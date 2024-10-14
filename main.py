@@ -7,17 +7,17 @@ from scipy import spatial
 import ast
 import tiktoken
 
-# Define the question at the top of the script
-question = "What is the MSC project thesis module at QMUL?"
-
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 COMPLETIONS_MODEL = "text-davinci-003"
 EMBEDDING_MODEL = "text-embedding-ada-002"
 GPT_MODEL = "gpt-4o-mini"
 
+question = "When can I see a list of supervisors to pick?"
+embeddings = "ug-embeddings.csv"
+
 # Read data from the previously created embedding CSV file and convert the 'embedding' column to NumPy arrays
-df = pd.read_csv('msc-embeddings.csv')
+df = pd.read_csv(embeddings)
 df['embedding'] = df['embedding'].apply(ast.literal_eval).apply(np.array)
 
 
