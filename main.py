@@ -13,8 +13,9 @@ COMPLETIONS_MODEL = "text-davinci-003"
 EMBEDDING_MODEL = "text-embedding-ada-002"
 GPT_MODEL = "gpt-4o-mini"
 
-question = "When can I see a list of supervisors to pick?"
-embeddings = "ug-embeddings.csv"
+question = "What deadline is coming up next?"
+module = "Undergraduate Project"
+embeddings = "data/ug-embeddings.csv"
 
 # Read data from the previously created embedding CSV file and convert the 'embedding' column to NumPy arrays
 df = pd.read_csv(embeddings)
@@ -45,14 +46,14 @@ def strings_ranked_by_relatedness(query: str, data_frame: pd.DataFrame,
 # Function to generate a query message for GPT
 def query_message(query: str, data_frame: pd.DataFrame, model: str, token_budget: int) -> str:
     strings, relatednesses = strings_ranked_by_relatedness(query, data_frame)
-    introduction = ('Use the below articles on the QMUL Computer Science MSc Project Thesis Module to answer the '
+    introduction = (f'Use the below articles on the {module} Module to answer the '
                     'subsequent question. If the answer cannot be found in the articles, write "I\'m sorry, '
                     'I could not find an appropriate answer."')
     query = f"\n\nQuestion: {query}"
     message = introduction
 
     for string in strings:
-        next_article = f'\n\nQMUL MSc Project Thesis Information section:\n"""\n{string}\n"""'
+        next_article = f'\n\nInformation section:\n"""\n{string}\n"""'
         if num_tokens(message + next_article + query, model=model) > token_budget:
             break
         else:
@@ -70,7 +71,7 @@ def ask(query: str, data_frame: pd.DataFrame = df, model: str = GPT_MODEL, token
         print(message)
 
     messages = [
-        {"role": "system", "content": "You answer questions about the QMUL MSc Project Thesis."},
+        {"role": "system", "content": f"You answer questions about the {module} module."},
         {"role": "user", "content": message},
     ]
 

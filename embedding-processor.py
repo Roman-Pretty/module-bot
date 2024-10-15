@@ -13,7 +13,7 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Read the PDF file
-reader = PdfReader("UG_Guide.pdf")
+reader = PdfReader("data/UG_Guide.pdf")
 pdf_text = ""
 
 # Extract text from each page of the PDF
@@ -67,4 +67,4 @@ def get_embedding(text: str) -> list:
 dataframe['embedding'] = dataframe['content'].apply(get_embedding)
 
 # Save the DataFrame to a CSV file
-dataframe.to_csv('ug-embeddings.csv', index=True)
+dataframe.to_csv('data/ug-embeddings.csv', index=True)
