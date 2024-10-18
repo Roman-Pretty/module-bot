@@ -45,6 +45,6 @@ while msg != "exit":
     response = chat_engine.chat(
         "You are only allowed to answer questions based on the provided embeddings."
         f" today's date is {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}, but don't repeat it unless asked to."
-        f"Here is your message: " + msg
+        f"Here is your message: {msg}"
     )
     print("Chatbot: ", response)
