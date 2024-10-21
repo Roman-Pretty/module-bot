@@ -6,6 +6,10 @@
           :message="m.message"
           :user="m.user"
       />
+      <div v-if="messages.length === 0" class="flex justify-center items-center h-full">
+        <h1 class="text-3xl">What can I help you with?</h1>
+      </div>
+
     </div>
     <div class="flex justify-center p-10 px-[30vw]">
       <div class="w-full  p-2 bg-base-200 rounded-full flex justify-center">

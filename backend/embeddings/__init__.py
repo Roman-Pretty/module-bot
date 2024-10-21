@@ -27,7 +27,7 @@ else:
     reader = SimpleDirectoryReader(input_dir="../data")
     documents = reader.load_data()
 
-    Settings.llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY)
+    Settings.llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, max_tokens=50) # I have set this to 50 for now (from 16!), need to set this later
     Settings.embed_model = OpenAIEmbedding(model="text-embedding-ada-002")
 
     vector_store = FaissVectorStore(faiss_index=faiss_index)
