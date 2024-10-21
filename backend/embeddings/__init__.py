@@ -6,12 +6,13 @@ from llama_index.vector_stores.faiss import FaissVectorStore
 from dotenv import load_dotenv
 import os
 import pickle
-from datetime import datetime
 
+# TODO: Change 'chat' so it memorizes the context of the conversation for each user
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 INDEX_FILE_PATH = "index.pkl"
 
+# TODO: Save index to the database
 # Check if the VectorStoreIndex file already exists
 if os.path.exists(INDEX_FILE_PATH):
     # Load the existing VectorStoreIndex
@@ -23,7 +24,7 @@ else:
     # Create a new FAISS index
     faiss_index = faiss.IndexFlatL2(d)
 
-    reader = SimpleDirectoryReader(input_dir="data")
+    reader = SimpleDirectoryReader(input_dir="../data")
     documents = reader.load_data()
 
     Settings.llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY)
@@ -38,13 +39,3 @@ else:
         pickle.dump(index, f)
 
 chat_engine = index.as_chat_engine(similarity_top_k=20, chat_mode='context')
-
-msg = ""
-while msg != "exit":
-    msg = input("You: ")
-    response = chat_engine.chat(
-        "You are only allowed to answer questions based on the provided embeddings."
-        f" today's date is {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}, but don't repeat it unless asked to."
-        f"Here is your message: {msg}"
-    )
-    print("Chatbot: ", response)
