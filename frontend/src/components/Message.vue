@@ -15,8 +15,16 @@
       </div>
     </div>
     <div :class="['chat-bubble', !bot ? '' : 'bg-base-100 text-neutral-800']">
-      <!--Research Sanitation and XSS (Cross-Site Scripting) attacks-->
-      <div v-html="message" class="response"></div>
+      <div v-if="message.includes('\n')">
+        <div v-for="(line, index) in message.split('\n')" :key="index">
+          {{ line }}
+          <br/>
+        </div>
+      </div>
+
+      <div v-else>
+        {{ message }}
+      </div>
     </div>
   </div>
 </template>
