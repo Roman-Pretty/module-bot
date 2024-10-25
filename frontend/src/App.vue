@@ -1,47 +1,56 @@
 <template>
-  <div class="flex flex-col h-screen">
-    <div class="flex justify-center my-4">
-      <button @click="clearChat" class="text-xs hover:underline">
-        Clear Chat
-      </button>
+  <div class="flex flex-row h-screen w-screen">
+    <div class="max-w-[16vw] bg-base-200/50">
+      <SideView />
     </div>
-    <div class="flex-1 overflow-y-auto p-4 px-[30vw]" ref="chatContainer">
-      <Message
-          v-for="m in messages"
-          :key="m.id"
-          :message="m.message"
-          :bot="m.bot"
-      />
-      <div v-if="messages.length === 0" class="flex justify-center items-center h-full">
-        <h1 class="text-3xl">What can I help you with?</h1>
-      </div>
-    </div>
-    <div class="flex justify-center p-10 px-[30vw]">
-      <div class="w-full p-2 bg-base-200 rounded-full flex justify-center">
-        <input
-            type="text"
-            v-model="display_message"
-            placeholder="Enter your message"
-            class="ml-4 w-full bg-base-200 rounded-full mr-2 focus:outline-none text-lg"
-            @keyup.enter="sendMessage"
-        />
-        <button
-            @click="sendMessage"
-            class="rounded-full bg-neutral-900 min-w-10 min-h-10 flex justify-center items-center"
-        >
-          <ArrowUp color="white" :size="20"/>
+
+    <div class="flex flex-col h-full w-full">
+
+      <div class="flex justify-center my-4">
+        <button @click="clearChat" class="text-xs hover:underline">
+          Clear Chat
         </button>
+      </div>
+      <div class="flex-1 overflow-y-auto p-4 px-[20vw]" ref="chatContainer">
+        <Message
+            v-for="m in messages"
+            :key="m.id"
+            :message="m.message"
+            :bot="m.bot"
+        />
+        <div v-if="messages.length === 0" class="flex justify-center items-center h-full">
+          <h1 class="text-3xl">What can I help you with?</h1>
+        </div>
+      </div>
+      <div class="flex justify-center p-10 px-[20vw]">
+        <div class="w-full p-2 bg-base-200 rounded-full flex justify-center">
+          <input
+              type="text"
+              v-model="display_message"
+              placeholder="Enter your message"
+              class="ml-4 w-full bg-base-200 rounded-full mr-2 focus:outline-none text-lg"
+              @keyup.enter="sendMessage"
+          />
+          <button
+              @click="sendMessage"
+              class="rounded-full bg-neutral-900 min-w-10 min-h-10 flex justify-center items-center"
+          >
+            <ArrowUp color="white" :size="20"/>
+          </button>
+        </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
 import Message from "./components/Message.vue";
 import {ArrowUp} from "lucide-vue-next";
+import SideView from "./components/SideView.vue";
 
 export default {
-  components: {Message, ArrowUp},
+  components: {SideView, Message, ArrowUp},
   data() {
     return {
       message: "",

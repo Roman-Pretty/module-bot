@@ -96,3 +96,23 @@ def clear_chatlogs(request):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 
+@csrf_exempt  # Remove this for production
+def get_bots(request):
+    if request.method == 'GET':
+        # Fetch all modules/bots
+        modules = Module.objects.all()
+
+        # Prepare data to send to the frontend
+        data = [
+            {
+                'course_id': module.course_id,
+                'name': module.name
+            }
+            for module in modules
+        ]
+
+        # Return data as JSON response
+        return JsonResponse(data, safe=False)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
+
