@@ -1,157 +1,109 @@
 <template>
   <div class="flex flex-row h-screen w-screen">
-    <div class="max-w-[16vw] bg-base-200/50">
-      <SideView />
+    <div class="w-80 bg-base-200/50 overflow-hidden">
+      <SideView @moduleChanged="handleModuleChange"/>
     </div>
 
     <div class="flex flex-col h-full w-full">
-
       <div class="flex justify-center my-4">
         <button @click="clearChat" class="text-xs hover:underline">
           Clear Chat
         </button>
       </div>
+
       <div class="flex-1 overflow-y-auto p-4 px-[20vw]" ref="chatContainer">
         <Message
-            v-for="m in messages"
-            :key="m.id"
-            :message="m.message"
-            :bot="m.bot"
+          v-for="m in messages"
+          :key="m.id"
+          :message="m.message"
+          :bot="m.bot"
         />
         <div v-if="messages.length === 0" class="flex justify-center items-center h-full">
           <h1 class="text-3xl">What can I help you with?</h1>
         </div>
       </div>
-      <div class="flex justify-center p-10 px-[20vw]">
-        <div class="w-full p-2 bg-base-200 rounded-full flex justify-center">
-          <input
-              type="text"
-              v-model="display_message"
-              placeholder="Enter your message"
-              class="ml-4 w-full bg-base-200 rounded-full mr-2 focus:outline-none text-lg"
-              @keyup.enter="sendMessage"
-          />
-          <button
-              @click="sendMessage"
-              class="rounded-full bg-neutral-900 min-w-10 min-h-10 flex justify-center items-center"
-          >
-            <ArrowUp color="white" :size="20"/>
-          </button>
-        </div>
+
+      <div class="flex justify-center pb-10 px-[20vw]">
+        <InputBar @send="sendMessage" />
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
-import Message from "./components/Message.vue";
-import {ArrowUp} from "lucide-vue-next";
 import SideView from "./components/SideView.vue";
+import Message from "./components/Message.vue";
+import InputBar from "./components/InputBar.vue";
 
 export default {
-  components: {SideView, Message, ArrowUp},
+  components: { SideView, Message, InputBar },
   data() {
     return {
-      message: "",
-      display_message: "",
-      response_data: "",
+      currentModule: "ECS417U",
       messages: [],
     };
   },
   mounted() {
-    this.fetchChatLogs();
+    this.fetchChatLogs(this.currentModule);
   },
   updated() {
-    // Scroll to bottom after Vue updates the DOM
     this.scrollToBottom();
   },
   methods: {
-    async fetchChatLogs() {
+    async fetchChatLogs(moduleId) {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/chatlogs/");
+        const response = await fetch(`http://127.0.0.1:8000/api/chatlogs/?username=roman&course_id=${moduleId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch chat logs");
         }
         const data = await response.json();
         this.messages = data;
-        this.scrollToBottom(); // Scroll to bottom after fetching logs
+        this.scrollToBottom();
       } catch (error) {
         console.error("Error:", error);
       }
     },
-    async sendMessage() {
-      this.message = this.display_message;
-      this.display_message = "";
+    handleModuleChange(courseId) {
+      this.currentModule = courseId;
+      this.fetchChatLogs(courseId);
+    },
+    async sendMessage(message) {
+      // This will receive the message emitted from InputBar
+      if (!message) return;
 
+      const userMessage = message;
+
+      // Add the user message locally to display it immediately
       this.messages.push({
-        message: this.message,
+        message: userMessage,
         bot: false,
       });
 
-      // Save user message to the backend
+      // Send message to the backend and get bot response
       try {
-        await fetch("http://127.0.0.1:8000/api/save-chatlog/", {
+        const response = await fetch("http://127.0.0.1:8000/api/embedding_response/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: "roman", // TODO: replace with user and module
-            module_id: "ECS417U",
-            message: this.message,
-            bot_message: false,
-          }),
-        });
-      } catch (error) {
-        console.error("Error saving user message:", error);
-      }
-
-      // Send the message to the embedding API and get the bot response
-      try {
-        const response = await fetch("http://127.0.0.1:8000/api/embedding/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: new URLSearchParams({
-            message: this.message,
+            username: "roman",
+            module_id: this.currentModule,
+            message: userMessage,
           }),
         });
 
         const data = await response.json();
         if (response.ok) {
-          this.response_data = data.response;
-
-          // Push the bot response to the messages array
           this.messages.push({
             message: data.response,
             bot: true,
           });
-
-          // Save bot message to the backend
-          try {
-            await fetch("http://127.0.0.1:8000/api/save-chatlog/", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                username: "roman", // TODO: replace with user and module
-                module_id: "ECS417U",
-                message: data.response,
-                bot_message: true,
-              }),
-            });
-          } catch (error) {
-            console.error("Error saving bot message:", error);
-          }
         } else {
-          this.response_data = data.error || "Error occurred";
+          console.error("Bot response error:", data.error || "Unknown error");
         }
       } catch (error) {
-        console.error("Error:", error);
-        this.response_data = "Failed to fetch response";
+        console.error("Error fetching bot response:", error);
       }
     },
     async clearChat() {
@@ -162,13 +114,12 @@ export default {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: "roman", // TODO: replace with user and module
-            module_id: "ECS417U",
+            username: "roman",
+            module_id: this.currentModule,
           }),
         });
 
         if (response.ok) {
-          // Clear the local messages and chatLogs arrays after successful deletion
           this.messages = [];
         } else {
           const errorData = await response.json();
@@ -186,7 +137,7 @@ export default {
           behavior: "smooth",
         });
       }
-    }
+    },
   },
 };
 </script>
