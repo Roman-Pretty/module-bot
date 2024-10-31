@@ -1,17 +1,39 @@
 <template>
   <div class="flex flex-row h-screen w-screen">
-    <div class="w-80 bg-base-200/50 overflow-hidden">
+    <div class="w-80 bg-qm overflow-hidden">
       <SideView @moduleChanged="handleModuleChange"/>
     </div>
 
     <div class="flex flex-col h-full w-full">
-      <div class="flex justify-center my-4">
-        <button @click="clearChat" class="text-xs hover:underline">
-          Clear Chat
-        </button>
+      <div class="navbar bg-base-100">
+  <div class="flex-1">
+    <a class="btn btn-ghost text-xl">QMLearn</a>
+  </div>
+  <div class="flex-none gap-2">
+    <div class="dropdown dropdown-end mr-8">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar ">
+        <div class="w-10 rounded-full">
+          <img
+            alt="Tailwind CSS Navbar component"
+            src="./assets/user.jpg" />
+        </div>
       </div>
+      <ul
+        tabindex="0"
+        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+        <li>
+          <a class="justify-between">
+            Profile
+          </a>
+        </li>
+        <li><a>Settings</a></li>
+        <li><a>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-      <div class="flex-1 overflow-y-auto p-4 px-[20vw]" ref="chatContainer">
+      <div class="flex-1 overflow-y-auto p-4 px-[22vw]" ref="chatContainer">
         <Message
           v-for="m in messages"
           :key="m.id"
@@ -23,7 +45,7 @@
         </div>
       </div>
 
-      <div class="flex justify-center pb-10 px-[20vw]">
+      <div class="flex justify-center pb-10 px-[22vw]">
         <InputBar @send="sendMessage" />
       </div>
     </div>

@@ -1,10 +1,10 @@
 <template>
   <div class="p-4 pt-8 ">
-    <h2 class="font-semibold text-xs pb-2">Module Bots</h2>
+    <h2 class="font-semibold text-xs pb-2 text-neutral-50">Module Bots</h2>
     <div v-for="bot in bots" :key="bot.course_id">
       <button
-          class="btn btn-ghost w-full mb-2 justify-start font-normal"
-          :class="{'bg-neutral-300': currentModule === bot.course_id, 'bg-default-class': currentModule !== bot.course_id}"
+          class="btn btn-ghost w-full mb-2 justify-start font-normal text-neutral-50"
+          :class="{'bg-neutral-900/40': currentModule === bot.course_id, 'bg-default-class': currentModule !== bot.course_id}"
           @click="selectBot(bot.course_id)"
       >
         <span class="text-start text-nowrap truncate h-4">

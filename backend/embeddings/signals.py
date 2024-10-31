@@ -18,6 +18,7 @@ def initialize_embeddings(module_id=None):
     global chat_engine
     global index
 
+    TOP_K = 6
     print(f"Initializing embeddings... for {module_id}")
     index = None
     chat_engine = None
@@ -84,9 +85,9 @@ def initialize_embeddings(module_id=None):
     else:
         # Use the loaded index for the chat engine
         print("Chat engine initialized...")
-        chat_engine = index.as_chat_engine(similarity_top_k=200, chat_mode=ChatMode.CONTEXT)
+        chat_engine = index.as_chat_engine(similarity_top_k=TOP_K, chat_mode=ChatMode.CONTEXT)
 
     # Initialize chat engine if it's not already done
     if chat_engine is None:
-        chat_engine = index.as_chat_engine(similarity_top_k=200, chat_mode=ChatMode.CONTEXT)
+        chat_engine = index.as_chat_engine(similarity_top_k=TOP_K, chat_mode=ChatMode.CONTEXT)
 

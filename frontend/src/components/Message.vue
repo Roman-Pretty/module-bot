@@ -7,7 +7,7 @@
             src='../assets/user.jpg'
         />
       </div>
-      <div class="w-10 rounded-full border" v-if="bot">
+      <div class="w-10 rounded-full border border-qm" v-if="bot">
         <img
             alt="Bot Avatar"
             src='../assets/bot.webp'
