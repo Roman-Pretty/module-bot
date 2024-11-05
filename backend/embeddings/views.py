@@ -219,5 +219,6 @@ def generate_module(request):
             module_instance.save()
             os.remove("../data/module_instance.html")
             return JsonResponse({'status': 'success', 'message': 'Module generated successfully'}, status=200)
+
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
