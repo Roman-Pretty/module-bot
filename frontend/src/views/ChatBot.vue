@@ -33,19 +33,23 @@
         </div>
       </div>
 
-      <div class="flex-1 overflow-y-auto p-4 px-[22vw]" ref="chatContainer">
+      <div v-if="currentModule === ''" class="flex flex-col justify-center items-center h-full w-full">
+        <h1 class="text-3xl pb-2">Select a module to start chatting</h1>
+        <RouterLink to="/addmodule" class="text-md mb-[10vh] text-neutral-600 link">Member of staff? Click here to add a module.</RouterLink>
+      </div>
+      <div v-if="currentModule !== ''" class="flex-1 overflow-y-auto p-4 px-[22vw]" ref="chatContainer">
         <Message
             v-for="m in messages"
             :key="m.id"
             :message="m.message"
             :bot="m.bot"
         />
-        <div v-if="messages.length === 0" class="flex justify-center items-center h-full">
+        <div v-if="messages.length === 0 && currentModule !== ''" class="flex justify-center items-center h-full">
           <h1 class="text-3xl">What can I help you with?</h1>
         </div>
       </div>
 
-      <div class="flex justify-center pb-10 px-[22vw]">
+      <div v-if="currentModule !== ''" class="flex justify-center pb-10 px-[22vw]">
         <InputBar @send="sendMessage"/>
       </div>
     </div>
@@ -62,7 +66,7 @@ export default {
   components: {SideView, Message, InputBar},
   data() {
     return {
-      currentModule: "ECS635U", // TODO: Have a screen where no module is selected or get user's most recent module
+      currentModule: "",
       messages: [],
     };
   },
