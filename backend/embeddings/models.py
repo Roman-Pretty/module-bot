@@ -5,6 +5,8 @@ from django.contrib.auth.models import User  # Use Django's built-in User model
 class Module(models.Model):
     course_id = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=100)
+    url = models.URLField()
+    html = models.TextField()
     index_data = models.BinaryField(null=True, blank=True)
     students = models.ManyToManyField(User, related_name='modules', blank=True)
 

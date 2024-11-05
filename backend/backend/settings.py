@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'pgvector.django',
+    # 'pgvector.django',
     'embeddings',
 ]
 
@@ -79,22 +79,22 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-load_dotenv()
-DB_PASSWORD = os.getenv("DB_PASSWORD")
+# load_dotenv()
+# DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'modulebot',           # The name of your PostgreSQL database
-        'USER': 'postgres',          # Your PostgreSQL username
-        'PASSWORD': DB_PASSWORD,  # TODO: Move to .env file
-        'HOST': 'localhost',
-        'PORT': '5432',
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+# 'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'modulebot',           # The name of your PostgreSQL database
+#         'USER': 'postgres',          # Your PostgreSQL username
+#         'PASSWORD': DB_PASSWORD,
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
 }
 
 # Password validation

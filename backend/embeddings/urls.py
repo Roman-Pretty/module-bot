@@ -7,4 +7,7 @@ urlpatterns = [
     path('clear-chatlogs/', views.clear_chatlogs, name='clear_chatlogs'),
     path('get_bots/', views.get_bots, name='get_bots'),
     path('set_current_module/', views.set_current_module, name='set_current_module'),
+    path('generate-module/', views.generate_module, name='generate_module'),
 ]
+
+#TODO: Follow URL naming conventions

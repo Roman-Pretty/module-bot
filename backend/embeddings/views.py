@@ -1,9 +1,8 @@
-from django.http import JsonResponse
-from datetime import datetime
-from django.shortcuts import get_object_or_404
-from .models import ChatLog, Module
-from django.contrib.auth.models import User
-import json
+from llama_index.core import SimpleDirectoryReader
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
 
 from django.http import JsonResponse
 from datetime import datetime
@@ -141,3 +140,84 @@ def get_bots(request):
         return JsonResponse(data, safe=False)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+def generate_module(request):
+    import pickle
+    from llama_index.core import VectorStoreIndex, Settings, StorageContext, Document
+    import faiss
+    from llama_index.llms.openai import OpenAI
+    from llama_index.embeddings.openai import OpenAIEmbedding
+    from llama_index.vector_stores.faiss import FaissVectorStore
+    from .models import Module
+    import os
+    from dotenv import load_dotenv
+
+    if request.method == 'POST':
+        try:
+            # TODO: Encrypt the password
+            data = json.loads(request.body)
+            name = data.get('name')
+            course_id = data.get('course_id')
+            email = data.get('email')
+            password = data.get('password')
+            url = data.get('url')
+
+            driver = webdriver.Chrome()
+
+            saml_login_url = "https://qmplus.qmul.ac.uk/auth/saml2/login.php?wants&idp=4eb950c6f0e1110dc8e14b5cf41532d7&passive=off"
+            driver.get(saml_login_url)
+
+            try:
+                time.sleep(5)
+                username_field = driver.find_element(By.NAME, "loginfmt")
+                username_field.send_keys(email)
+                username_field.send_keys(Keys.RETURN)
+                time.sleep(5)
+
+                password_field = driver.find_element(By.NAME, "passwd")
+                password_field.send_keys(password)
+                password_field.send_keys(Keys.RETURN)
+                time.sleep(5)
+
+                driver.get(url)
+                time.sleep(5)
+
+                page_content = driver.page_source
+
+                with open("../data/module_instance.html", "w") as file:
+                    file.write(page_content)
+            except Exception as e:
+                print(e)
+
+            module_instance = Module(
+                course_id=course_id,
+                name=name,
+                url=url,
+                html=page_content if page_content else ""
+            )
+            driver.quit()
+
+            load_dotenv()
+            OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+            d = 1536  # dimensions of text-ada-embedding-002
+            faiss_index = faiss.IndexFlatL2(d)
+
+            # TODO: Find more efficient way to load the data
+            reader = SimpleDirectoryReader(input_dir="../data")
+            documents = reader.load_data()
+
+            Settings.llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, max_tokens=18)
+            Settings.embed_model = OpenAIEmbedding(model="text-embedding-ada-002")
+
+            vector_store = FaissVectorStore(faiss_index=faiss_index)
+            storage_context = StorageContext.from_defaults(vector_store=vector_store)
+            index = VectorStoreIndex.from_documents(documents, storage_context=storage_context, show_progress=True)
+
+            # Serialize and save the VectorStoreIndex to the database
+            module_instance.index_data = pickle.dumps(index)
+            module_instance.save()
+            os.remove("../data/module_instance.html")
+            return JsonResponse({'status': 'success', 'message': 'Module generated successfully'}, status=200)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
