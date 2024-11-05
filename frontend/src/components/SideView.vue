@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       bots: [],
-      currentModule: "ECS417U",
+      currentModule: "ECS635U", // TODO: Have a screen where no module is selected or get user's most recent module
     };
   },
   methods: {

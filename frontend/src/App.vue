@@ -6,39 +6,39 @@
 
     <div class="flex flex-col h-full w-full">
       <div class="navbar bg-base-100">
-  <div class="flex-1">
-    <a class="btn btn-ghost text-xl">QMLearn</a>
-  </div>
-  <div class="flex-none gap-2">
-    <div class="dropdown dropdown-end mr-8">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar ">
-        <div class="w-10 rounded-full">
-          <img
-            alt="Tailwind CSS Navbar component"
-            src="./assets/user.jpg" />
+        <div class="flex-1">
+          <a class="btn btn-ghost text-xl" @click="clearChat">QMLearn</a>
+        </div>
+        <div class="flex-none gap-2">
+          <div class="dropdown dropdown-end mr-8">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar ">
+              <div class="w-10 rounded-full">
+                <img
+                    alt="Tailwind CSS Navbar component"
+                    src="./assets/user.jpg"/>
+              </div>
+            </div>
+            <ul
+                tabindex="0"
+                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+              <li>
+                <a class="justify-between">
+                  Profile
+                </a>
+              </li>
+              <li><a>Settings</a></li>
+              <li><a>Logout</a></li>
+            </ul>
+          </div>
         </div>
       </div>
-      <ul
-        tabindex="0"
-        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-        <li>
-          <a class="justify-between">
-            Profile
-          </a>
-        </li>
-        <li><a>Settings</a></li>
-        <li><a>Logout</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
 
       <div class="flex-1 overflow-y-auto p-4 px-[22vw]" ref="chatContainer">
         <Message
-          v-for="m in messages"
-          :key="m.id"
-          :message="m.message"
-          :bot="m.bot"
+            v-for="m in messages"
+            :key="m.id"
+            :message="m.message"
+            :bot="m.bot"
         />
         <div v-if="messages.length === 0" class="flex justify-center items-center h-full">
           <h1 class="text-3xl">What can I help you with?</h1>
@@ -46,7 +46,7 @@
       </div>
 
       <div class="flex justify-center pb-10 px-[22vw]">
-        <InputBar @send="sendMessage" />
+        <InputBar @send="sendMessage"/>
       </div>
     </div>
   </div>
@@ -58,10 +58,10 @@ import Message from "./components/Message.vue";
 import InputBar from "./components/InputBar.vue";
 
 export default {
-  components: { SideView, Message, InputBar },
+  components: {SideView, Message, InputBar},
   data() {
     return {
-      currentModule: "ECS417U",
+      currentModule: "ECS635U", // TODO: Have a screen where no module is selected or get user's most recent module
       messages: [],
     };
   },
@@ -74,6 +74,7 @@ export default {
   methods: {
     async fetchChatLogs(moduleId) {
       try {
+        // TODO: Fetch chatlogs using body not headers, and check that the user is actually logged in so you cant see other people's chatlogs
         const response = await fetch(`http://127.0.0.1:8000/api/chatlogs/?username=roman&course_id=${moduleId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch chat logs");

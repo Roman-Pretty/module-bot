@@ -10,7 +10,9 @@ from llama_index.vector_stores.faiss import FaissVectorStore
 from .models import Module, ChatLog
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+import logging
 
+logger = logging.getLogger(__name__)
 chat_engine = None
 index = None
 
@@ -29,7 +31,7 @@ def initialize_embeddings(module_id=None):
     try:
         user = User.objects.get(username='roman')
     except User.DoesNotExist:
-        print("I don't exist!")
+        logger.error("User with username 'roman' does not exist.")
         return
 
     # If module_id is provided, fetch the specific module, otherwise use the most recent accessed module
@@ -37,7 +39,7 @@ def initialize_embeddings(module_id=None):
         try:
             module_instance = Module.objects.get(course_id=module_id)
         except Module.DoesNotExist:
-            print(f"Module with course_id {module_id} does not exist.")
+            logger.error(f"Module with course_id {module_id} does not exist.")
             return
     else:
         # Get the most recent accessed module from the chat logs
@@ -46,21 +48,21 @@ def initialize_embeddings(module_id=None):
             if recent_chat_log:
                 module_instance = recent_chat_log.module
             else:
-                print("No chat logs found for user.")
+                logger.info("No chat logs found for the user.")
 
                 #TODO: Add a default module
                 module_instance = Module.objects.first()
         except ObjectDoesNotExist:
-            print("Module associated with chat log does not exist.")
+            logger.error("Module associated with chat log does not exist.")
             return
 
     if not module_instance:
-        print("Module instance not found.")
+        logger.error("Module instance not found.")
         return
 
     # Load the existing VectorStoreIndex or create a new one
     if module_instance.index_data:
-        print("Loading existing index...")
+        logger.info("Loading existing index...")
         index = pickle.loads(module_instance.index_data)
     else:
         index = None
@@ -72,7 +74,7 @@ def initialize_embeddings(module_id=None):
         reader = SimpleDirectoryReader(input_dir="../data")
         documents = reader.load_data()
 
-        Settings.llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, max_tokens=50)
+        Settings.llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, max_tokens=18)
         Settings.embed_model = OpenAIEmbedding(model="text-embedding-ada-002")
 
         vector_store = FaissVectorStore(faiss_index=faiss_index)
@@ -82,9 +84,13 @@ def initialize_embeddings(module_id=None):
         # Serialize and save the VectorStoreIndex to the database
         module_instance.index_data = pickle.dumps(index)
         module_instance.save()
+
+        # These lines are new
+        index = pickle.loads(module_instance.index_data)
+        chat_engine = index.as_chat_engine(similarity_top_k=TOP_K, chat_mode=ChatMode.CONTEXT)
     else:
         # Use the loaded index for the chat engine
-        print("Chat engine initialized...")
+        logger.info("Using existing index...")
         chat_engine = index.as_chat_engine(similarity_top_k=TOP_K, chat_mode=ChatMode.CONTEXT)
 
     # Initialize chat engine if it's not already done
