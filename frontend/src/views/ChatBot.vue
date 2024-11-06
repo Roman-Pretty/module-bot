@@ -7,7 +7,7 @@
     <div class="flex flex-col h-full w-full">
       <div class="navbar bg-base-100">
         <div class="flex-1">
-          <a class="btn btn-ghost text-xl" @click="clearChat">QMLearn</a>
+          <a class="btn btn-ghost text-xl" @click="clearChat">{{ currentModule }}</a>
         </div>
         <div class="flex-none gap-2">
           <div class="dropdown dropdown-end mr-8">
@@ -22,9 +22,12 @@
                 tabindex="0"
                 class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
               <li>
-                <a class="justify-between">
-                  Profile
+                <a class="justify-between" href="http://127.0.0.1:8000/admin" target="_blank">
+                  Manage Modules
                 </a>
+              </li>
+              <li>
+                <RouterLink to="/addmodule">Add Module</RouterLink>
               </li>
               <li><a>Settings</a></li>
               <li><a>Logout</a></li>
@@ -35,9 +38,12 @@
 
       <div v-if="currentModule === ''" class="flex flex-col justify-center items-center h-full w-full">
         <h1 class="text-3xl pb-2">Select a module to start chatting</h1>
-        <RouterLink to="/addmodule" class="text-md mb-[10vh] text-neutral-600 link">Member of staff? Click here to add a module.</RouterLink>
+        <RouterLink to="/addmodule" class="text-md mb-[10vh] text-neutral-600 link">Member of staff? Click here to add a
+          module.
+          <!-- TODO: Add a carousel of enrolled modules if its over 4, otherwise just show them here as buttons-->
+        </RouterLink>
       </div>
-      <div v-if="currentModule !== ''" class="flex-1 overflow-y-auto p-4 px-[22vw]" ref="chatContainer">
+      <div v-if="currentModule !== ''" class="flex-1 overflow-y-auto p-4 px-[18vw]" ref="chatContainer">
         <Message
             v-for="m in messages"
             :key="m.id"
@@ -49,7 +55,7 @@
         </div>
       </div>
 
-      <div v-if="currentModule !== ''" class="flex justify-center pb-10 px-[22vw]">
+      <div v-if="currentModule !== ''" class="flex justify-center pb-10 px-[18vw]">
         <InputBar @send="sendMessage"/>
       </div>
     </div>
@@ -57,9 +63,9 @@
 </template>
 
 <script>
-import SideView from "../components/SideView.vue";
-import Message from "../components/Message.vue";
-import InputBar from "../components/InputBar.vue";
+import SideView from "../components/chat/SideView.vue";
+import Message from "../components/chat/Message.vue";
+import InputBar from "../components/chat/InputBar.vue";
 
 export default {
   name: "ChatBot",

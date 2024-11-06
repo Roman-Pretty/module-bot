@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User  # Use Django's built-in User model
+from django.contrib.auth.models import User
 
 # Module model stores course-related information
 class Module(models.Model):

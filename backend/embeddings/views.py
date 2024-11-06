@@ -10,6 +10,8 @@ from django.shortcuts import get_object_or_404
 from .models import ChatLog, Module
 from django.contrib.auth.models import User
 import json
+import shutil
+import os
 
 
 def embedding_response(request):
@@ -31,11 +33,14 @@ def embedding_response(request):
             if not chat_engine:
                 return JsonResponse({'response': 'Chat engine not initialized'}, status=500)
 
+            # Ensure that two spaces are at the end of each line for markdown line breaks
+            user_input = user_input.replace("\n", "  \n")  # Add two spaces before line breaks
+
             response = chat_engine.chat(
-                "You are only allowed to answer questions based on the provided embeddings. Do not mention you are providing a response based on the embeddings or information provided."
-                f" today's date is {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}, but don't repeat it unless asked to. Use this information when answering questions based on what to do now or in the future."
-                f" if you do not know the answer, please direct the user to the appropriate contact. Please ensure your responses are lengthy if needed and accurate."
-                f" Please ensure your responses are structured clearly and nicely. Here is your message: {user_input}"
+                "You are only allowed to answer questions based on the provided embeddings."
+                f" today's date is {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}. Use this information when answering questions based on what to do now or in the future."
+                f" if you do not know the answer, please direct the user to the appropriate contact. Please ensure your responses are accurate."
+                f" Responses must be structured clearly, formatted in markdown. Here is your message: {user_input}"
             )
 
             # Save both user message and bot response in chat log
@@ -150,7 +155,6 @@ def generate_module(request):
     from llama_index.embeddings.openai import OpenAIEmbedding
     from llama_index.vector_stores.faiss import FaissVectorStore
     from .models import Module
-    import os
     from dotenv import load_dotenv
 
     if request.method == 'POST':
@@ -163,7 +167,13 @@ def generate_module(request):
             password = data.get('password')
             url = data.get('url')
 
-            driver = webdriver.Chrome()
+            from selenium.webdriver.chrome.options import Options
+            chrome_options = Options()
+            chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--disable-gpu")
+            chrome_options.add_argument("--window-size=1920x1080")
+            # Initialize the WebDriver with the specified options
+            driver = webdriver.Chrome(options=chrome_options)
 
             saml_login_url = "https://qmplus.qmul.ac.uk/auth/saml2/login.php?wants&idp=4eb950c6f0e1110dc8e14b5cf41532d7&passive=off"
             driver.get(saml_login_url)
@@ -183,10 +193,12 @@ def generate_module(request):
                 driver.get(url)
                 time.sleep(5)
 
+                # TODO: write an algorithm that also downloads pdfs and other resources
                 page_content = driver.page_source
 
                 with open("../data/module_instance.html", "w") as file:
                     file.write(page_content)
+
             except Exception as e:
                 print(e)
 
@@ -207,7 +219,7 @@ def generate_module(request):
             reader = SimpleDirectoryReader(input_dir="../data")
             documents = reader.load_data()
 
-            Settings.llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, max_tokens=18)
+            Settings.llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, max_tokens=1000)
             Settings.embed_model = OpenAIEmbedding(model="text-embedding-ada-002")
 
             vector_store = FaissVectorStore(faiss_index=faiss_index)
@@ -217,8 +229,40 @@ def generate_module(request):
             # Serialize and save the VectorStoreIndex to the database
             module_instance.index_data = pickle.dumps(index)
             module_instance.save()
-            os.remove("../data/module_instance.html")
+
+            # Path to the data folder
+            data_folder_path = "../data"
+
+            # Delete all files and subdirectories in the data folder
+            for filename in os.listdir(data_folder_path):
+                file_path = os.path.join(data_folder_path, filename)
+                try:
+                    if os.path.isfile(file_path) or os.path.islink(file_path):
+                        os.remove(file_path)
+                    elif os.path.isdir(file_path):
+                        shutil.rmtree(file_path)
+                except Exception as e:
+                    print(f"Failed to delete {file_path}. Reason: {e}")
+
             return JsonResponse({'status': 'success', 'message': 'Module generated successfully'}, status=200)
 
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+
+def upload_files(request):
+    import os
+    from django.conf import settings
+    if request.method == 'POST':
+        data_folder = os.path.join(settings.BASE_DIR, '../data')
+        os.makedirs(data_folder, exist_ok=True)
+
+        files = request.FILES.getlist('files')
+        for file in files:
+            file_path = os.path.join(data_folder, file.name)
+            with open(file_path, 'wb+') as destination:
+                for chunk in file.chunks():
+                    destination.write(chunk)
+
+        return JsonResponse({'status': 'success', 'message': 'Files uploaded successfully'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)

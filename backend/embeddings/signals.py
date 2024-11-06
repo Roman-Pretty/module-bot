@@ -20,7 +20,7 @@ def initialize_embeddings(module_id=None):
     global chat_engine
     global index
 
-    TOP_K = 6
+    TOP_K = 20
     print(f"Initializing embeddings... for {module_id}")
     index = None
     chat_engine = None
@@ -47,6 +47,7 @@ def initialize_embeddings(module_id=None):
     # Load the existing VectorStoreIndex or create a new one
     if module_instance.index_data:
         logger.info("Loading existing index...")
+        print("Loading existing index...")
         index = pickle.loads(module_instance.index_data)
     else:
         index = None

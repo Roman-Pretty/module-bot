@@ -1,92 +1,80 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { Hash, User, KeyRound, Link, Pencil } from 'lucide-vue-next';
-import LoadingScreen from "../components/LoadingScreen.vue";
+import { defineComponent, ref } from 'vue';
+import ModuleInfoForm from "../components/add_module/ModuleInfoForm.vue";
+import ResourceUploadForm from "../components/add_module/ResourceUploadForm.vue";
+import FinalSubmit from "../components/add_module/FinalSubmit.vue";
+import LoadingScreen from "../components/add_module/LoadingScreen.vue";
 
 export default defineComponent({
   name: "AddModule",
-  components: {LoadingScreen, User, KeyRound, Link, Pencil, Hash },
-  data() {
-    return {
+  components: { LoadingScreen, ModuleInfoForm, ResourceUploadForm, FinalSubmit },
+  setup() {
+    const step = ref(1);
+    const loading = ref(false);
+
+    const moduleData = ref({
       module_url: '',
       staff_email: '',
       password: '',
       module_name: '',
       module_code: '',
-      loading: false
+    });
+
+    const files = ref<File[]>([]); // Store files here
+
+    const handleNext = (data: any) => {
+      moduleData.value = { ...moduleData.value, ...data };
+      nextStep();
+    };
+
+    const handleFiles = (selectedFiles: File[]) => {
+      files.value = selectedFiles; // Capture files from ResourceUploadForm
+    };
+
+    const setLoading = (value: boolean) => {
+      loading.value = value; // Update loading state
+    };
+
+    const nextStep = () => {
+      if (step.value < 3) step.value++;
+    };
+
+    const previousStep = () => {
+      if (step.value > 1) step.value--;
+    };
+
+    return {
+      step,
+      loading,
+      moduleData,
+      files,
+      handleNext,
+      handleFiles,
+      setLoading,
+      nextStep,
+      previousStep,
     };
   },
-  methods: {
-    async generateModule() {
-      this.loading = true; // Set loading to true when the request starts
-      try {
-        await fetch('http://localhost:8000/api/generate-module/', {
-          method: 'POST',
-          body: JSON.stringify({
-            url: this.module_url,
-            email: this.staff_email,
-            password: this.password,
-            name: this.module_name,
-            course_id: this.module_code
-          })
-        });
-      } catch (error) {
-        console.error('Error generating module:', error);
-      } finally {
-        this.loading = false; // Set loading to false when the request completes
-      }
-    }
-  }
 });
 </script>
 
 <template>
   <div class="hero bg-[#0a1732] min-h-screen">
     <div class="hero-content text-center">
-      <div class="max-w-md">
+      <div v-if="loading">
+        <LoadingScreen/>
+      </div>
 
-        <LoadingScreen v-if="loading" />
-
-        <div v-else class="card bg-base-100 w-96 shadow-xl rounded-none">
-          <div class="card-body">
+      <div v-else class="card bg-base-100 w-[30vw] shadow-xl rounded-none h-[60vh] ">
+        <div class="card-body h-full justify-between">
+          <div>
             <h2 class="card-title justify-center">Add Module</h2>
-            <label class="input flex items-center gap-2">
-              <div class="opacity-35">
-                <Pencil />
-              </div>
-              <input type="text" class="grow" placeholder="Module Name" v-model="module_name" />
-            </label>
-            <label class="input flex items-center gap-2">
-              <div class="opacity-35">
-                <Hash />
-              </div>
-              <input type="text" class="grow" placeholder="Module Code" v-model="module_code" />
-            </label>
-            <label class="input flex items-center gap-2">
-              <div class="opacity-35">
-                <Link />
-              </div>
-              <input type="text" class="grow" placeholder="Module URL" v-model="module_url" />
-            </label>
-            <div class="divider mt-0 my-0" />
-            <label class="input flex items-center gap-2">
-              <div class="opacity-35">
-                <User />
-              </div>
-              <input type="text" class="grow" placeholder="Staff Email" v-model="staff_email" />
-            </label>
-            <label class="input flex items-center gap-2">
-              <div class="opacity-35">
-                <KeyRound />
-              </div>
-              <input type="password" class="grow" placeholder="Password" v-model="password" />
-            </label>
-            <div class="card-actions justify-center">
-              <button class="btn bg-qm text-neutral-50" @click="generateModule">Submit</button>
-            </div>
+            <div class="divider my-0"/>
           </div>
+          <ModuleInfoForm v-if="step === 1" @next="handleNext"/>
+          <ResourceUploadForm v-else-if="step === 2" @updateFiles="handleFiles" @next="nextStep" @previous="previousStep"/>
+          <FinalSubmit v-else-if="step === 3" v-bind="{...moduleData, files}" @setLoading="setLoading" @previous="previousStep"/>
         </div>
-
       </div>
     </div>
   </div>

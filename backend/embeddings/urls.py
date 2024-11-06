@@ -8,6 +8,7 @@ urlpatterns = [
     path('get_bots/', views.get_bots, name='get_bots'),
     path('set_current_module/', views.set_current_module, name='set_current_module'),
     path('generate-module/', views.generate_module, name='generate_module'),
+    path('upload-files/', views.upload_files, name='upload_files'),
 ]
 
 #TODO: Follow URL naming conventions
