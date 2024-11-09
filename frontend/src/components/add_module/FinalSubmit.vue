@@ -61,8 +61,10 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col items-center">
     <p class="text-neutral-700">Ready to submit?</p>
+    </div>
+  <div>
     <div class="card-actions justify-center mt-4">
       <button class="btn w-1/3" @click="previous">Previous</button>
       <button class="btn bg-qm text-neutral-50 w-1/3" @click="submit">Submit</button>

@@ -1,15 +1,12 @@
 import os
 import pickle
 from dotenv import load_dotenv
-from llama_index.core import SimpleDirectoryReader, VectorStoreIndex, Settings, StorageContext
+from llama_index.core import Settings
 from llama_index.core.chat_engine.types import ChatMode
-import faiss
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
-from llama_index.vector_stores.faiss import FaissVectorStore
-from .models import Module, ChatLog
+from .models import Module
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 import logging
 
 logger = logging.getLogger(__name__)
@@ -20,13 +17,15 @@ def initialize_embeddings(module_id=None):
     global chat_engine
     global index
 
-    TOP_K = 20
+    TOP_K = 8
     print(f"Initializing embeddings... for {module_id}")
     index = None
     chat_engine = None
 
     load_dotenv()
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    Settings.llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, max_tokens=1000)
+    Settings.embed_model = OpenAIEmbedding(model="text-embedding-ada-002")
 
     try:
         user = User.objects.get(username='roman')

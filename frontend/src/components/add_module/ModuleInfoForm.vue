@@ -54,6 +54,7 @@ export default defineComponent({
     </label>
   </div>
   <div class="card-actions justify-center mt-4">
+    <RouterLink class="btn w-1/3" to="/">Cancel</RouterLink>
     <button class="btn bg-qm text-neutral-50 w-1/3" @click="next">Next</button>
   </div>
 </template>

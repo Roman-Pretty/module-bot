@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 
 export default defineComponent({
   name: "ResourceUploadForm",
@@ -27,18 +27,18 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col items-center">
     <h3 class="text-neutral-700 mb-2">Are there any additional resources the bot should be aware of?</h3>
     <p class="text-neutral-500 text-sm">These may include PDFs, lecture slides, or downloaded external resources.</p>
     <input
-      type="file"
-      multiple
-      class="file-input w-full max-w-xs my-4"
-      @change="handleFileUpload"
+        type="file"
+        multiple
+        class="file-input w-full max-w-xs my-4"
+        @change="handleFileUpload"
     />
-    <div class="card-actions justify-center">
-      <button class="btn w-1/3" @click="previous">Previous</button>
-      <button class="btn bg-qm text-neutral-50 w-1/3" @click="next">Next</button>
-    </div>
+  </div>
+  <div class="card-actions justify-center">
+    <button class="btn w-1/3" @click="previous">Previous</button>
+    <button class="btn bg-qm text-neutral-50 w-1/3" @click="next">Next</button>
   </div>
 </template>
