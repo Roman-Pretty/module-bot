@@ -8,6 +8,17 @@ module.exports = {
         },
         extend: {},
     },
+    daisyui: {
+        themes: [
+            {
+                light: {
+                    ...require("daisyui/src/theming/themes")["light"],
+                    primary: "#0d3273",
+                    secondary: "#0a2a63",
+                },
+            },
+        ],
+    },
     variants: {
         extend: {},
     },

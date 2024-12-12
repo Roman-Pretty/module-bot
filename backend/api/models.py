@@ -13,7 +13,7 @@ class Module(models.Model):
     def __str__(self):
         return f"{self.name} ({self.course_id})"
 
-# ChatLog model that links users, modules, and their respective chat history
+# ChatLog model that links users, modules, and their respective chat_old history
 class ChatLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chatlogs')
     module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='chatlogs')

@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('message', models.TextField()),
                 ('bot_message', models.BooleanField(default=False)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='chatlogs', to=settings.AUTH_USER_MODEL)),
-                ('module', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='chatlogs', to='embeddings.module')),
+                ('module', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='chatlogs', to='api.module')),
             ],
         ),
     ]
