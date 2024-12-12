@@ -1,12 +1,24 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {MessageType} from "../../../types"
+import showdown from 'showdown'
 
 export default defineComponent({
   name: "Message",
+  data() {
+    return {
+      html: ''
+    }
+  },
+  mounted() {
+    var converter = new showdown.Converter();
+    var text = this.message.message;
+    converter.setOption('simpleLineBreaks', true);
+    this.html = converter.makeHtml(text);
+  },
   props: {
     message: {
-      type: MessageType,
+      type: Object as () => MessageType,
       required: true,
     },
   },
@@ -24,8 +36,26 @@ export default defineComponent({
       </div>
     </div>
 
-    <div :class="['chat-bubble', message.bot_message ? 'bg-base-100 text-neutral-800' : 'text-base-200']">
-      <span>{{message.message}}</span>
+    <div :class="['chat-bubble', message.bot_message ? 'bg-base-100 text-neutral-800 bot' : 'text-base-200']">
+      <!--TODO: protect against XSS-->
+      <div v-html="html"/>
     </div>
   </div>
 </template>
+
+<style>
+  .bot p, .bot ol {
+    padding-top: 1rem;
+  }
+
+  .bot li {
+    margin-left: 2rem;
+    list-style-type: disc;
+  }
+
+  .bot a {
+    color: #0d3273;
+    text-decoration: underline;
+  }
+
+</style>
