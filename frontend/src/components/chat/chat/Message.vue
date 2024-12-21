@@ -1,20 +1,15 @@
 <script lang="ts">
-import {defineComponent} from 'vue'
-import {MessageType} from "../../../types"
-import showdown from 'showdown'
+import {defineComponent} from 'vue';
+import {MessageType} from "../../../types";
+import showdown from 'showdown';
 
 export default defineComponent({
   name: "Message",
   data() {
     return {
-      html: ''
-    }
-  },
-  mounted() {
-    var converter = new showdown.Converter();
-    var text = this.message.message;
-    converter.setOption('simpleLineBreaks', true);
-    this.html = converter.makeHtml(text);
+      html: '',
+      converter: new showdown.Converter(),
+    };
   },
   props: {
     message: {
@@ -22,8 +17,28 @@ export default defineComponent({
       required: true,
     },
   },
-})
+  mounted() {
+    this.updateHtml();
+  },
+  watch: {
+    'message.message': {
+      immediate: true,
+      handler() {
+        this.updateHtml();
+      },
+    },
+  },
+  methods: {
+    updateHtml() {
+      // Protect against null or undefined messages
+      const text = this.message.message || '';
+      this.converter.setOption('simpleLineBreaks', true);
+      this.html = this.converter.makeHtml(text);
+    },
+  },
+});
 </script>
+
 
 <template>
   <div :class="['chat message my-2', !message.bot_message ? 'chat-end' : 'chat-start']">

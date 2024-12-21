@@ -1,5 +1,7 @@
 <script lang="ts">
 import {defineComponent, ref, provide} from 'vue'
+import { useAuthStore } from '../store/auth.ts'
+import { useRouter } from 'vue-router'
 import Sidebar from "../components/chat/sidebar/Sidebar.vue";
 import Chat from "../components/chat/chat/Chat.vue";
 
@@ -9,8 +11,19 @@ export default defineComponent({
   setup() {
     const currentModuleID = ref("");
     provide('currentModuleID', currentModuleID);
+    const authStore = useAuthStore()
+    const router = useRouter()
+
+    return {
+      authStore, router
+    }
   },
-  mounted() {
+  async mounted() {
+
+    if (!this.authStore.isAuthenticated) {
+      this.$router.push({name: 'Login'})
+    }
+    await this.authStore.fetchUser()
     this.getBots();
   },
   methods: {
@@ -28,8 +41,8 @@ export default defineComponent({
 
 <template>
   <main class="flex flex-row w-screen h-screen">
-    <Sidebar :bots="bots" />
-    <Chat />
+    <Sidebar :bots="bots"/>
+    <Chat/>
   </main>
 
 </template>

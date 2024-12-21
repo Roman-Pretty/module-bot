@@ -1,22 +1,25 @@
 <script lang="ts">
 import {defineComponent, inject, nextTick} from 'vue';
 import Header from "./Header.vue";
-import Conversation from "./Conversation.vue";
 import Input from "./Input.vue";
 import {MessageType} from "../../../types.ts";
+import {useAuthStore} from "../../../store/auth.ts";
+import Message from "./Message.vue";
 
 export default defineComponent({
   name: "Chat",
-  components: {Input, Conversation, Header},
+  components: {Message, Input, Header},
   setup() {
     const currentModuleID = inject<number>('currentModuleID');
+    const authStore = useAuthStore()
+
     return {
-      currentModuleID,
+      currentModuleID, authStore
     };
   },
   data() {
     return {
-      messages: [] as MessageType[], // Explicitly type messages as an array of Message
+      messages: [] as MessageType[],
       isStreaming: false as boolean,
     };
   },
@@ -24,7 +27,7 @@ export default defineComponent({
     async fetchChatLogs(): Promise<void> {
       try {
         const response = await fetch(
-            `http://127.0.0.1:8000/api/chat-logs/?username=roman&course_id=${this.currentModuleID}`,
+            `http://127.0.0.1:8000/api/chat-logs/?username=${this.authStore.user?.username}&course_id=${this.currentModuleID}`,
             {method: "GET"}
         );
         if (!response.ok) {
@@ -62,7 +65,7 @@ export default defineComponent({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: "roman", // TODO: Hardcoded username for now
+            username: this.authStore.user?.username,
             module_id: this.currentModuleID,
             message: userMessage,
           }),
@@ -89,22 +92,31 @@ export default defineComponent({
           bot_message: true,
         }) - 1;
 
-        const processStream = async (): Promise<void> => {
-          const {done, value} = await reader.read();
-          if (done) {
-            this.isStreaming = false;
-            return;
+        const processStream = async () => {
+          let done = false;
+          while (!done) {
+            const {value, done: readerDone} = await reader.read();
+            done = readerDone;
+
+            if (value) {
+              text += decoder.decode(value, {stream: true});
+
+              // Trigger reactivity by reassigning the object
+              this.messages[botMessageIndex] = {
+                ...this.messages[botMessageIndex],
+                message: text,
+              };
+
+              console.log("Current message:", this.messages[botMessageIndex].message);
+
+              this.scrollToBottom();
+            }
+
           }
-
-          text += decoder.decode(value, {stream: true});
-          this.messages[botMessageIndex].message = text;
-          this.scrollToBottom();
-
-          // Recursively process the next chunk
-          await processStream();
+          this.isStreaming = false;
         };
-
         await processStream();
+
       } catch (error) {
         console.error("Error fetching bot response:", error);
       }
@@ -139,7 +151,7 @@ export default defineComponent({
   <div class="flex-grow flex flex-col justify-between">
     <Header/>
     <div ref="chatContainer" class="h-full overflow-y-auto xl:px-[26%] lg:px-[20%]">
-      <Conversation :messages="messages"/>
+      <Message v-for="msg in messages" :key="msg.id" :message="msg"/>
     </div>
     <Input @sendMessage="sendMessage"/>
   </div>

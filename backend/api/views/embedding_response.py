@@ -37,12 +37,6 @@ def get_chatbot(module_id):
     Settings.llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, max_tokens=1000)
     Settings.embed_model = OpenAIEmbedding(model="text-embedding-ada-002")
 
-    try:
-        user = User.objects.get(username='roman')
-    except User.DoesNotExist:
-        logger.error("User with username 'roman' does not exist.")
-        return None
-
     if module_id is not None:
         try:
             module_instance = Module.objects.get(course_id=module_id)

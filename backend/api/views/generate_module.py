@@ -60,7 +60,10 @@ def generate_module(request):
             # TODO: write an algorithm that also downloads pdfs and other resources
             page_content = driver.page_source
 
-            with open("../data/module_instance.html", "w") as file:
+            data_dir = "./data"
+            if not os.path.exists(data_dir):
+                os.makedirs(data_dir)
+            with open("./data/module_instance.html", "w") as file:
                 file.write(page_content)
 
         except Exception as e:
@@ -80,7 +83,7 @@ def generate_module(request):
         faiss_index = faiss.IndexFlatL2(d)
 
         # TODO: Find more efficient way to load the data
-        reader = SimpleDirectoryReader(input_dir="../data")
+        reader = SimpleDirectoryReader(input_dir="./data")
         documents = reader.load_data()
 
         Settings.llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, max_tokens=1000)
@@ -95,7 +98,7 @@ def generate_module(request):
         module_instance.save()
 
         # Path to the data folder
-        data_folder_path = "../data"
+        data_folder_path = "./data"
 
         # Delete all files and subdirectories in the data folder
         for filename in os.listdir(data_folder_path):

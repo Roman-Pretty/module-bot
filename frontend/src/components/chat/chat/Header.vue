@@ -1,13 +1,24 @@
 <script lang="ts">
 import {defineComponent, inject} from 'vue'
+import {useAuthStore} from "../../../store/auth.ts";
 
 export default defineComponent({
   name: "Header",
   setup() {
     const currentModuleID = inject<string>('currentModuleID');
+    const authStore = useAuthStore()
     return {
-      currentModuleID,
+      currentModuleID, authStore
     };
+  },
+  methods: {
+    async logout() {
+      try {
+        await this.authStore.logout(this.$router)
+      } catch (error) {
+        console.error(error)
+      }
+    },
   },
 })
 </script>
@@ -37,7 +48,11 @@ export default defineComponent({
           </li>
           <li><a>Clear Chat</a></li>
           <li><a>Settings</a></li>
-          <li><a>Logout</a></li>
+          <li>
+            <a class="justify-between" @click="logout">
+              Logout
+            </a>
+          </li>
         </ul>
       </div>
     </div>
