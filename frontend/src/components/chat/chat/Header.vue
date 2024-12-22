@@ -46,7 +46,6 @@ export default defineComponent({
           <li>
             <RouterLink to="/addmodule">Add Module</RouterLink>
           </li>
-          <li><a>Clear Chat</a></li>
           <li><a>Settings</a></li>
           <li>
             <a class="justify-between" @click="logout">

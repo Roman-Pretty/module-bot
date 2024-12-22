@@ -1,29 +1,30 @@
 <script lang="ts">
-import {defineComponent, ref, provide} from 'vue'
-import { useAuthStore } from '../store/auth.ts'
-import { useRouter } from 'vue-router'
+import {defineComponent, ref, provide} from 'vue';
+import {useAuthStore} from '../store/auth.ts';
+import {useRouter} from 'vue-router';
 import Sidebar from "../components/chat/sidebar/Sidebar.vue";
 import Chat from "../components/chat/chat/Chat.vue";
+import SelectModule from "../components/chat/chat/SelectModule.vue";
 
 export default defineComponent({
   name: "ChatBot",
-  components: {Chat, Sidebar},
+  components: {SelectModule, Chat, Sidebar},
   setup() {
     const currentModuleID = ref("");
     provide('currentModuleID', currentModuleID);
-    const authStore = useAuthStore()
-    const router = useRouter()
+    const authStore = useAuthStore();
+    const router = useRouter();
 
     return {
-      authStore, router
-    }
+      authStore, router, currentModuleID
+    };
   },
   async mounted() {
-
     if (!this.authStore.isAuthenticated) {
-      this.$router.push({name: 'Login'})
+      this.$router.push({name: 'Login'});
+      return;
     }
-    await this.authStore.fetchUser()
+    await this.authStore.fetchUser();
     this.getBots();
   },
   methods: {
@@ -36,13 +37,13 @@ export default defineComponent({
       bots: []
     };
   },
-})
+});
 </script>
 
 <template>
   <main class="flex flex-row w-screen h-screen">
-    <Sidebar :bots="bots"/>
-    <Chat/>
+    <Sidebar :bots="bots" />
+    <Chat v-if="currentModuleID" />
+    <SelectModule v-else />
   </main>
-
 </template>
