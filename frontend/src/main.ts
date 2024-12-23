@@ -8,6 +8,7 @@ import { createPinia } from 'pinia'
 import { useAuthStore } from './store/auth'
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
+import Dashboard from "./views/Dashboard.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -22,6 +23,12 @@ const router = createRouter({
             path: '/addmodule',
             component: AddModule,
             name: 'addmodule',
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/dashboard',
+            component: Dashboard,
+            name: 'dashboard',
             meta: { requiresAuth: true }
         },
         {

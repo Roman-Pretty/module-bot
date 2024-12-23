@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent, inject, nextTick} from 'vue';
-import Header from "./Header.vue";
+import Header from "../../Header.vue";
 import Input from "./Input.vue";
 import {MessageType} from "../../../types.ts";
 import {useAuthStore} from "../../../store/auth.ts";

@@ -1,9 +1,9 @@
-<script lang="ts">
+<script>
 import {defineComponent} from 'vue'
-import Header from "../../Header.vue";
+import Header from "../Header.vue";
 
 export default defineComponent({
-  name: "SelectModule",
+  name: "SelectDashboard",
   components: {Header}
 })
 </script>
@@ -14,9 +14,9 @@ export default defineComponent({
     <div class="justify-center items-center flex-grow flex flex-col h-full pb-16">
       <div class="hero-content text-center">
         <div class="max-w-md">
-          <h1 class="text-2xl font-semibold">What can I help you with?</h1>
+          <h1 class="text-2xl font-semibold">Q-Module-Bot Dashboard</h1>
           <p class="py-4">
-            Please select a module to start chatting.
+            Please select a module to view the dashboard.
           </p>
         </div>
       </div>

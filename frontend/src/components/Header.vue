@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent, inject} from 'vue'
-import {useAuthStore} from "../../../store/auth.ts";
+import {useAuthStore} from "../store/auth.ts";
 
 export default defineComponent({
   name: "Header",
@@ -32,7 +32,7 @@ export default defineComponent({
       <div class="dropdown dropdown-end mr-8">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar ">
           <div class="w-10 rounded-full">
-            <img alt="Tailwind CSS Navbar component" src="../../../assets/user.jpg"/>
+            <img alt="Tailwind CSS Navbar component" src="../assets/user.jpg"/>
           </div>
         </div>
         <ul
