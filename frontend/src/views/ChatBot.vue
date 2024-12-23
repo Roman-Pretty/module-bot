@@ -19,6 +19,16 @@ export default defineComponent({
       authStore, router, currentModuleID
     };
   },
+  watch: {
+    currentModuleID: {
+      immediate: true,
+      handler() {
+        if (this.currentModuleID) {
+          window.document.title = `Q-Module-Bot | ${this.currentModuleID}`;
+        }
+      }
+    }
+  },
   async mounted() {
     if (!this.authStore.isAuthenticated) {
       this.$router.push({name: 'Login'});

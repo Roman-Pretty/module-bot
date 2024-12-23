@@ -1,23 +1,3 @@
-<!--<t>-->
-<!--  <div class="login">-->
-<!--    <h1>Login</h1>-->
-<!--    <form @submit.prevent="login">-->
-<!--      <div>-->
-<!--        <label for="username">username:</label>-->
-<!--        <input v-model="username" id="username" type="text" required-->
-<!--               @input="resetError">-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <label for="password">Password:</label>-->
-<!--        <input v-model="password" id="password" type="password" required-->
-<!--               @input="resetError">-->
-<!--      </div>-->
-<!--      <button type="submit">Login</button>-->
-<!--    </form>-->
-<!--    <p v-if="error" class="error">{{ error }}</p>-->
-<!--  </div>-->
-<!--</t>-->
-
 <template>
   <div class="hero bg-[#0a1732] min-h-screen login">
     <div class="hero-content flex-col lg:flex-row-reverse">

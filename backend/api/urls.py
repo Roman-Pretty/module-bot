@@ -20,6 +20,9 @@ urlpatterns = [
     path('user', views.user, name='user'),
     path('register', views.register, name='register'),
 
+    # Dashboard API
+    path('chart-data/<str:module_id>/', views.chart_data, name='chart_data'),
+
 ]
 
 #TODO: Follow URL naming conventions

@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent, inject} from 'vue'
-import {useAuthStore} from "../store/auth.ts";
+import {useAuthStore} from "../store/auth";
 
 export default defineComponent({
   name: "Header",
@@ -10,6 +10,12 @@ export default defineComponent({
     return {
       currentModuleID, authStore
     };
+  },
+  props: {
+    isDashboard: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     async logout() {
@@ -24,11 +30,16 @@ export default defineComponent({
 </script>
 
 <template>
-  <nav class="navbar bg-base-100">
-    <div class="flex-1">
+  <nav class="navbar ">
+    <div class="navbar-start">
       <a class="btn btn-ghost text-xl">{{ currentModuleID }}</a>
     </div>
-    <div class="flex-none gap-2">
+    <div v-if="isDashboard" role="tablist" class="tabs tabs-bordered navbar-center">
+      <a role="tab" class="tab tab-active">Statistics</a>
+      <a role="tab" class="tab">Members</a>
+      <a role="tab" class="tab">Settings</a>
+    </div>
+    <div class="gap-2 navbar-end">
       <div class="dropdown dropdown-end mr-8">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar ">
           <div class="w-10 rounded-full">
@@ -45,6 +56,9 @@ export default defineComponent({
           </li>
           <li>
             <RouterLink to="/addmodule">Add Module</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/dashboard">Dashboard</RouterLink>
           </li>
           <li><a>Settings</a></li>
           <li>

@@ -20,6 +20,16 @@ export default defineComponent({
       authStore, router, currentModuleID
     };
   },
+  watch: {
+    currentModuleID: {
+      immediate: true,
+      handler() {
+        if (this.currentModuleID) {
+          window.document.title = `Dashboard | ${this.currentModuleID}`;
+        }
+      }
+    }
+  },
   async mounted() {
     if (!this.authStore.isAuthenticated) {
       this.$router.push({name: 'Login'});
@@ -42,7 +52,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <main class="flex flex-row w-screen h-screen">
+  <main class="flex flex-row w-screen h-screen bg-base-200">
     <Sidebar :bots="bots" />
     <DashboardContent v-if="currentModuleID" />
     <SelectDashboard v-else />

@@ -1,22 +1,30 @@
-<script>
-import {defineComponent} from 'vue'
+<script lang="ts">
+import {defineComponent, inject} from 'vue'
 import Header from "../Header.vue";
+import BarChart from "./BarChart.vue";
+import WeekCard from "./cards/WeekCard.vue";
+import MonthCard from "./cards/MonthCard.vue";
+import CardWrapper from "./cards/CardWrapper.vue";
+import ThreeMonthCard from "./cards/ThreeMonthCard.vue";
 
 export default defineComponent({
   name: "DashboardContent",
-  components: {Header}
+  components: {ThreeMonthCard, CardWrapper, MonthCard, WeekCard, BarChart, Header},
+  setup() {
+    const currentModuleID = inject<string>('currentModuleID');
+    return {
+      currentModuleID,
+    };
+  },
 })
 </script>
 
 <template>
   <div class="flex-grow flex flex-col justify-between">
-    <Header/>
-    <div class="justify-center items-center flex-grow flex flex-col h-full pb-16">
-      <div class="hero-content text-center">
-        <div class="max-w-md">
-          <h1 class="text-2xl font-semibold">Q-Module-Bot Dashboard</h1>
-        </div>
-      </div>
+    <Header :is-dashboard="true"/>
+    <div class="h-full overflow-y-auto px-8">
+      <CardWrapper/>
+      <ThreeMonthCard/>
     </div>
   </div>
 </template>

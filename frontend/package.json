@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "chart.js": "^4.4.7",
     "dompurify": "^3.1.7",
     "epic-spinners": "^2.0.0",
     "lucide-vue-next": "^0.453.0",
@@ -16,6 +17,7 @@
     "pinia": "^2.3.0",
     "showdown": "^2.1.0",
     "vue": "^3.5.10",
+    "vue-chartjs": "^5.3.2",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
