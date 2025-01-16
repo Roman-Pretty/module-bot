@@ -13,7 +13,7 @@ export default defineComponent({
       const target = event.target as HTMLInputElement;
       if (target.files) {
         this.files = Array.from(target.files);
-        this.$emit('updateFiles', this.files); // Emit files to parent
+        this.$emit('updateFiles', this.files);
       }
     },
     next() {

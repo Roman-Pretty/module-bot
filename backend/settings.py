@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'api',
     'rest_framework',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -83,18 +83,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'q-module-bot',
+        'USER': 'admin',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
-# 'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'modulebot',           # The name of your PostgreSQL database
-#         'USER': 'postgres',          # Your PostgreSQL username
-#         'PASSWORD': DB_PASSWORD,
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
 }
 
 # Password validation
@@ -135,3 +131,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Embedding model dimensions
+EMBEDDING_MODEL_DIMENSIONS = 1536
+
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")

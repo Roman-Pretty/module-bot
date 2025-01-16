@@ -1,17 +1,28 @@
 from django.db import models
 from django.contrib.auth.models import User
+from pgvector.django import VectorField
+from backend import settings
+
 
 # Module model stores course-related information
 class Module(models.Model):
-    course_id = models.CharField(max_length=20, unique=True)
+    id = models.CharField(max_length=100, unique=True, primary_key=True)
     name = models.CharField(max_length=100)
-    url = models.URLField()
-    html = models.TextField()
-    index_data = models.BinaryField(null=True, blank=True)
+    url = models.URLField(max_length=300)
     students = models.ManyToManyField(User, related_name='modules', blank=True)
 
     def __str__(self):
-        return f"{self.name} ({self.course_id})"
+        return f"{self.name} ({self.id})"
+
+class ModuleEmbedding(models.Model):
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='embeddings')
+    embedding_data = VectorField(dimensions=settings.EMBEDDING_MODEL_DIMENSIONS)
+    content = models.TextField()
+
+    def __str__(self):
+        return f"Embedding for {self.module.name} (ID: {self.id})"
+
+
 
 # ChatLog model that links users, modules, and their respective chat_old history
 class ChatLog(models.Model):

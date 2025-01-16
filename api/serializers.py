@@ -6,7 +6,7 @@ from .models import Module, ChatLog
 class ModuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Module
-        fields = 'course_id', 'name'
+        fields = 'id', 'name', 'url'
 
 class URLModuleSerializer(serializers.ModelSerializer):
     class Meta:

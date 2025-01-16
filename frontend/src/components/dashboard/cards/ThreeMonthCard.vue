@@ -5,12 +5,6 @@ import BarChart from "../BarChart.vue";
 export default defineComponent({
   name: "ThreeMonthCard",
   components: {BarChart},
-  setup() {
-    const currentModuleID = inject<string>('currentModuleID');
-    return {
-      currentModuleID,
-    };
-  },
 })
 </script>
 
@@ -21,7 +15,7 @@ export default defineComponent({
       <h2 class="card-title
       text-lg">Questions Asked this Semester</h2>
     </div>
-      <BarChart :module-id="this.currentModuleID" :timeframe="'3months'"/>
+      <BarChart :timeframe="'3months'"/>
     </div>
   </div>
 </template>

@@ -1,5 +1,6 @@
 <script lang="ts">
 import {defineComponent, ref, onMounted, onBeforeUnmount} from 'vue';
+//@ts-ignore
 import {FulfillingSquareSpinner} from 'epic-spinners';
 
 export default defineComponent({

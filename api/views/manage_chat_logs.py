@@ -9,13 +9,12 @@ from api.serializers import ChatLogSerializer
 @api_view(['GET', 'DELETE'])
 def manage_chat_logs(request):
     try:
-        # Common: Extract parameters
-        username = request.GET.get('username') or request.data.get('username', 'roman')  # Default username if GET
-        course_id = request.GET.get('course_id') or request.data.get('module_id', '')
+        username = request.GET.get('username')
+        id = request.GET.get('id', '')
 
         # Validate user and module
         user = get_object_or_404(User, username=username)
-        module = get_object_or_404(Module, course_id=course_id)
+        module = get_object_or_404(Module, id=id)
 
         if request.method == 'GET':
             # Fetch chat_old logs

@@ -20,7 +20,7 @@ export default defineComponent({
       module_code: '',
     });
 
-    const files = ref<File[]>([]); // Store files here
+    const files = ref<File[]>([]);
 
     const handleNext = (data: any) => {
       moduleData.value = { ...moduleData.value, ...data };
@@ -28,11 +28,11 @@ export default defineComponent({
     };
 
     const handleFiles = (selectedFiles: File[]) => {
-      files.value = selectedFiles; // Capture files from ResourceUploadForm
+      files.value = selectedFiles;
     };
 
     const setLoading = (value: boolean) => {
-      loading.value = value; // Update loading state
+      loading.value = value;
     };
 
     const nextStep = () => {

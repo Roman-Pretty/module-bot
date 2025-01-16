@@ -1,9 +1,12 @@
 import { defineStore } from 'pinia'
 import { Router } from 'vue-router'
+import {useModuleStore} from "./module.ts";
 
 interface User {
-    name: string
-    [key: string]: any // Allows flexibility if the user object has additional properties
+    username: string,
+    id: number,
+    email: string,
+    [key: string]: any
 }
 
 interface AuthState {
@@ -67,6 +70,7 @@ export const useAuthStore = defineStore('auth', {
                 if (response.ok) {
                     this.user = null
                     this.isAuthenticated = false
+                    useModuleStore().currentModule = null
                     this.saveState()
                     if (router) {
                         await router.push({ name: 'login' })

@@ -1,33 +1,23 @@
 <script lang="ts">
-import {defineComponent, ref, provide} from 'vue';
+import {defineComponent} from 'vue';
 import {useAuthStore} from '../store/auth.ts';
 import {useRouter} from 'vue-router';
 import Sidebar from "../components/chat/sidebar/Sidebar.vue";
 import Chat from "../components/chat/chat/Chat.vue";
 import SelectModule from "../components/chat/chat/SelectModule.vue";
+import {useModuleStore} from "../store/module.ts";
 
 export default defineComponent({
   name: "ChatBot",
   components: {SelectModule, Chat, Sidebar},
   setup() {
-    const currentModuleID = ref("");
-    provide('currentModuleID', currentModuleID);
+    const moduleStore = useModuleStore();
     const authStore = useAuthStore();
     const router = useRouter();
 
     return {
-      authStore, router, currentModuleID
+      authStore, moduleStore, router
     };
-  },
-  watch: {
-    currentModuleID: {
-      immediate: true,
-      handler() {
-        if (this.currentModuleID) {
-          window.document.title = `Q-Module-Bot | ${this.currentModuleID}`;
-        }
-      }
-    }
   },
   async mounted() {
     if (!this.authStore.isAuthenticated) {
@@ -35,25 +25,15 @@ export default defineComponent({
       return;
     }
     await this.authStore.fetchUser();
-    this.getBots();
-  },
-  methods: {
-    async getBots() {
-      this.bots = await fetch('http://127.0.0.1:8000/api/get_bots/').then((res) => res.json());
-    },
-  },
-  data() {
-    return {
-      bots: []
-    };
+    await this.moduleStore.fetchModules();
   },
 });
 </script>
 
 <template>
   <main class="flex flex-row w-screen h-screen">
-    <Sidebar :bots="bots" />
-    <Chat v-if="currentModuleID" />
+    <Sidebar :bots="moduleStore.getModules" />
+    <Chat v-if="moduleStore.moduleSelected" />
     <SelectModule v-else />
   </main>
 </template>

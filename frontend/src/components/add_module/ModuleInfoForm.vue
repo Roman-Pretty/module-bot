@@ -16,7 +16,6 @@ export default defineComponent({
   },
   methods: {
     next() {
-      // Emit the form data to the parent component
       this.$emit('next', {
         module_url: this.module_url,
         staff_email: this.staff_email,

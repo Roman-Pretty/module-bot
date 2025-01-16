@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent, inject} from 'vue'
+import {defineComponent} from 'vue'
 import Header from "../Header.vue";
 import BarChart from "./BarChart.vue";
 import WeekCard from "./cards/WeekCard.vue";
@@ -10,12 +10,6 @@ import ThreeMonthCard from "./cards/ThreeMonthCard.vue";
 export default defineComponent({
   name: "DashboardContent",
   components: {ThreeMonthCard, CardWrapper, MonthCard, WeekCard, BarChart, Header},
-  setup() {
-    const currentModuleID = inject<string>('currentModuleID');
-    return {
-      currentModuleID,
-    };
-  },
 })
 </script>
 

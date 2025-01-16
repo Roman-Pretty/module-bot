@@ -1,10 +1,13 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {MessageType} from "../../../types";
+import {MessageType} from "./Chat.vue";
 import showdown from 'showdown';
+//@ts-ignore
+import {HollowDotsSpinner} from 'epic-spinners'
 
 export default defineComponent({
   name: "Message",
+  components: {HollowDotsSpinner},
   data() {
     return {
       html: '',
@@ -54,23 +57,31 @@ export default defineComponent({
     <div :class="['chat-bubble', message.bot_message ? 'bg-base-100 text-neutral-800 bot' : 'text-base-200']">
       <!--TODO: protect against XSS-->
       <div v-html="html"/>
+      <div class="mt-2" v-if="message.loading">
+        <hollow-dots-spinner
+            :animation-duration="800"
+            :dot-size="10"
+            :dots-num="3"
+            color="#072355"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <style>
-  .bot p, .bot ol {
-    padding-top: 1rem;
-  }
+.bot p, .bot ol {
+  padding-top: 1rem;
+}
 
-  .bot li {
-    margin-left: 2rem;
-    list-style-type: disc;
-  }
+.bot li {
+  margin-left: 2rem;
+  list-style-type: disc;
+}
 
-  .bot a {
-    color: #0d3273;
-    text-decoration: underline;
-  }
+.bot a {
+  color: #0d3273;
+  text-decoration: underline;
+}
 
 </style>

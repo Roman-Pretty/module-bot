@@ -1,14 +1,15 @@
 <script lang="ts">
-import {defineComponent, inject} from 'vue'
-import {useAuthStore} from "../store/auth";
+import {defineComponent} from 'vue'
+import {useAuthStore} from "../store/auth.ts";
+import {useModuleStore} from "../store/module.ts";
 
 export default defineComponent({
   name: "Header",
   setup() {
-    const currentModuleID = inject<string>('currentModuleID');
     const authStore = useAuthStore()
+    const moduleStore = useModuleStore();
     return {
-      currentModuleID, authStore
+      moduleStore, authStore
     };
   },
   props: {
@@ -32,7 +33,7 @@ export default defineComponent({
 <template>
   <nav class="navbar ">
     <div class="navbar-start">
-      <a class="btn btn-ghost text-xl">{{ currentModuleID }}</a>
+      <a class="btn btn-ghost text-xl" :href="moduleStore.getCurrentModule?.url" target="_blank">{{ moduleStore.getCurrentModule?.id }}</a>
     </div>
     <div v-if="isDashboard" role="tablist" class="tabs tabs-bordered navbar-center">
       <a role="tab" class="tab tab-active">Statistics</a>

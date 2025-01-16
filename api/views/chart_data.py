@@ -36,7 +36,7 @@ def chart_data(request, module_id):
 
     # Query ChatLogs for the given module ID within the calculated range
     weekly_logs = (
-        ChatLog.objects.filter(module__course_id=module_id, timestamp__date__range=[start_date, end_date], bot_message=False)
+        ChatLog.objects.filter(module__id=module_id, timestamp__date__range=[start_date, end_date], bot_message=False)
         .annotate(day=TruncDate('timestamp'))
         .values('day')
         .annotate(count=Count('id'))

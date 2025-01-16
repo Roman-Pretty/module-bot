@@ -5,5 +5,5 @@ from api.models import Module
 from api.serializers import ModuleSerializer
 
 @api_view(['GET'])
-def get_bots(request):
+def modules(request):
     return Response(ModuleSerializer(Module.objects.all(), many=True).data)

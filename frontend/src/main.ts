@@ -5,7 +5,7 @@ import App from './App.vue'
 import AddModule from "./views/AddModule.vue";
 import ChatBot from "./views/ChatBot.vue";
 import { createPinia } from 'pinia'
-import { useAuthStore } from './store/auth'
+import { useAuthStore } from './store/auth.ts'
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
 import Dashboard from "./views/Dashboard.vue";
@@ -44,11 +44,9 @@ const router = createRouter({
     ]
 })
 
+//@ts-ignore
 router.beforeEach(async function (to, from, next) {
     const authStore = useAuthStore()
-
-    // Log the route change
-    console.log(from);
 
     // Ensure the auth store is initialized (fetch user if needed)
     if (authStore.user === null && authStore.isAuthenticated === false) {
