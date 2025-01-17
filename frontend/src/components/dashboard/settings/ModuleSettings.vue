@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {useModuleStore} from "../../../store/module.ts";
+import {useModuleStore} from "../../../store/module";
 
 export default defineComponent({
   name: "ModuleSettings",

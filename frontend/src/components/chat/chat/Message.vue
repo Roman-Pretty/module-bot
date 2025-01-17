@@ -54,7 +54,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div :class="['chat-bubble', message.bot_message ? 'bg-base-100 text-base-content bot' : 'text-base-100 bg-base-content']">
+    <div :class="['chat-bubble', message.bot_message ? 'bg-base-100 text-base-content bot' : 'text-base-200 dark:bg-base-content']">
       <!--TODO: protect against XSS-->
       <div v-html="html"/>
       <div class="mt-2" v-if="message.loading">

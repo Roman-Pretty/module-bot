@@ -33,6 +33,9 @@ export default {
     async 'moduleStore.currentModule'() {
       this.chartData = await fetchChartData(this.timeframe);
     },
+    async 'timeframe'() {
+      this.chartData = await fetchChartData(this.timeframe);
+    },
   },
   data() {
     return {
@@ -47,6 +50,18 @@ export default {
         ],
       },
       chartOptions: {
+         scales: {
+            x: {
+                grid: {
+                    display: false
+                }
+            },
+            y: {
+                grid: {
+                    display: true
+                }
+            }
+        },
         responsive: true,
         plugins: {
           legend: {

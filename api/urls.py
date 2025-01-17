@@ -20,6 +20,7 @@ urlpatterns = [
 
     # Dashboard API
     path('chart-data/<str:module_id>/', views.chart_data, name='chart_data'),
+    path('chat-summary/<str:module_id>/', views.chat_summary, name='chat_summary'),
 
 ]
 

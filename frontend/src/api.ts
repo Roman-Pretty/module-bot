@@ -62,7 +62,8 @@ export async function fetchChatLogs(): Promise<[]> {
 
      export async function fetchChartData(timeframe: string) {
       try {
-        const response = await fetch(`http://localhost:8000/api/chart-data/${useModuleStore()?.getCurrentModule?.id}?timeframe=${timeframe}`);
+        const response = await fetch(`http://localhost:8000/api/chart-data/${useModuleStore()?.getCurrentModule?.id}?timeframe=${timeframe}`,
+            {method: "GET", credentials: "include"});
         if (!response.ok) {
           throw new Error('Failed to fetch chart data');
         }
@@ -82,5 +83,19 @@ export async function fetchChatLogs(): Promise<[]> {
         return chartData;
       } catch (error) {
         console.error('Error fetching chart data:', error);
+      }
+    }
+
+    export async function fetchChatSummary(timeframe: string) {
+    console.log(timeframe)
+      try {
+        const response = await fetch(`http://localhost:8000/api/chat-summary/${useModuleStore()?.getCurrentModule?.id}?timeframe=${timeframe}`,
+            {method: "GET", credentials: "include"});
+        if (!response.ok) {
+          throw new Error('Failed to fetch chat summary');
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('Error fetching chat summary:', error);
       }
     }

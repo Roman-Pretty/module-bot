@@ -50,13 +50,16 @@ export default defineComponent({
          target="_blank">{{ moduleStore.getCurrentModule?.id }}</a>
     </div>
     <div v-if="isDashboard" role="tablist" class="tabs tabs-bordered navbar-center">
-      <a role="tab" :class="{ 'tab-active': selected === 'Statistics' }" class="tab" @click="changeSection('Statistics')">Statistics</a>
-      <a role="tab" :class="{ 'tab-active': selected === 'Members' }"class="tab"  @click="changeSection('Members')">Members</a>
-      <a role="tab" :class="{ 'tab-active': selected === 'Settings' }"class="tab" @click="changeSection('Settings')">Settings</a>
+      <a role="tab" :class="{ 'tab-active': selected === 'Statistics' }" class="tab"
+         @click="changeSection('Statistics')">Statistics</a>
+      <a role="tab" :class="{ 'tab-active': selected === 'Members' }" class="tab" @click="changeSection('Members')">Members</a>
+      <a role="tab" :class="{ 'tab-active': selected === 'Settings' }" class="tab" @click="changeSection('Settings')">Settings</a>
     </div>
     <div class="gap-2 navbar-end">
-      <RouterLink to="/addmodule" class="btn btn-circle btn-sm text-neutral-700 rounded-full bg-base-100" v-if="isDashboard">
-        <Plus />
+      <RouterLink to="/addmodule"
+                  class="tooltip tooltip-bottom btn btn-circle btn-sm text-neutral-700 rounded-full bg-base-100 flex"
+                  data-tip="Add Module" v-if="isDashboard">
+        <Plus/>
       </RouterLink>
       <div class="dropdown dropdown-end mr-8">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar ">
