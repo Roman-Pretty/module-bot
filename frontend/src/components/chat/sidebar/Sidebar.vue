@@ -21,9 +21,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <nav class="w-1/6 bg-qm p-8 flex-col text-base-100 hidden md:flex">
-    <h1 class="text-xs font-semibold uppercase">Module Bots</h1>
-    <ul class="mt-4 flex flex-col gap-2">
+  <nav class="w-1/6 bg-qm flex-col text-base-100 hidden md:flex ">
+    <h1 class="text-xs font-semibold uppercase m-8">Module Bots</h1>
+    <ul class="flex flex-col gap-2 overflow-y-auto px-8 mb-8">
       <li @click="moduleStore.setCurrentModule(bot.id)" v-for="bot in bots" :key="bot.id"
           class="btn btn-primary shadow-none text-base-100 justify-between font-normal "
           :class="{'btn-secondary': moduleStore?.getCurrentModule?.id === bot.id}">

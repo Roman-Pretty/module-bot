@@ -9,17 +9,17 @@ from api.rag import conversational_rag
 from api.selenium import get_qmplus_cookies
 
 
-def embedding_response(request):
+def module_chat(request):
     user_question = request.POST.get("question")
-    user_id = request.POST.get("user_id")
-    module_id = request.POST.get("module_id")
-    chat_session_id = str(user_id) + '-' + str(module_id)
+    module_id = request.POST.get("id")
+    user = request.user
+    chat_session_id = str(user.id) + '-' + str(module_id)
 
-    if not user_question or not chat_session_id or not module_id or not user_id:
+    if not user_question or not chat_session_id or not module_id or not user:
         return HttpResponseBadRequest()
 
     ChatLog.objects.create(
-        user_id=user_id,
+        user_id=user.id,
         module_id=module_id,
         message=user_question,
     )
@@ -31,9 +31,11 @@ def embedding_response(request):
          just reformulate it if needed and otherwise return it as is.
        """
     system_prompt_template = """
-         You are an assistant for answering questions.
+        You are an assistant for answering questions.
         You should answer based on the provided context, and the conversation history.
-        If you don't have any context, just say "I don't know".
+        If you don't have any context, or the question is not relevant to the context just say
+        "I'm sorry, but I can only answer questions relevant to this module.". If the question
+        asks you to write something or to write code, just say "I'm sorry, but I can't do your work for you!".
         Context: {context}
        """
     def message_stream():
@@ -53,7 +55,7 @@ def embedding_response(request):
             response_text += chunk.get("answer", "")
             yield chunk.get("answer", "")
         ChatLog.objects.create(
-            user_id=user_id,
+            user_id=user.id,
             module_id=module_id,
             message=response_text,
             bot_message=True,

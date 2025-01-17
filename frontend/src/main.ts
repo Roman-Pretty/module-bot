@@ -1,11 +1,11 @@
-import { createApp } from 'vue'
-import { createRouter, createWebHistory } from "vue-router";
+import {createApp} from 'vue'
+import {createRouter, createWebHistory} from "vue-router";
 import './index.css'
 import App from './App.vue'
 import AddModule from "./views/AddModule.vue";
 import ChatBot from "./views/ChatBot.vue";
-import { createPinia } from 'pinia'
-import { useAuthStore } from './store/auth.ts'
+import {createPinia} from 'pinia'
+import {useAuthStore} from './store/auth.ts'
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
 import Dashboard from "./views/Dashboard.vue";
@@ -17,19 +17,19 @@ const router = createRouter({
             path: '/',
             component: ChatBot,
             name: 'chatbot',
-            meta: { requiresAuth: true }
+            meta: {requiresAuth: true}
         },
         {
             path: '/addmodule',
             component: AddModule,
             name: 'addmodule',
-            meta: { requiresAuth: true }
+            meta: {requiresAuth: true}
         },
         {
             path: '/dashboard',
             component: Dashboard,
             name: 'dashboard',
-            meta: { requiresAuth: true }
+            meta: {requiresAuth: true}
         },
         {
             path: '/login',
@@ -48,14 +48,10 @@ const router = createRouter({
 router.beforeEach(async function (to, from, next) {
     const authStore = useAuthStore()
 
-    // Ensure the auth store is initialized (fetch user if needed)
-    if (authStore.user === null && authStore.isAuthenticated === false) {
-        await authStore.fetchUser()
-    }
-
     // Check if the route requires authentication
     if (to.meta.requiresAuth && !authStore.isAuthenticated) {
         // Redirect to login if not authenticated
+        useAuthStore().logout()
         next({name: 'login', query: {redirect: to.fullPath}})
     } else {
         next()

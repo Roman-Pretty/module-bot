@@ -39,13 +39,13 @@ export const useAuthStore = defineStore('auth', {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCSRFToken(),
                 },
-                body: JSON.stringify({ username, password }),
                 credentials: 'include',
+                body: JSON.stringify({ username, password }),
             })
             const data = await response.json()
             if (data.success) {
                 this.isAuthenticated = true
-                this.user = data.user // Assume API returns a user object
+                this.user = data.user
                 this.saveState()
                 if (router) {
                     const redirect = router.currentRoute.value.query.redirect as string || '/'

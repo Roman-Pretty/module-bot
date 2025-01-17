@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent, inject} from 'vue'
+import {defineComponent} from 'vue'
 import BarChart from "../BarChart.vue";
 
 export default defineComponent({

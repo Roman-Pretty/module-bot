@@ -4,13 +4,12 @@ from . import views
 urlpatterns = [
 
     # Conversation API
-    path('embedding-response/', views.embedding_response, name='embedding_response'),
+    path('embedding-response/', views.module_chat, name='embedding_response'),
     path('chat-logs/', views.manage_chat_logs, name='manage_chat_logs'),
-    path('modules/', views.modules, name='modules'),
+    path('modules', views.modules, name='modules'),
 
     # Generate Module API
     path('generate-module/', views.generate_module, name='generate_module'),
-    path('upload-files/', views.upload_files, name='upload_files'),
 
     # Auth API
     path('set-csrf-token', views.set_csrf_token, name='set_csrf_token'),

@@ -18,7 +18,6 @@ def get_qmplus_cookies(email, password):
         username_field.send_keys(email)
         username_field.send_keys(Keys.RETURN)
         time.sleep(2)
-
         password_field = driver.find_element(By.NAME, "passwd")
         password_field.send_keys(password)
         password_field.send_keys(Keys.RETURN)

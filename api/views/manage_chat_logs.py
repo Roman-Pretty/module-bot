@@ -9,7 +9,7 @@ from api.serializers import ChatLogSerializer
 @api_view(['GET', 'DELETE'])
 def manage_chat_logs(request):
     try:
-        username = request.GET.get('username')
+        username = request.user.username
         id = request.GET.get('id', '')
 
         # Validate user and module

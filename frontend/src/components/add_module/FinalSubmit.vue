@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 
 export default defineComponent({
   name: "FinalSubmit",
@@ -16,31 +16,17 @@ export default defineComponent({
       this.$emit('setLoading', true); // Set loading to true
 
       try {
-        // Upload files if any
-        if (this.files && this.files.length > 0) {
-          const formData = new FormData();
-          this.files.forEach((file) => formData.append('files', file));
-
-          const fileUploadResponse = await fetch('http://localhost:8000/api/upload-files/', {
-            method: 'POST',
-            body: formData,
-          });
-
-          if (!fileUploadResponse.ok) throw new Error("File upload failed");
-        }
+        const formData = new FormData();
+        formData.append('url', this.module_url || '');
+        formData.append('email', this.staff_email || '');
+        formData.append('password', this.password || '');
+        formData.append('name', this.module_name || '');
+        formData.append('course_id', this.module_code || '');
+        this.files?.forEach((file) => formData.append('files', file));
 
         const response = await fetch('http://localhost:8000/api/generate-module/', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            url: this.module_url,
-            email: this.staff_email,
-            password: this.password,
-            name: this.module_name,
-            course_id: this.module_code,
-          }),
+          body: formData,
         });
 
         if (!response.ok) throw new Error("Module submission failed");
@@ -63,7 +49,7 @@ export default defineComponent({
 <template>
   <div class="flex flex-col items-center">
     <p class="text-neutral-700">Ready to submit?</p>
-    </div>
+  </div>
   <div>
     <div class="card-actions justify-center mt-4">
       <button class="btn w-1/3" @click="previous">Previous</button>

@@ -51,6 +51,9 @@ export default defineComponent({
             tabindex="0"
             class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
           <li>
+            <RouterLink to="/">Home</RouterLink>
+          </li>
+          <li>
             <a class="justify-between" href="http://127.0.0.1:8000/admin" target="_blank">
               Manage Modules
             </a>

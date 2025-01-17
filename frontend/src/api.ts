@@ -1,18 +1,18 @@
-import {getCSRFToken, useAuthStore} from "./store/auth.ts";
+import {getCSRFToken} from "./store/auth.ts";
 import {useModuleStore} from "./store/module.ts";
 
 
 export async function* askChatbot(question: string) {
     const formData = new FormData();
     formData.append("question", question);
-    formData.append("user_id", `${useAuthStore().user?.id}`);
-    formData.append("module_id", `${useModuleStore().currentModule?.id}`);
+    formData.append("id", `${useModuleStore().currentModule?.id}`);
 
-    const response = await fetch("http://127.0.0.1:8000/api/embedding-response/", {
+    const response = await fetch("http://localhost:8000/api/embedding-response/", {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'X-CSRFToken': getCSRFToken(),
+            "X-CSRFToken": getCSRFToken(),
         },
         body: new URLSearchParams(formData as any),
     });
@@ -41,8 +41,8 @@ export async function* askChatbot(question: string) {
 export async function fetchChatLogs(): Promise<[]> {
       try {
         const response = await fetch(
-            `http://127.0.0.1:8000/api/chat-logs/?username=${useAuthStore().user?.username}&id=${useModuleStore().currentModule?.id}`,
-            {method: "GET"}
+            `http://localhost:8000/api/chat-logs/?id=${useModuleStore().currentModule?.id}`,
+            {method: "GET", credentials: "include"}
         );
         if (!response.ok) {
           throw new Error("Failed to fetch chat logs");
@@ -62,7 +62,7 @@ export async function fetchChatLogs(): Promise<[]> {
 
      export async function fetchChartData(timeframe: string) {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/chart-data/${useModuleStore()?.getCurrentModule?.id}?timeframe=${timeframe}`);
+        const response = await fetch(`http://localhost:8000/api/chart-data/${useModuleStore()?.getCurrentModule?.id}?timeframe=${timeframe}`);
         if (!response.ok) {
           throw new Error('Failed to fetch chart data');
         }

@@ -4,6 +4,11 @@ from rest_framework.response import Response
 from api.models import Module
 from api.serializers import ModuleSerializer
 
+
 @api_view(['GET'])
 def modules(request):
-    return Response(ModuleSerializer(Module.objects.all(), many=True).data)
+    if not request.user:
+        return Response({'message': 'Not logged in'}, status=401)
+
+    registered_modules = Module.objects.filter(students=request.user)
+    return Response(ModuleSerializer(registered_modules, many=True).data)

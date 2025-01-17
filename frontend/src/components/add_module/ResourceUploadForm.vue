@@ -35,7 +35,15 @@ export default defineComponent({
         multiple
         class="file-input w-full max-w-xs my-4"
         @change="handleFileUpload"
+        accept="application/pdf,
+                application/vnd.ms-powerpoint,
+                application/vnd.openxmlformats-officedocument.presentationml.presentation,
+                application/msword,
+                application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                text/plain,
+                "
     />
+    <p class="text-neutral-400 text-xs ">accepted: .pdf, .ppt, .pptx, .doc, .docx</p>
   </div>
   <div class="card-actions justify-center">
     <button class="btn w-1/3" @click="previous">Previous</button>
