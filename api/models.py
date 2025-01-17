@@ -10,6 +10,7 @@ class Module(models.Model):
     name = models.CharField(max_length=100)
     url = models.URLField(max_length=300)
     students = models.ManyToManyField(User, related_name='modules', blank=True)
+    organizers = models.ManyToManyField(User, related_name='organized_modules', blank=True)
 
     def __str__(self):
         return f"{self.name} ({self.id})"

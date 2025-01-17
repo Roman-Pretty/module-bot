@@ -26,8 +26,8 @@ export default defineComponent({
       <input type="text" class="grow" placeholder="Enter your message" v-model="message" @keyup.enter="send"/>
       <button @click="send" class=" rounded-full p-1.5 " :disabled="!message.trim()"
               :class="{
-              'bg-neutral-800': message.trim(),
-              'bg-neutral-300': !message.trim(),
+              'bg-base-content dark:bg-base-300': message.trim(),
+              'bg-base-content/30 dark:bg-base-300/50': !message.trim(),
               'cursor-pointer': message.trim()}"
       >
         <ArrowUp color="white" :size="20"/>

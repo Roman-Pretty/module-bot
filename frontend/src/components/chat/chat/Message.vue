@@ -46,7 +46,7 @@ export default defineComponent({
 <template>
   <div :class="['chat message my-2', !message.bot_message ? 'chat-end' : 'chat-start']">
     <div class="chat-image avatar">
-      <div class="w-10 rounded-full border border-qm" v-if="message.bot_message">
+      <div class="w-10 rounded-full border border-primary dark:border-base-content" v-if="message.bot_message">
         <img
             alt="Bot Avatar"
             src='../../../assets/bot.webp'
@@ -54,7 +54,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div :class="['chat-bubble', message.bot_message ? 'bg-base-100 text-neutral-800 bot' : 'text-base-200']">
+    <div :class="['chat-bubble', message.bot_message ? 'bg-base-100 text-base-content bot' : 'text-base-100 bg-base-content']">
       <!--TODO: protect against XSS-->
       <div v-html="html"/>
       <div class="mt-2" v-if="message.loading">

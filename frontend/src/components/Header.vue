@@ -2,15 +2,24 @@
 import {defineComponent} from 'vue'
 import {useAuthStore} from "../store/auth.ts";
 import {useModuleStore} from "../store/module.ts";
+import {Plus} from 'lucide-vue-next'
 
 export default defineComponent({
   name: "Header",
+  components: {
+    Plus
+  },
   setup() {
     const authStore = useAuthStore()
     const moduleStore = useModuleStore();
     return {
       moduleStore, authStore
     };
+  },
+  data() {
+    return {
+      selected: 'Statistics'
+    }
   },
   props: {
     isDashboard: {
@@ -19,6 +28,10 @@ export default defineComponent({
     }
   },
   methods: {
+    changeSection(section: string) {
+      this.selected = section;
+      this.$emit('change-section', section);
+    },
     async logout() {
       try {
         await this.authStore.logout(this.$router)
@@ -33,14 +46,18 @@ export default defineComponent({
 <template>
   <nav class="navbar ">
     <div class="navbar-start">
-      <a class="btn btn-ghost text-xl" :href="moduleStore.getCurrentModule?.url" target="_blank">{{ moduleStore.getCurrentModule?.id }}</a>
+      <a class="btn btn-ghost text-xl" :href="moduleStore.getCurrentModule?.url"
+         target="_blank">{{ moduleStore.getCurrentModule?.id }}</a>
     </div>
     <div v-if="isDashboard" role="tablist" class="tabs tabs-bordered navbar-center">
-      <a role="tab" class="tab tab-active">Statistics</a>
-      <a role="tab" class="tab">Members</a>
-      <a role="tab" class="tab">Settings</a>
+      <a role="tab" :class="{ 'tab-active': selected === 'Statistics' }" class="tab" @click="changeSection('Statistics')">Statistics</a>
+      <a role="tab" :class="{ 'tab-active': selected === 'Members' }"class="tab"  @click="changeSection('Members')">Members</a>
+      <a role="tab" :class="{ 'tab-active': selected === 'Settings' }"class="tab" @click="changeSection('Settings')">Settings</a>
     </div>
     <div class="gap-2 navbar-end">
+      <RouterLink to="/addmodule" class="btn btn-circle btn-sm text-neutral-700 rounded-full bg-base-100" v-if="isDashboard">
+        <Plus />
+      </RouterLink>
       <div class="dropdown dropdown-end mr-8">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar ">
           <div class="w-10 rounded-full">
@@ -52,14 +69,6 @@ export default defineComponent({
             class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
           <li>
             <RouterLink to="/">Home</RouterLink>
-          </li>
-          <li>
-            <a class="justify-between" href="http://127.0.0.1:8000/admin" target="_blank">
-              Manage Modules
-            </a>
-          </li>
-          <li>
-            <RouterLink to="/addmodule">Add Module</RouterLink>
           </li>
           <li>
             <RouterLink to="/dashboard">Dashboard</RouterLink>

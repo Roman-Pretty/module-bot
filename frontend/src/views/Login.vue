@@ -1,5 +1,5 @@
 <template>
-  <div class="hero bg-[#0a1732] min-h-screen login">
+  <div class="hero bg-[#0a1732] dark:bg-base-300 min-h-screen login">
     <div class="hero-content flex-col lg:flex-row-reverse">
       <div class="card bg-base-100 w-full shrink-0 shadow-2xl max-w-md rounded-none">
         <form class="card-body gap-4" @submit.prevent="login">
@@ -20,7 +20,7 @@
             </label>
           </div>
           <div class="form-control mt-6">
-            <button class="btn btn-primary" type="submit">Login</button>
+            <button class="btn btn-primary dark:btn-ghost" type="submit">Login</button>
           </div>
           <p v-if="error" class="error">{{ error }}</p>
         </form>

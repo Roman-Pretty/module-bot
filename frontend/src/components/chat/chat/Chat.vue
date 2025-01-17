@@ -76,9 +76,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="flex-1 flex flex-col justify-between">
+  <div class="w-full flex flex-col justify-between">
     <Header/>
-    <div ref="chatContainer" class="h-full overflow-y-auto xl:px-[26%] lg:px-[20%]">
+    <div ref="chatContainer" class="h-full overflow-y-auto xl:px-[26%] lg:px-[20%] px-4">
       <Message v-for="msg in messages" :key="msg.id" :message="msg"/>
     </div>
     <Input @sendMessage="sendMessage"/>

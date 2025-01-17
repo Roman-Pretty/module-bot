@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -10,5 +11,8 @@ def modules(request):
     if not request.user:
         return Response({'message': 'Not logged in'}, status=401)
 
-    registered_modules = Module.objects.filter(students=request.user)
+    registered_modules = Module.objects.filter(
+        Q(organizers=request.user) | Q(students=request.user)
+    )
+
     return Response(ModuleSerializer(registered_modules, many=True).data)

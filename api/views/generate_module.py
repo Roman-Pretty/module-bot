@@ -20,6 +20,9 @@ from backend import settings
 
 @api_view(['POST'])
 def generate_module(request):
+
+    print(request.user)
+
     name = request.POST.get('name')
     module_id = request.POST.get('course_id')
     email = request.POST.get('email')
@@ -38,6 +41,8 @@ def generate_module(request):
         name=name,
         url=url,
     )
+    module_instance.organizers.add(request.user.id)
+    module_instance.save()
 
     #Authenticate with QMPlus and retrieve content
     raw_cookies = get_qmplus_cookies(email=email, password=password)

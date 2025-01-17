@@ -1,9 +1,11 @@
 import {defineStore} from 'pinia';
+import {useAuthStore} from "./auth.ts";
 
 export interface Module {
     id: string,
     name: string,
     url: string,
+    organizers: number[],
     [key: string]: any
 }
 
@@ -37,6 +39,9 @@ export const useModuleStore = defineStore('modules', {
         },
         getModules: (state) => {
             return state.modules;
+        },
+        getOrganizedModules: (state) => {
+            return state.modules.filter((module: Module) => module.organizers.includes(useAuthStore()?.user?.id));
         },
         getCurrentModule: (state) => {
             return state.currentModule;

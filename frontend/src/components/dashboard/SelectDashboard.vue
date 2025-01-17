@@ -9,7 +9,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="flex-grow flex flex-col justify-between">
+  <div class="w-full flex flex-col justify-between">
     <Header/>
     <div class="justify-center items-center flex-grow flex flex-col h-full pb-16">
       <div class="hero-content text-center">

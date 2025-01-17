@@ -9,8 +9,8 @@
 <script>
 import {Bar} from 'vue-chartjs';
 import {Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale} from 'chart.js';
-import {fetchChartData} from "../../api";
-import {useModuleStore} from "../../store/module";
+import {fetchChartData} from "../../../api";
+import {useModuleStore} from "../../../store/module";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 

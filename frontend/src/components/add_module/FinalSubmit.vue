@@ -1,5 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
+import {getCSRFToken} from "../../store/auth.ts";
 
 export default defineComponent({
   name: "FinalSubmit",
@@ -26,6 +27,10 @@ export default defineComponent({
 
         const response = await fetch('http://localhost:8000/api/generate-module/', {
           method: 'POST',
+          credentials: 'include',
+          headers: {
+            "X-CSRFToken": getCSRFToken(),
+          },
           body: formData,
         });
 
@@ -36,7 +41,6 @@ export default defineComponent({
       } finally {
         this.$emit('setLoading', false);
         window.location.href = '/';
-
       }
     },
     previous() {

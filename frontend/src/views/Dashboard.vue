@@ -3,7 +3,7 @@ import {defineComponent, provide, ref} from 'vue'
 import Header from "../components/Header.vue";
 import {useAuthStore} from "../store/auth.ts";
 import {useRouter} from "vue-router";
-import Sidebar from "../components/chat/sidebar/Sidebar.vue";
+import Sidebar from "../components/sidebar/Sidebar.vue";
 import SelectDashboard from "../components/dashboard/SelectDashboard.vue";
 import DashboardContent from "../components/dashboard/DashboardContent.vue";
 import {useModuleStore} from "../store/module";
@@ -33,7 +33,7 @@ export default defineComponent({
 
 <template>
   <main class="flex flex-row w-screen h-screen bg-base-200">
-    <Sidebar :bots="moduleStore.getModules" />
+    <Sidebar :bots="moduleStore.getOrganizedModules" />
     <DashboardContent v-if="moduleStore.moduleSelected" />
     <SelectDashboard v-else />
   </main>
