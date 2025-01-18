@@ -1,12 +1,15 @@
+from datetime import timedelta
+
 from django.http import JsonResponse, HttpResponseBadRequest, StreamingHttpResponse
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.document_loaders import PyMuPDFLoader
 from dotenv import load_dotenv
 import os
-
+from django.utils.timezone import now
 from api.models import Module, ModuleEmbedding, ChatLog
 from api.rag import conversational_rag
 from api.selenium import get_qmplus_cookies
+from backend import settings
 
 
 def module_chat(request):
@@ -17,6 +20,28 @@ def module_chat(request):
 
     if not user_question or not chat_session_id or not module_id or not user:
         return HttpResponseBadRequest()
+
+    # Check if the module is enabled
+    module = Module.objects.get(id=module_id)
+    if not module.enabled:
+        response_text = "ERROR:This module is currently disabled."
+        return StreamingHttpResponse(response_text, content_type="text/event-stream")
+
+    # Count the number of chat logs for the user and module in the last 1 hour
+    one_hour_ago = now() - timedelta(hours=1)
+    chat_logs = ChatLog.objects.filter(
+        user_id=user.id,
+        module_id=module_id,
+        bot_message=False,
+        timestamp__gte=one_hour_ago
+    ).order_by('-timestamp')
+
+    # If the user has asked 10 or more questions, return a message
+    if len(chat_logs) >= settings.QUESTION_LIMIT:
+        available_at = chat_logs[0].timestamp + timedelta(hours=1)
+        available_at = available_at.strftime("%H:%M")
+        response_text = f"ERROR:You have reached the maximum number of questions for this module. Please try again after {available_at}."
+        return StreamingHttpResponse(response_text, content_type="text/event-stream")
 
     ChatLog.objects.create(
         user_id=user.id,
@@ -31,11 +56,11 @@ def module_chat(request):
          just reformulate it if needed and otherwise return it as is.
        """
     system_prompt_template = """
-        You are an assistant for answering questions.
+        You are an assistant for answering module questions.
         You should answer based on the provided context, and the conversation history.
-        If you don't have any context, or the question is not relevant to the context just say
-        "I'm sorry, but I can only answer questions relevant to this module.". If the question
-        asks you to write something or to write code, just say "I'm sorry, but I can't do your work for you!".
+        If you don't have any context or the question is not relevant to asking for help
+        or contact information for the module, just say
+        "I'm sorry, but I can only answer questions relevant to this module.".
         Context: {context}
        """
     def message_stream():

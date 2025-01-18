@@ -2,16 +2,18 @@
 import {defineComponent} from 'vue';
 import {MessageType} from "./Chat.vue";
 import showdown from 'showdown';
+import {CircleAlert} from 'lucide-vue-next';
 //@ts-ignore
 import {HollowDotsSpinner} from 'epic-spinners'
 
 export default defineComponent({
   name: "Message",
-  components: {HollowDotsSpinner},
+  components: {HollowDotsSpinner, CircleAlert},
   data() {
     return {
       html: '',
       converter: new showdown.Converter(),
+      error: false,
     };
   },
   props: {
@@ -34,7 +36,11 @@ export default defineComponent({
   methods: {
     updateHtml() {
       // Protect against null or undefined messages
-      const text = this.message.message || '';
+      let text = this.message.message || '';
+      if (text.includes('ERROR:', 0)) {
+        this.error = true;
+        text = text.slice(6);
+      }
       this.converter.setOption('simpleLineBreaks', true);
       this.html = this.converter.makeHtml(text);
     },
@@ -54,9 +60,15 @@ export default defineComponent({
       </div>
     </div>
 
-    <div :class="['chat-bubble', message.bot_message ? 'bg-base-100 text-base-content bot' : 'text-base-200 dark:bg-base-content']">
+    <div :class="['chat-bubble max-w-full',
+    message.bot_message ? 'bg-base-100 text-base-content bot' : 'text-base-200 dark:bg-base-content',
+    error ? 'bg-error/10 ' : '']">
       <!--TODO: protect against XSS-->
-      <div v-html="html"/>
+      <div v-if="error" class="text-error h-full flex items-center gap-2">
+        <CircleAlert />
+        <div class="pb-4" v-html="html"/>
+      </div>
+      <div v-else v-html="html"/>
       <div class="mt-2" v-if="message.loading">
         <hollow-dots-spinner
             :animation-duration="800"

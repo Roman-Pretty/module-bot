@@ -34,11 +34,25 @@ export default defineComponent({
   },
   async mounted() {
     this.messages = await fetchChatLogs();
+    if (this.messages.length === 0 && this.moduleStore.currentModule?.enable_welcome_message) {
+      this.messages.push({
+        id: 1,
+        message: this.moduleStore.currentModule.welcome_message,
+        bot_message: true,
+      });
+    }
     scrollToBottom(this.$refs.chatContainer as HTMLElement);
   },
   watch: {
     async 'moduleStore.currentModule'() {
       this.messages = await fetchChatLogs();
+      if (this.messages.length === 0 && this.moduleStore.currentModule?.enable_welcome_message) {
+        this.messages.push({
+          id: 1,
+          message: this.moduleStore.currentModule.welcome_message,
+          bot_message: true,
+        });
+      }
       scrollToBottom(this.$refs.chatContainer as HTMLElement);
     },
   },
@@ -70,6 +84,8 @@ export default defineComponent({
           this.messages[this.messages.length - 1].loading = false;
         }
       })();
+      scrollToBottom(this.$refs.chatContainer as HTMLElement);
+
     },
   },
 });
@@ -78,7 +94,7 @@ export default defineComponent({
 <template>
   <div class="w-full flex flex-col justify-between">
     <Header/>
-    <div ref="chatContainer" class="h-full overflow-y-auto xl:px-[26%] lg:px-[20%] px-4">
+    <div ref="chatContainer" class="h-full overflow-y-auto overflow-x-hidden xl:px-[26%] lg:px-[20%] px-4">
       <Message v-for="msg in messages" :key="msg.id" :message="msg"/>
     </div>
     <Input @sendMessage="sendMessage"/>

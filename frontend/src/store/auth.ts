@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { Router } from 'vue-router'
 import {useModuleStore} from "./module.ts";
 
-interface User {
+export interface User {
     username: string,
     id: number,
     email: string,

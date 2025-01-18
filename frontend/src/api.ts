@@ -39,63 +39,130 @@ export async function* askChatbot(question: string) {
 }
 
 export async function fetchChatLogs(): Promise<[]> {
-      try {
+    try {
         const response = await fetch(
             `http://localhost:8000/api/chat-logs/?id=${useModuleStore().currentModule?.id}`,
             {method: "GET", credentials: "include"}
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch chat logs");
+            throw new Error("Failed to fetch chat logs");
         }
         const data = await response.json();
-          return data.map((msg: any, index: number) => ({
+        return data.map((msg: any, index: number) => ({
             id: index + 1,
             message: msg.message,
             bot_message: msg.bot_message,
         }));
 
-      } catch (error) {
+    } catch (error) {
         console.error("Error:", error);
-      }
-      return [];
     }
+    return [];
+}
 
-     export async function fetchChartData(timeframe: string) {
-      try {
+export async function fetchChartData(timeframe: string) {
+    try {
         const response = await fetch(`http://localhost:8000/api/chart-data/${useModuleStore()?.getCurrentModule?.id}?timeframe=${timeframe}`,
             {method: "GET", credentials: "include"});
         if (!response.ok) {
-          throw new Error('Failed to fetch chart data');
+            throw new Error('Failed to fetch chart data');
         }
         const data = await response.json();
 
         // Create a new chartData object to trigger reactivity
         const chartData = {
-          labels: data.labels,
-          datasets: [
-            {
-              label: 'Questions Asked',
-              data: data.values,
-              backgroundColor: 'rgba(75, 192, 192, 0.6)',
-            },
-          ],
+            labels: data.labels,
+            datasets: [
+                {
+                    label: 'Questions Asked',
+                    data: data.values,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                },
+            ],
         };
         return chartData;
-      } catch (error) {
+    } catch (error) {
         console.error('Error fetching chart data:', error);
-      }
     }
+}
 
-    export async function fetchChatSummary(timeframe: string) {
-    console.log(timeframe)
-      try {
+export async function fetchChatSummary(timeframe: string) {
+    try {
         const response = await fetch(`http://localhost:8000/api/chat-summary/${useModuleStore()?.getCurrentModule?.id}?timeframe=${timeframe}`,
             {method: "GET", credentials: "include"});
         if (!response.ok) {
-          throw new Error('Failed to fetch chat summary');
+            throw new Error('Failed to fetch chat summary');
         }
         return await response.json();
-      } catch (error) {
+    } catch (error) {
         console.error('Error fetching chat summary:', error);
-      }
     }
+}
+
+export async function downloadChatLogs() {
+    try {
+        const response = await fetch(`http://localhost:8000/api/download-chat-logs/${useModuleStore()?.getCurrentModule?.id}`,
+            {method: "GET", credentials: "include"});
+        if (!response.ok) {
+            throw new Error('Failed to download chat logs');
+        }
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'chat-logs.csv';
+        a.click();
+    } catch (error) {
+        console.error('Error downloading chat logs:', error);
+    }
+}
+
+export async function fetchModuleMembers() {
+    try {
+        const response = await fetch(`http://localhost:8000/api/module-members/${useModuleStore()?.getCurrentModule?.id}`,
+            {method: "GET", credentials: "include"});
+        if (!response.ok) {
+            throw new Error('Failed to fetch module organizers');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching module organizers:', error);
+    }
+}
+
+export async function fetchModuleSettings() {
+    try {
+        const response = await fetch(`http://localhost:8000/api/module-settings/${useModuleStore()?.getCurrentModule?.id}`,
+            {method: "GET", credentials: "include"});
+        if (!response.ok) {
+            throw new Error('Failed to fetch module settings');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching module settings:', error);
+    }
+}
+
+export async function updateModuleSettings(settings: any) {
+    try {
+        const formData = new FormData();
+        for (const key in settings) {
+            formData.append(key, settings[key]);
+        }
+        const response = await fetch(`http://localhost:8000/api/module-settings/${useModuleStore()?.getCurrentModule?.id}/`,
+            {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                    "X-CSRFToken": getCSRFToken(),
+                },
+                body: formData,
+            });
+        if (!response.ok) {
+            throw new Error('Failed to update module settings');
+        }
+        useModuleStore().fetchModules();
+    } catch (error) {
+        console.error('Error updating module settings:', error);
+    }
+}

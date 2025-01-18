@@ -13,6 +13,6 @@ def modules(request):
 
     registered_modules = Module.objects.filter(
         Q(organizers=request.user) | Q(students=request.user)
-    )
+    ).distinct().order_by('name')
 
     return Response(ModuleSerializer(registered_modules, many=True).data)

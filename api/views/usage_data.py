@@ -4,6 +4,8 @@ from django.db.models.functions import TruncDate
 from django.utils.timezone import now, timedelta
 from api.models import ChatLog, Module
 from collections import defaultdict
+import csv
+from django.http import HttpResponse
 
 
 def get_chats_based_on_timeframe(timeframe, module_id):
@@ -92,5 +94,26 @@ def chat_summary(request, module_id):
     total_users = len(user_ids)
     avg_questions_per_user = total_chats / total_users if total_users > 0 else 0
 
+    return JsonResponse(
+        {'total_chats': total_chats, 'total_users': total_users, 'avg_questions_per_user': avg_questions_per_user})
 
-    return JsonResponse({'total_chats': total_chats, 'total_users': total_users, 'avg_questions_per_user': avg_questions_per_user})
+
+def download_chat_logs(request, module_id):
+    user = request.user
+    if not Module.objects.filter(id=module_id, organizers=user).exists():
+        return JsonResponse({'error': 'User does not have access to this module'}, status=403)
+
+    logs = ChatLog.objects.filter(module__id=module_id, bot_message=False).order_by('timestamp')
+    logs = logs.values('timestamp', 'user_id', 'message')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename=chat_logs_{module_id}.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(['Timestamp', 'User ID', 'Message'])
+
+    # Write each log entry as a new row in the CSV
+    for log in logs:
+        writer.writerow([log['timestamp'], log['user_id'], log['message']])
+
+    return response

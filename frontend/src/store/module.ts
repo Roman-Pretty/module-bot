@@ -6,6 +6,8 @@ export interface Module {
     name: string,
     url: string,
     organizers: number[],
+    enable_welcome_message: boolean,
+    welcome_message: string,
     [key: string]: any
 }
 
@@ -41,7 +43,12 @@ export const useModuleStore = defineStore('modules', {
             return state.modules;
         },
         getOrganizedModules: (state) => {
-            return state.modules.filter((module: Module) => module.organizers.includes(useAuthStore()?.user?.id));
+            // Workaround for typescript
+            if (!useAuthStore()?.user) return [];
+            else {
+                const user = useAuthStore()?.user || {id: -1};
+                return state.modules.filter((module: Module) => module.organizers.includes(user.id));
+            }
         },
         getCurrentModule: (state) => {
             return state.currentModule;

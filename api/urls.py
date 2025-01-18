@@ -21,6 +21,11 @@ urlpatterns = [
     # Dashboard API
     path('chart-data/<str:module_id>/', views.chart_data, name='chart_data'),
     path('chat-summary/<str:module_id>/', views.chat_summary, name='chat_summary'),
+    path('download-chat-logs/<str:module_id>/', views.download_chat_logs, name='download_chat_logs'),
+    path('module-settings/<str:module_id>/', views.module_settings, name='module_settings'),
+
+    # Module Users API
+    path('module-members/<str:module_id>/', views.module_members, name='module_users'),
 
 ]
 

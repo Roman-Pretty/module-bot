@@ -9,8 +9,14 @@ class Module(models.Model):
     id = models.CharField(max_length=100, unique=True, primary_key=True)
     name = models.CharField(max_length=100)
     url = models.URLField(max_length=300)
+
     students = models.ManyToManyField(User, related_name='modules', blank=True)
+    demonstrators = models.ManyToManyField(User, related_name='demonstrated_modules', blank=True)
     organizers = models.ManyToManyField(User, related_name='organized_modules', blank=True)
+
+    enabled = models.BooleanField(default=True)
+    enable_welcome_message = models.BooleanField(default=False)
+    welcome_message = models.TextField(default="Welcome to Q-Module-Bot!")
 
     def __str__(self):
         return f"{self.name} ({self.id})"
