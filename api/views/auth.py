@@ -5,6 +5,7 @@ import json
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login, logout
 from ..forms import CreateUserForm
+from ..models import Module
 
 
 @ensure_csrf_cookie
@@ -30,8 +31,8 @@ def login_view(request):
     user = authenticate(request, username=username, password=password)
     if user:
         login(request, user)
-        print(request.user)
-        return JsonResponse({'success': True})
+        is_module_organizer = Module.objects.filter(organizers=user).exists()
+        return JsonResponse({'success': True, 'is_module_organizer': is_module_organizer})
     return JsonResponse(
         {'success': False, 'message': 'Invalid credentials'}, status=401
     )
@@ -45,8 +46,9 @@ def logout_view(request):
 @require_http_methods(['GET'])
 def user(request):
     if request.user.is_authenticated:
+        is_module_organizer = Module.objects.filter(organizers=request.user).exists()
         return JsonResponse(
-            {'username': request.user.username, 'email': request.user.email, 'id': request.user.id}
+            {'username': request.user.username, 'email': request.user.email, 'id': request.user.id, 'is_module_organizer': is_module_organizer}
         )
     return JsonResponse(
         {'message': 'Not logged in'}, status=401

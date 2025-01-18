@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.db.models.functions import TruncDate
 from django.utils.timezone import now, timedelta
 from api.models import ChatLog, Module
@@ -95,7 +95,7 @@ def chat_summary(request, module_id):
     avg_questions_per_user = total_chats / total_users if total_users > 0 else 0
 
     return JsonResponse(
-        {'total_chats': total_chats, 'total_users': total_users, 'avg_questions_per_user': avg_questions_per_user})
+        {'total_chats': total_chats, 'total_users': total_users, 'avg_questions_per_user': round(avg_questions_per_user, 2)})
 
 
 def download_chat_logs(request, module_id):
@@ -117,3 +117,42 @@ def download_chat_logs(request, module_id):
         writer.writerow([log['timestamp'], log['user_id'], log['message']])
 
     return response
+
+
+def user_summary(request):
+    user = request.user
+
+    modules = Module.objects.filter(
+        Q(organizers=user) | Q(students=user) | Q(demonstrators=user)
+    ).distinct().count()
+
+    user_chats = ChatLog.objects.filter(user=user, bot_message=False).count()
+
+    all_users = ChatLog.objects.filter(bot_message=False).values_list('user', flat=True).distinct()
+
+    user_chat_counts = {
+        user_id: ChatLog.objects.filter(user_id=user_id, bot_message=False).count()
+        for user_id in all_users
+    }
+
+    sorted_users = sorted(user_chat_counts.items(), key=lambda x: x[1], reverse=True)
+    rank = next((i + 1 for i, (user_id, _) in enumerate(sorted_users) if user_id == user.id), len(sorted_users))
+
+    total_users = len(sorted_users)
+    top_percentage = 100 - (1 - (rank - 1) / total_users) * 100 if total_users > 0 else -1
+
+    if top_percentage == 0:
+        top_percentage = 1
+
+    if top_percentage == -1:
+        top_percentage = 0
+
+    top_percentage = round(top_percentage, 2)
+
+    return JsonResponse({
+        'modules': modules,
+        'user_chats': user_chats,
+        'top_percentage': top_percentage
+    })
+
+

@@ -30,10 +30,12 @@ export default defineComponent({
   data() {
     return {
       messages: [] as MessageType[],
+      isLoading: true,
     };
   },
   async mounted() {
     this.messages = await fetchChatLogs();
+    this.isLoading = false;
     if (this.messages.length === 0 && this.moduleStore.currentModule?.enable_welcome_message) {
       this.messages.push({
         id: 1,
@@ -45,7 +47,11 @@ export default defineComponent({
   },
   watch: {
     async 'moduleStore.currentModule'() {
+      this.isLoading = true;
       this.messages = await fetchChatLogs();
+      this.isLoading = false;
+      scrollToBottom(this.$refs.chatContainer as HTMLElement);
+
       if (this.messages.length === 0 && this.moduleStore.currentModule?.enable_welcome_message) {
         this.messages.push({
           id: 1,
@@ -53,6 +59,9 @@ export default defineComponent({
           bot_message: true,
         });
       }
+      scrollToBottom(this.$refs.chatContainer as HTMLElement);
+    },
+    'isLoading'() {
       scrollToBottom(this.$refs.chatContainer as HTMLElement);
     },
   },
@@ -94,8 +103,21 @@ export default defineComponent({
 <template>
   <div class="w-full flex flex-col justify-between">
     <Header/>
+    <div v-if="isLoading" class="flex justify-center items-center h-full">
+      <div class="text-center pt-[30vh]">
+        <span class="loading loading-spinner loading-lg"></span>
+        <p class="mt-2">Loading conversation...</p>
+      </div>
+    </div>
+    <div class="h-full overflow-y-auto overflow-x-hidden xl:px-[26%] lg:px-[20%] px-4"
+         v-else-if="messages.length <= 0">
+      <div class="flex flex-col items-center justify-center h-full pt-[30vh]">
+        <h1 class="text-2xl">No messages yet...</h1>
+        <p class="text-neutral-400">Start a conversation by typing in the input field below</p>
+      </div>
+    </div>
     <div ref="chatContainer" class="h-full overflow-y-auto overflow-x-hidden xl:px-[26%] lg:px-[20%] px-4">
-      <Message v-for="msg in messages" :key="msg.id" :message="msg"/>
+      <Message v-if="!isLoading" v-for="msg in messages" :key="msg.id" :message="msg"/>
     </div>
     <Input @sendMessage="sendMessage"/>
   </div>

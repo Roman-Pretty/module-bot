@@ -2,12 +2,12 @@
 import {defineComponent} from 'vue'
 import {useAuthStore} from "../store/auth.ts";
 import {useModuleStore} from "../store/module.ts";
-import {Plus} from 'lucide-vue-next'
+import {Plus, ChevronLeft} from 'lucide-vue-next'
 
 export default defineComponent({
   name: "Header",
   components: {
-    Plus
+    Plus, ChevronLeft
   },
   setup() {
     const authStore = useAuthStore()
@@ -46,8 +46,10 @@ export default defineComponent({
 <template>
   <nav class="navbar ">
     <div class="navbar-start">
-      <a class="btn btn-ghost text-xl" :href="moduleStore.getCurrentModule?.url"
+      <div v-if="moduleStore?.getCurrentModule == null && $route.path === '/'"/>
+      <a v-else-if="$route.path === '/'" class="btn btn-ghost text-xl" :href="moduleStore.getCurrentModule?.url"
          target="_blank">{{ moduleStore.getCurrentModule?.id }}</a>
+      <RouterLink to="/" v-else class="btn btn-ghost text-xl text-neutral-400 dark:text-base-content"><ChevronLeft />Back</RouterLink>
     </div>
     <div v-if="isDashboard" role="tablist" class="tabs tabs-bordered navbar-center">
       <a role="tab" :class="{ 'tab-active': selected === 'Statistics' }" class="tab"
@@ -58,13 +60,13 @@ export default defineComponent({
     <div class="gap-2 navbar-end">
       <RouterLink to="/addmodule"
                   class="tooltip tooltip-bottom btn btn-circle btn-sm text-neutral-700 rounded-full bg-base-100 flex"
-                  data-tip="Add Module" v-if="isDashboard">
+                  data-tip="Add Module" v-if="$route.path === '/dashboard'">
         <Plus/>
       </RouterLink>
       <div class="dropdown dropdown-end mr-8">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar ">
-          <div class="w-10 rounded-full">
-            <img alt="Tailwind CSS Navbar component" src="../assets/user.jpg"/>
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle ">
+          <div class="rounded-full w-10 h-10 bg-base-300 flex items-center justify-center font-semibold text-lg uppercase">
+            {{ authStore?.user?.username?.charAt(0) || '!' }}
           </div>
         </div>
         <ul
@@ -73,10 +75,12 @@ export default defineComponent({
           <li>
             <RouterLink to="/">Home</RouterLink>
           </li>
-          <li>
+          <li v-if="authStore.isModuleOrganizer">
             <RouterLink to="/dashboard">Dashboard</RouterLink>
           </li>
-          <li><a>Settings</a></li>
+          <li>
+            <RouterLink to="/profile">Profile</RouterLink>
+          </li>
           <li>
             <a class="justify-between" @click="logout">
               Logout

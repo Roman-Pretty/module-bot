@@ -25,6 +25,10 @@ export default defineComponent({
       this.$router.push({name: 'Login'});
       return;
     }
+    if(!this.authStore.isModuleOrganizer) {
+      this.$router.back();
+      return;
+    }
     await this.authStore.fetchUser();
     await this.moduleStore.fetchModules();
   },
@@ -32,7 +36,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <main class="flex flex-row w-screen h-screen bg-base-200">
+  <main class="flex flex-row w-screen h-screen">
     <Sidebar :bots="moduleStore.getOrganizedModules" />
     <DashboardContent v-if="moduleStore.moduleSelected" />
     <SelectDashboard v-else />

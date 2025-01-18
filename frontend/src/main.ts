@@ -9,6 +9,7 @@ import {useAuthStore} from './store/auth.ts'
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
 import Dashboard from "./views/Dashboard.vue";
+import Profile from "./views/Profile.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -29,6 +30,12 @@ const router = createRouter({
             path: '/dashboard',
             component: Dashboard,
             name: 'dashboard',
+            meta: {requiresAuth: true}
+        },
+        {
+            path: '/profile',
+            component: Profile,
+            name: 'profile',
             meta: {requiresAuth: true}
         },
         {

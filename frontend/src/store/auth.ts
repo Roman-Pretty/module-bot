@@ -1,17 +1,19 @@
-import { defineStore } from 'pinia'
-import { Router } from 'vue-router'
+import {defineStore} from 'pinia'
+import {Router} from 'vue-router'
 import {useModuleStore} from "./module.ts";
 
 export interface User {
     username: string,
     id: number,
     email: string,
+
     [key: string]: any
 }
 
 interface AuthState {
     user: User | null
     isAuthenticated: boolean
+    isModuleOrganizer: boolean
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -20,9 +22,10 @@ export const useAuthStore = defineStore('auth', {
         return storedState
             ? JSON.parse(storedState)
             : {
-                  user: null,
-                  isAuthenticated: false,
-              }
+                user: null,
+                isAuthenticated: false,
+                isModuleOrganizer: false,
+            }
     },
     actions: {
         async setCsrfToken(): Promise<void> {
@@ -40,12 +43,13 @@ export const useAuthStore = defineStore('auth', {
                     'X-CSRFToken': getCSRFToken(),
                 },
                 credentials: 'include',
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({username, password}),
             })
             const data = await response.json()
             if (data.success) {
                 this.isAuthenticated = true
                 this.user = data.user
+                this.isModuleOrganizer = data.is_module_organizer
                 this.saveState()
                 if (router) {
                     const redirect = router.currentRoute.value.query.redirect as string || '/'
@@ -70,10 +74,12 @@ export const useAuthStore = defineStore('auth', {
                 if (response.ok) {
                     this.user = null
                     this.isAuthenticated = false
-                    useModuleStore().currentModule = null
+                    const moduleStore = useModuleStore()
+                    moduleStore.currentModule = null
+                    moduleStore.modules = []
                     this.saveState()
                     if (router) {
-                        await router.push({ name: 'login' })
+                        await router.push({name: 'login'})
                     }
                 }
             } catch (error) {
@@ -94,6 +100,7 @@ export const useAuthStore = defineStore('auth', {
                 if (response.ok) {
                     const data = await response.json()
                     this.user = data
+                    this.isModuleOrganizer = data.is_module_organizer
                     this.isAuthenticated = true
                 } else {
                     this.user = null

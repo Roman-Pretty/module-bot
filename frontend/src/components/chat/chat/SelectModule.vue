@@ -14,8 +14,8 @@ export default defineComponent({
     <div class="justify-center items-center flex-grow flex flex-col h-full pb-16">
       <div class="hero-content text-center">
         <div class="max-w-md">
-          <h1 class="text-2xl font-semibold">What can I help you with?</h1>
-          <p class="py-4">
+          <h1 class="text-2xl ">What can I help you with?</h1>
+          <p class="py-4 text-neutral-400">
             Please select a module to start chatting.
           </p>
         </div>

@@ -166,3 +166,16 @@ export async function updateModuleSettings(settings: any) {
         console.error('Error updating module settings:', error);
     }
 }
+
+export async function fetchUserSummary() {
+    try {
+        const response = await fetch(`http://localhost:8000/api/user-summary/`,
+            {method: "GET", credentials: "include"});
+        if (!response.ok) {
+            throw new Error('Failed to fetch user summary');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching user summary:', error);
+    }
+}

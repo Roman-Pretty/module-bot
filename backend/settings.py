@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
+from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -134,3 +135,6 @@ EMBEDDING_MODEL_DIMENSIONS = 1536
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 QUESTION_LIMIT = 10
+
+# Semester start date
+SEMESTER_START_DATE = datetime(2025, 1, 20)

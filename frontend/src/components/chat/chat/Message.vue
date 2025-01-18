@@ -60,8 +60,8 @@ export default defineComponent({
       </div>
     </div>
 
-    <div :class="['chat-bubble max-w-full',
-    message.bot_message ? 'bg-base-100 text-base-content bot' : 'text-base-200 dark:bg-base-content',
+    <div :class="['chat-bubble',
+    message.bot_message ? 'bg-base-100 text-base-content bot max-w-full' : 'text-base-200 dark:bg-base-content max-w-[70%]',
     error ? 'bg-error/10 ' : '']">
       <!--TODO: protect against XSS-->
       <div v-if="error" class="text-error h-full flex items-center gap-2">

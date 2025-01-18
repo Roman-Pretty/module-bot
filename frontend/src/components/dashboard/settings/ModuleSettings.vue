@@ -73,7 +73,10 @@ export default defineComponent({
 
 <template>
   <div v-if="isLoading" class="flex justify-center items-center h-full">
-    <p>Loading module settings...</p>
+    <div class="text-center">
+      <span class="loading loading-spinner loading-lg"></span>
+      <p class="mt-2">Loading settings...</p>
+    </div>
   </div>
   <form
       v-else
@@ -148,9 +151,9 @@ export default defineComponent({
           Regenerate Module Data after saving
         </h2>
         <p class="text-neutral-400 mt-1">
-          This will regenerate the module's knowledge based on your QMPlus
-          page.
-          <br/>
+          This will completely regenerate the module's knowledge based on your QMPlus
+          page. This is useful if you have made changes to your QMPlus page and want
+          the bot to reflect those changes.<br/>
           You will need to enter your Queen Mary username and password to
           continue.
         </p>

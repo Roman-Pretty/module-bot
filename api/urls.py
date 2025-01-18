@@ -27,6 +27,9 @@ urlpatterns = [
     # Module Users API
     path('module-members/<str:module_id>/', views.module_members, name='module_users'),
 
+    # Profile API
+    path('user-summary/', views.user_summary, name='user_summary'),
+
 ]
 
 #TODO: Follow URL naming conventions

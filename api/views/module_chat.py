@@ -1,15 +1,21 @@
-from datetime import timedelta
-
 from django.http import JsonResponse, HttpResponseBadRequest, StreamingHttpResponse
-from langchain_openai import OpenAIEmbeddings
-from langchain_community.document_loaders import PyMuPDFLoader
-from dotenv import load_dotenv
-import os
-from django.utils.timezone import now
-from api.models import Module, ModuleEmbedding, ChatLog
+from api.models import Module, ChatLog
 from api.rag import conversational_rag
-from api.selenium import get_qmplus_cookies
 from backend import settings
+from datetime import timedelta
+from django.utils.timezone import now
+import pytz
+
+def get_current_semester_week():
+    date = now()
+    start_date = pytz.timezone('UTC').localize(settings.SEMESTER_START_DATE)
+
+    week = 1
+    while start_date + timedelta(days=7) <= date:
+        start_date += timedelta(days=7)
+        week += 1
+
+    return week
 
 
 def module_chat(request):
@@ -48,6 +54,7 @@ def module_chat(request):
         module_id=module_id,
         message=user_question,
     )
+    week = get_current_semester_week()
     condense_question_prompt_template = """
          Given a chat history and the latest user question
          which might reference context in the chat history,
@@ -55,13 +62,12 @@ def module_chat(request):
          without the chat history. Do NOT answer the question,
          just reformulate it if needed and otherwise return it as is.
        """
-    system_prompt_template = """
-        You are an assistant for answering module questions.
+    system_prompt_template = f"""
+        You are an assistant for answering university module questions. The current semester week is week {week}.
         You should answer based on the provided context, and the conversation history.
-        If you don't have any context or the question is not relevant to asking for help
-        or contact information for the module, just say
-        "I'm sorry, but I can only answer questions relevant to this module.".
-        Context: {context}
+        If you don't have any context just say "I'm sorry, but I can only answer questions relevant to {module.name}.".
+        You may respond to greetings and other non-question prompts.
+        Context: {'{context}'}
        """
     def message_stream():
         response_text = ''

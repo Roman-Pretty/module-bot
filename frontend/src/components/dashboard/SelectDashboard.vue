@@ -10,12 +10,12 @@ export default defineComponent({
 
 <template>
   <div class="w-full flex flex-col justify-between">
-    <Header/>
+    <Header />
     <div class="justify-center items-center flex-grow flex flex-col h-full pb-16">
       <div class="hero-content text-center">
         <div class="max-w-md">
-          <h1 class="text-2xl font-semibold">Q-Module-Bot Dashboard</h1>
-          <p class="py-4">
+          <h1 class="text-2xl">Q-Module-Bot Dashboard</h1>
+          <p class="py-4 text-neutral-400">
             Please select a module to view the dashboard.
           </p>
         </div>

@@ -19,9 +19,13 @@ export default defineComponent({
       'avg_questions_per_user': 0
     });
 
+    const isLoading = ref(true);
+
     const fetchSummary = async () => {
       try {
+        isLoading.value = true;
         chatSummary.value = await fetchChatSummary(selectedTimeframe.value);
+        isLoading.value = false;
       } catch (error) {
         console.error("Failed to fetch chat summary:", error);
       }
@@ -41,7 +45,7 @@ export default defineComponent({
       switch (timeframe) {
         case '1 day':
           startDate = new Date(endDate);
-          startDate.setUTCDate(startDate.getUTCDate() - 1);
+          startDate.setUTCDate(startDate.getUTCDate());
           break;
         case '3 days':
           startDate = new Date(endDate);
@@ -61,6 +65,9 @@ export default defineComponent({
       }
 
       const options = {year: 'numeric', month: 'long', day: 'numeric'} as const;
+      if (startDate.toDateString() === endDate.toDateString()) {
+        return startDate.toLocaleDateString('en-GB', options);
+      }
       return `${startDate.toLocaleDateString('en-GB', options)} – ${endDate.toLocaleDateString('en-GB', options)}`;
     };
 
@@ -71,6 +78,7 @@ export default defineComponent({
       selectedTimeframe,
       chatSummary,
       title,
+      isLoading
     };
   },
 });
@@ -78,7 +86,15 @@ export default defineComponent({
 
 <template>
   <div class="h-full w-full overflow-y-auto xl:px-[20%] lg:px-[14%] px-4">
-    <div class="mt-8 w-full flex justify-between">
+
+    <div v-if="isLoading" class="flex justify-center items-center h-full">
+      <div class="text-center">
+        <span class="loading loading-spinner loading-lg"></span>
+        <p class="mt-2">Loading statistics...</p>
+      </div>
+    </div>
+
+    <div class="mt-8 w-full flex justify-between" v-else>
       <h1 class="text-2xl">{{ title }}</h1>
       <select
           class="select select-bordered bg-base-200 select-sm max-w-xs"
