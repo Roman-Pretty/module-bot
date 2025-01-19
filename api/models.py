@@ -1,8 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from pgvector.django import VectorField
 from backend import settings
 
+class User(AbstractUser):
+    is_module_organizer = models.BooleanField(default=False)
 
 # Module model stores course-related information
 class Module(models.Model):

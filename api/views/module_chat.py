@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponseBadRequest, StreamingHttpResponse
+from django.http import HttpResponseBadRequest, StreamingHttpResponse
 from api.models import Module, ChatLog
 from api.rag import conversational_rag
 from backend import settings

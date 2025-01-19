@@ -25,7 +25,7 @@ export default defineComponent({
       this.$router.push({name: 'Login'});
       return;
     }
-    if(!this.authStore.isModuleOrganizer) {
+    if(!this.authStore.user?.is_module_organizer) {
       this.$router.back();
       return;
     }

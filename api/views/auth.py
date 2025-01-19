@@ -32,7 +32,7 @@ def login_view(request):
     if user:
         login(request, user)
         is_module_organizer = Module.objects.filter(organizers=user).exists()
-        return JsonResponse({'success': True, 'is_module_organizer': is_module_organizer})
+        return JsonResponse({'success': True})
     return JsonResponse(
         {'success': False, 'message': 'Invalid credentials'}, status=401
     )
@@ -46,9 +46,8 @@ def logout_view(request):
 @require_http_methods(['GET'])
 def user(request):
     if request.user.is_authenticated:
-        is_module_organizer = Module.objects.filter(organizers=request.user).exists()
         return JsonResponse(
-            {'username': request.user.username, 'email': request.user.email, 'id': request.user.id, 'is_module_organizer': is_module_organizer}
+            {'username': request.user.username, 'email': request.user.email, 'id': request.user.id, 'is_module_organizer': request.user.is_module_organizer}
         )
     return JsonResponse(
         {'message': 'Not logged in'}, status=401

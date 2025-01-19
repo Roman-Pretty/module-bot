@@ -1,5 +1,6 @@
 from django import forms
-from django.contrib.auth.models import User
+from api.models import User
+# from django.contrib.auth.models import User
 
 class CreateUserForm(forms.ModelForm):
     class Meta:

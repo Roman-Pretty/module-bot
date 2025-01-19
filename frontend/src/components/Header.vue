@@ -60,7 +60,7 @@ export default defineComponent({
     <div class="gap-2 navbar-end">
       <RouterLink to="/addmodule"
                   class="tooltip tooltip-bottom btn btn-circle btn-sm text-neutral-700 rounded-full bg-base-100 flex"
-                  data-tip="Add Module" v-if="$route.path === '/dashboard'">
+                  data-tip="Add Module" v-if="$route.path === '/dashboard' && authStore.user?.is_module_organizer">
         <Plus/>
       </RouterLink>
       <div class="dropdown dropdown-end mr-8">
@@ -75,7 +75,7 @@ export default defineComponent({
           <li>
             <RouterLink to="/">Home</RouterLink>
           </li>
-          <li v-if="authStore.isModuleOrganizer">
+          <li v-if="authStore.user?.is_module_organizer">
             <RouterLink to="/dashboard">Dashboard</RouterLink>
           </li>
           <li>

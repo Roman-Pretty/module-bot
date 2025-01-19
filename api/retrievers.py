@@ -4,7 +4,7 @@ from langchain_core.retrievers import BaseRetriever
 from pgvector.django import CosineDistance
 from langchain_openai import OpenAIEmbeddings
 from django.conf import settings
-from api.models import ModuleEmbedding, Module
+from api.models import ModuleEmbedding
 
 
 class DocumentRetriever(BaseRetriever):

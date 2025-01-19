@@ -71,11 +71,11 @@ export default defineComponent({
               </h1>
               <p class="text-neutral-400 dark:text-base-content mt-2">
                 You have asked
-                <span class="font-semibold">{{ userSummary?.user_chats || "" }} questions</span>
+                <span class="font-semibold">{{ userSummary?.user_chats || "0" }} questions</span>
                 in your
-                <span class="font-semibold">{{ userSummary?.modules || "" }} enrolled modules</span>.
+                <span class="font-semibold">{{ userSummary?.modules || "0" }} enrolled modules</span>.
                 You are in the
-                <span class="font-semibold">Top {{ userSummary?.top_percentage || "" }}%</span>
+                <span class="font-semibold">Top {{ userSummary?.top_percentage || "100" }}%</span>
                 of all Q-Module-Bot users!
               </p>
             </div>

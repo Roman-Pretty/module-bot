@@ -6,6 +6,7 @@ export interface User {
     username: string,
     id: number,
     email: string,
+    is_module_organizer: boolean,
 
     [key: string]: any
 }
@@ -13,7 +14,6 @@ export interface User {
 interface AuthState {
     user: User | null
     isAuthenticated: boolean
-    isModuleOrganizer: boolean
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -24,7 +24,6 @@ export const useAuthStore = defineStore('auth', {
             : {
                 user: null,
                 isAuthenticated: false,
-                isModuleOrganizer: false,
             }
     },
     actions: {
@@ -49,7 +48,6 @@ export const useAuthStore = defineStore('auth', {
             if (data.success) {
                 this.isAuthenticated = true
                 this.user = data.user
-                this.isModuleOrganizer = data.is_module_organizer
                 this.saveState()
                 if (router) {
                     const redirect = router.currentRoute.value.query.redirect as string || '/'
@@ -100,7 +98,6 @@ export const useAuthStore = defineStore('auth', {
                 if (response.ok) {
                     const data = await response.json()
                     this.user = data
-                    this.isModuleOrganizer = data.is_module_organizer
                     this.isAuthenticated = true
                 } else {
                     this.user = null

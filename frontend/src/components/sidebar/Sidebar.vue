@@ -16,7 +16,7 @@ export default defineComponent({
     'moduleStore.modules': {
       immediate: true,
       handler() {
-        if (this.moduleStore.modules.length > 0) {
+        if (this.moduleStore.modules) {
           this.isLoading = false;
         }
       },
@@ -24,7 +24,7 @@ export default defineComponent({
   },
   setup() {
     const moduleStore = useModuleStore();
-    const isLoading = moduleStore.modules.length === 0;
+    const isLoading = moduleStore.modules === null;
 
     return {
       moduleStore,
@@ -44,6 +44,12 @@ export default defineComponent({
       <div class="text-center">
         <span class="loading loading-spinner loading-md"></span>
         <p class="mt-2 text-xs">Loading modules...</p>
+      </div>
+    </div>
+
+    <div v-else-if="(moduleStore?.modules?.length ?? 0) <= 0">
+      <div class="flex justify-center items-center px-8">
+          <p class="mt-2 text-xs">No modules found</p>
       </div>
     </div>
 

@@ -1,5 +1,4 @@
 from api.models import Module
-from django.http import JsonResponse
 from api.serializers import UserSerializer
 from django.http import JsonResponse
 

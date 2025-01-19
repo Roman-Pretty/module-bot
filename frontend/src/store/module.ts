@@ -13,13 +13,13 @@ export interface Module {
 
 interface ModuleState {
     currentModule: Module | null,
-    modules: Module[]
+    modules: Module[] | null
 }
 
 export const useModuleStore = defineStore('modules', {
     state: (): ModuleState => ({
         currentModule: null,
-        modules: [],
+        modules: null,
     }),
     actions: {
         async fetchModules() {
@@ -29,15 +29,15 @@ export const useModuleStore = defineStore('modules', {
             this.modules = await response.json();
         },
         setCurrentModule(moduleID: string) {
-            this.currentModule = this.modules.find((module) => module.id === moduleID) || null;
+            this.currentModule = this.modules?.find((module) => module.id === moduleID) || null;
         },
     },
     getters: {
         getModuleById: (state) => (id: string) => {
-            return state.modules.find((module) => module.id === id);
+            return state.modules?.find((module) => module.id === id);
         },
         getModuleByName: (state) => (name: string) => {
-            return state.modules.find((module) => module.name === name);
+            return state.modules?.find((module) => module.name === name);
         },
         getModules: (state) => {
             return state.modules;
@@ -47,7 +47,7 @@ export const useModuleStore = defineStore('modules', {
             if (!useAuthStore()?.user) return [];
             else {
                 const user = useAuthStore()?.user || {id: -1};
-                return state.modules.filter((module: Module) => module.organizers.includes(user.id));
+                return state.modules?.filter((module: Module) => module.organizers.includes(user.id));
             }
         },
         getCurrentModule: (state) => {

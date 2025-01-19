@@ -1,18 +1,9 @@
 import io
-import json
-import os
-
 from django.http import JsonResponse, HttpResponseBadRequest
-from dotenv import load_dotenv
-from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from rest_framework.decorators import api_view
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_unstructured import UnstructuredLoader
-
-
-
 from api.models import Module, ModuleEmbedding
 from api.selenium import get_qmplus_cookies
 from backend import settings
@@ -29,8 +20,6 @@ def generate_module(request):
     password = request.POST.get('password')
     url = request.POST.get('url')
     files = request.FILES.getlist('files')
-
-    print(name, module_id, email, password, url, files)
 
     if not name or not module_id or not email or not password or not url:
         return HttpResponseBadRequest("Missing required parameters")
