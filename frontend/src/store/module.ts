@@ -5,9 +5,10 @@ export interface Module {
     id: string,
     name: string,
     url: string,
-    organizers: number[],
+    members: {member_id: number, role: string}[],
     enable_welcome_message: boolean,
     welcome_message: string,
+
     [key: string]: any
 }
 
@@ -47,7 +48,9 @@ export const useModuleStore = defineStore('modules', {
             if (!useAuthStore()?.user) return [];
             else {
                 const user = useAuthStore()?.user || {id: -1};
-                return state.modules?.filter((module: Module) => module.organizers.includes(user.id));
+                return state.modules?.filter((module: Module) =>
+                    module.members.some((member) => member.member_id === user.id && member.role === 'Organizer')
+                );
             }
         },
         getCurrentModule: (state) => {

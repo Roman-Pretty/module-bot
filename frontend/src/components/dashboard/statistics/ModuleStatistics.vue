@@ -112,8 +112,8 @@ export default defineComponent({
         <h2 class="text-md  font-semibold">Overview</h2>
         <p class="text-neutral-400 mt-1">
         <span
-            class="font-semibold">{{ chatSummary.total_users }} user{{ chatSummary.total_users > 1 ? 's' : '' }}</span>
-          {{ chatSummary.total_users > 1 ? 'have' : 'has' }} asked
+            class="font-semibold">{{ chatSummary.total_users }} user{{ chatSummary.total_users != 1 ? 's' : '' }}</span>
+          {{ chatSummary.total_users != 1 ? 'have' : 'has' }} asked
           <span class="font-semibold">{{ chatSummary.total_chats }} questions</span> over the
           past <span class="font-semibold">{{ selectedTimeframe.toLowerCase() }}</span>,
           with an average

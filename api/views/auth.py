@@ -31,7 +31,6 @@ def login_view(request):
     user = authenticate(request, username=username, password=password)
     if user:
         login(request, user)
-        is_module_organizer = Module.objects.filter(organizers=user).exists()
         return JsonResponse({'success': True})
     return JsonResponse(
         {'success': False, 'message': 'Invalid credentials'}, status=401

@@ -179,3 +179,96 @@ export async function fetchUserSummary() {
         console.error('Error fetching user summary:', error);
     }
 }
+
+export async function fetchAllUsersOutOfModule(page: number, searchQuery: string) {
+  try {
+    const url = new URL(`http://localhost:8000/api/all-users/${useModuleStore()?.getCurrentModule?.id}/`);
+    url.searchParams.set('page', String(page));
+    if (searchQuery) {
+      url.searchParams.set('search', searchQuery);
+    }
+
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch all users");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching all users:", error);
+  }
+}
+
+export async function addMemberToModule(userId: number, role: string) {
+    try {
+        const formData = new FormData();
+        formData.append("user_id", String(userId));
+        formData.append("role", role);
+
+        const response = await fetch(`http://localhost:8000/api/add-member/${useModuleStore()?.getCurrentModule?.id}/`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "X-CSRFToken": getCSRFToken(),
+        },
+        body: formData,
+        });
+
+        if (!response.ok) {
+        throw new Error("Failed to add member to module");
+        }
+        useModuleStore().fetchModules();
+    } catch (error) {
+        console.error("Error adding member to module:", error);
+    }
+}
+
+
+export async function updateUserRole(userId: number, role: string) {
+    try {
+        const requestBody = {
+            user_id: userId,
+            role: role
+        };
+
+        const response = await fetch(`http://localhost:8000/api/update-member/${useModuleStore()?.getCurrentModule?.id}/`, {
+            method: "PUT",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCSRFToken(),
+            },
+            body: JSON.stringify(requestBody),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to update member role");
+        }
+        useModuleStore().fetchModules();
+    } catch (error) {
+        console.error("Error updating member role:", error);
+    }
+}
+
+export async function removeMemberFromModule(userId: number) {
+    try {
+        const response = await fetch(`http://localhost:8000/api/remove-member/${useModuleStore()?.getCurrentModule?.id}/${userId}/`, {
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to remove member from module");
+        }
+        useModuleStore().fetchModules();
+    } catch (error) {
+        console.error("Error removing member from module:", error);
+    }
+}
+

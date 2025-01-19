@@ -26,6 +26,10 @@ urlpatterns = [
 
     # Module Users API
     path('module-members/<str:module_id>/', views.module_members, name='module_users'),
+    path('all-users/<str:module_id>/', views.users_not_in_module, name='all_users'),
+    path('add-member/<str:module_id>/', views.add_member_to_module, name='add_member_to_module'),
+    path('update-member/<str:module_id>/', views.update_member, name='update_member'),
+    path('remove-member/<str:module_id>/<str:user_id>/', views.remove_member, name='remove_member'),
 
     # Profile API
     path('user-summary/', views.user_summary, name='user_summary'),

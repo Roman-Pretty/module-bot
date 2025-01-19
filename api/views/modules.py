@@ -1,7 +1,7 @@
 from django.db.models import Q
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from api.models import Module
+from api.models import Module, ModuleMember
 from api.serializers import ModuleSerializer
 
 
@@ -10,8 +10,7 @@ def modules(request):
     if not request.user:
         return Response({'message': 'Not logged in'}, status=401)
 
-    registered_modules = Module.objects.filter(
-        Q(organizers=request.user) | Q(students=request.user)
-    ).distinct().order_by('name')
+    memberships = ModuleMember.objects.filter(user=request.user)
+    registered_modules = [m.module for m in memberships]
 
     return Response(ModuleSerializer(registered_modules, many=True).data)

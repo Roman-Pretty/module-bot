@@ -9,7 +9,7 @@ from langchain_core.messages import BaseMessage
 from pydantic import BaseModel
 from pydantic import Field
 from django.conf import settings
-from api.retrievers import DocumentRetriever
+from api.llm.retrievers import DocumentRetriever
 
 
 class InMemoryHistory(BaseChatMessageHistory, BaseModel):

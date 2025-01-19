@@ -1,6 +1,6 @@
 from django.http import HttpResponseBadRequest, StreamingHttpResponse
 from api.models import Module, ChatLog
-from api.rag import conversational_rag
+from api.llm.rag import conversational_rag
 from backend import settings
 from datetime import timedelta
 from django.utils.timezone import now
@@ -63,10 +63,10 @@ def module_chat(request):
          just reformulate it if needed and otherwise return it as is.
        """
     system_prompt_template = f"""
-        You are an assistant for answering university module questions. The current semester week is week {week}.
+        You are an assistant for answering university module questions. 
         You should answer based on the provided context, and the conversation history.
         If you don't have any context just say "I'm sorry, but I can only answer questions relevant to {module.name}.".
-        You may respond to greetings and other non-question prompts.
+        You may respond to greetings and other non-question prompts. The current semester week is {week}.
         Context: {'{context}'}
        """
     def message_stream():

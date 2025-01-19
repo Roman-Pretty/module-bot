@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.db.models import Count, Q
 from django.db.models.functions import TruncDate
 from django.utils.timezone import now, timedelta
-from api.models import ChatLog, Module
+from api.models import ChatLog, Module, ModuleMember
 from collections import defaultdict
 import csv
 from django.http import HttpResponse
@@ -58,7 +58,7 @@ def chart_data(request, module_id):
         return JsonResponse({'error': 'Invalid timeframe'}, status=400)
 
     user = request.user
-    if not Module.objects.filter(id=module_id, organizers=user).exists():
+    if not ModuleMember.objects.filter(module__id=module_id, user=user, role='Organizer').exists():
         return JsonResponse({'error': 'User does not have access to this module'}, status=403)
 
     logs_dict, range_dates, _ = get_chats_based_on_timeframe(timeframe, module_id)
@@ -75,7 +75,7 @@ def chat_summary(request, module_id):
         return JsonResponse({'error': 'Invalid timeframe'}, status=400)
 
     user = request.user
-    if not Module.objects.filter(id=module_id, organizers=user).exists():
+    if not ModuleMember.objects.filter(module__id=module_id, user=user, role='Organizer').exists():
         return JsonResponse({'error': 'User does not have access to this module'}, status=403)
 
     logs_dict, _, logs = get_chats_based_on_timeframe(timeframe, module_id)
@@ -100,7 +100,7 @@ def chat_summary(request, module_id):
 
 def download_chat_logs(request, module_id):
     user = request.user
-    if not Module.objects.filter(id=module_id, organizers=user).exists():
+    if not ModuleMember.objects.filter(module__id=module_id, user=user, role='Organizer').exists():
         return JsonResponse({'error': 'User does not have access to this module'}, status=403)
 
     logs = ChatLog.objects.filter(module__id=module_id, bot_message=False).order_by('timestamp')
@@ -122,12 +122,8 @@ def download_chat_logs(request, module_id):
 def user_summary(request):
     user = request.user
 
-    modules = Module.objects.filter(
-        Q(organizers=user) | Q(students=user) | Q(demonstrators=user)
-    ).distinct().count()
-
+    modules = Module.objects.filter(members=user).count()
     user_chats = ChatLog.objects.filter(user=user, bot_message=False).count()
-
     all_users = ChatLog.objects.filter(bot_message=False).values_list('user', flat=True).distinct()
 
     user_chat_counts = {

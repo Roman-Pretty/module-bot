@@ -1,9 +1,9 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
 import csv
 import secrets
 from faker import Faker
 import random
+from ...models import User
 
 
 class Command(BaseCommand):

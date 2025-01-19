@@ -12,16 +12,28 @@ class Module(models.Model):
     name = models.CharField(max_length=100)
     url = models.URLField(max_length=300)
 
-    students = models.ManyToManyField(User, related_name='modules', blank=True)
-    demonstrators = models.ManyToManyField(User, related_name='demonstrated_modules', blank=True)
-    organizers = models.ManyToManyField(User, related_name='organized_modules', blank=True)
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ModuleMember')
 
+    # Module settings
     enabled = models.BooleanField(default=True)
     enable_welcome_message = models.BooleanField(default=False)
     welcome_message = models.TextField(default="Welcome to Q-Module-Bot!")
 
     def __str__(self):
         return f"{self.name} ({self.id})"
+
+class ModuleMember(models.Model):
+    ROLE_CHOICES = [
+        ('Student', 'Student'),
+        ('Demonstrator', 'Demonstrator'),
+        ('Organizer', 'Organizer'),
+    ]
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+
+    def __str__(self):
+        return f'{self.user.username} as {self.role} in {self.module.name}'
 
 class ModuleEmbedding(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='embeddings')

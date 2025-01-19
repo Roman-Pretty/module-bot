@@ -163,7 +163,7 @@ export default defineComponent({
     <div class="divider my-8"></div>
     <div class="flex w-full justify-end gap-2 mb-8">
       <button type="button" class="btn btn-wide" @click="undoChanges">
-        Undo Changes
+        Cancel Changes
       </button>
       <button type="submit" class="btn btn-wide">
         Save Changes

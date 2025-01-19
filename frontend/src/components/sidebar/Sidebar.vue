@@ -9,7 +9,7 @@ export default defineComponent({
   props: {
     bots: {
       type: Array as () => Module[],
-      required: true,
+      required: false,
     },
   },
   watch: {

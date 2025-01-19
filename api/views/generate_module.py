@@ -4,8 +4,8 @@ from langchain_openai import OpenAIEmbeddings
 from rest_framework.decorators import api_view
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_unstructured import UnstructuredLoader
-from api.models import Module, ModuleEmbedding
-from api.selenium import get_qmplus_cookies
+from api.models import Module, ModuleEmbedding, ModuleMember
+from api.llm.selenium import get_qmplus_cookies
 from backend import settings
 
 
@@ -30,8 +30,13 @@ def generate_module(request):
         name=name,
         url=url,
     )
-    module_instance.organizers.add(request.user.id)
     module_instance.save()
+
+    module_organizer = ModuleMember.objects.create(
+        module=module_instance,
+        user=request.user,
+        role='Organizer',
+    )
 
     #Authenticate with QMPlus and retrieve content
     raw_cookies = get_qmplus_cookies(email=email, password=password)
