@@ -10,23 +10,24 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
+import secrets
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
-
 from backend import database
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t6vf+rpj4))adv3%&1m@)6&0)a=fr)s+a*kdk_&h)o469*j1u7'
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    default=secrets.token_urlsafe(nbytes=64),
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("VITE_DEV_MODE") == "True"
+
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -138,3 +139,6 @@ QUESTION_LIMIT = 10
 
 # Semester start date
 SEMESTER_START_DATE = datetime(2025, 1, 20)
+
+import django_on_heroku
+django_on_heroku.settings(locals())
