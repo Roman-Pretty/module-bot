@@ -1,11 +1,11 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {Module, useModuleStore} from "../../store/module";
-import {Ellipsis} from "lucide-vue-next";
+import {Ellipsis, ChevronDown} from "lucide-vue-next";
 
 export default defineComponent({
   name: "Sidebar",
-  components: {Ellipsis},
+  components: {Ellipsis, ChevronDown},
   props: {
     bots: {
       type: Array as () => Module[],
@@ -35,7 +35,27 @@ export default defineComponent({
 </script>
 
 <template>
-  <nav class="w-[18%] bg-primary dark:bg-base-300 text-base-100 dark:text-base-content flex-col hidden md:flex overflow-x-hidden">
+  <div class="dropdown md:hidden absolute top-2 left-2">
+    <div tabindex="0" role="button" class="btn m-1 w-36 flex flex-nowrap flex-row justify-between">
+      <span class=" truncate text-nowrap max-w-[80%]">
+        {{ moduleStore.getCurrentModule?.id || 'Select' }}
+      </span>
+      <ChevronDown/>
+    </div>
+    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+      <li
+          @click="moduleStore.setCurrentModule(bot.id)"
+          v-for="bot in bots"
+          :key="bot.id"
+      >
+         <span class="text-nowrap truncate py-1 inline-block lg:hidden max-w-full">
+          {{ bot.id }}
+        </span>
+      </li>
+    </ul>
+  </div>
+  <nav
+      class="w-[18%] bg-primary dark:bg-base-300 text-base-100 dark:text-base-content flex-col hidden md:flex overflow-x-hidden">
     <a href="http://127.0.0.1:8000/admin" target="_blank" class="text-xs font-semibold uppercase m-8">
       Module Bots
     </a>
@@ -49,17 +69,17 @@ export default defineComponent({
 
     <div v-else-if="(moduleStore?.modules?.length ?? 0) <= 0">
       <div class="flex justify-center items-center px-8">
-          <p class="mt-2 text-xs">No modules found</p>
+        <p class="mt-2 text-xs">No modules found</p>
       </div>
     </div>
 
     <ul v-else class="flex flex-col gap-2 overflow-y-auto px-8 mb-8">
       <li
-        @click="moduleStore.setCurrentModule(bot.id)"
-        v-for="bot in bots"
-        :key="bot.id"
-        class="z-10 relative btn btn-primary dark:btn-ghost shadow-none text-base-100 dark:text-base-content justify-between font-normal"
-        :class="{
+          @click="moduleStore.setCurrentModule(bot.id)"
+          v-for="bot in bots"
+          :key="bot.id"
+          class="z-10 relative btn btn-primary dark:btn-ghost shadow-none text-base-100 dark:text-base-content justify-between font-normal"
+          :class="{
           'btn-secondary dark:bg-base-200': moduleStore?.getCurrentModule?.id === bot.id,
         }"
       >

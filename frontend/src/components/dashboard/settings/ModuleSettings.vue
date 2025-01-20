@@ -89,7 +89,7 @@ export default defineComponent({
     <h2 class="text-md mt-4 font-semibold">Module Name</h2>
     <input
         type="text"
-        class="input input-bordered bg-base-200 input-sm mt-1 w-1/3"
+        class="input input-bordered bg-base-200 md:input-sm mt-1 md:w-1/3 w-full"
         placeholder="Module Name"
         v-model="moduleName"
     />
@@ -130,7 +130,7 @@ export default defineComponent({
       <h2 class="text-md mt-4 font-semibold">Welcome Message</h2>
       <input
           type="text"
-          class="input input-bordered input-sm mt-1 w-1/2 bg-base-200"
+          class="input input-bordered md:input-sm mt-1 md:w-1/2 w-full bg-base-200"
           :placeholder="'Welcome to ' + moduleStore?.getCurrentModule?.name + '!'"
           v-model="welcomeMessage"
       />
@@ -162,10 +162,10 @@ export default defineComponent({
 
     <div class="divider my-8"></div>
     <div class="flex w-full justify-end gap-2 mb-8">
-      <button type="button" class="btn btn-wide" @click="undoChanges">
+      <button type="button" class="btn sm:btn-wide" @click="undoChanges">
         Cancel Changes
       </button>
-      <button type="submit" class="btn btn-wide">
+      <button type="submit" class="btn sm:btn-wide mb-20">
         Save Changes
       </button>
     </div>

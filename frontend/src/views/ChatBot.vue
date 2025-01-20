@@ -3,8 +3,8 @@ import {defineComponent} from 'vue';
 import {useAuthStore} from '../store/auth.ts';
 import {useRouter} from 'vue-router';
 import Sidebar from "../components/sidebar/Sidebar.vue";
-import Chat from "../components/chat/chat/Chat.vue";
-import SelectModule from "../components/chat/chat/SelectModule.vue";
+import Chat from "../components/chat/Chat.vue";
+import SelectModule from "../components/chat/SelectModule.vue";
 import {useModuleStore} from "../store/module.ts";
 
 export default defineComponent({

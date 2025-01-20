@@ -45,27 +45,30 @@ export default defineComponent({
 
 <template>
   <nav class="navbar ">
-    <div class="navbar-start">
+    <div class="navbar-start hidden md:flex">
       <div v-if="moduleStore?.getCurrentModule == null && $route.path === '/'"/>
       <a v-else-if="$route.path === '/'" class="btn btn-ghost text-xl" :href="moduleStore.getCurrentModule?.url"
          target="_blank">{{ moduleStore.getCurrentModule?.id }}</a>
       <RouterLink to="/" v-else class="btn btn-ghost text-xl text-neutral-400 dark:text-base-content"><ChevronLeft />Back</RouterLink>
     </div>
-    <div v-if="isDashboard" role="tablist" class="tabs tabs-bordered navbar-center">
+    <div class="navbar-start md:hidden"></div>
+
+    <div v-if="isDashboard" role="tablist" class="tabs tabs-bordered navbar-center hidden md:flex">
       <a role="tab" :class="{ 'tab-active': selected === 'Statistics' }" class="tab"
          @click="changeSection('Statistics')">Statistics</a>
       <a role="tab" :class="{ 'tab-active': selected === 'Members' }" class="tab" @click="changeSection('Members')">Members</a>
       <a role="tab" :class="{ 'tab-active': selected === 'Settings' }" class="tab" @click="changeSection('Settings')">Settings</a>
     </div>
+
     <div class="gap-2 navbar-end">
       <RouterLink to="/addmodule"
                   class="tooltip tooltip-bottom btn btn-circle btn-sm text-neutral-700 rounded-full bg-base-100 flex"
                   data-tip="Add Module" v-if="$route.path === '/dashboard' && authStore.user?.is_module_organizer">
         <Plus/>
       </RouterLink>
-      <div class="dropdown dropdown-end mr-8">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle ">
-          <div class="rounded-full w-10 h-10 bg-base-300 flex items-center justify-center font-semibold text-lg uppercase">
+      <div class="dropdown dropdown-end md:mr-8 mt-1">
+        <div tabindex="0" role="button" class="btn btn-ghost h-14 w-14 btn-circle ">
+          <div class="avatar rounded-full w-12 h-12 bg-base-200 md:bg-base-300 flex items-center justify-center font-semibold text-lg uppercase">
             {{ authStore?.user?.username?.charAt(0) || '!' }}
           </div>
         </div>

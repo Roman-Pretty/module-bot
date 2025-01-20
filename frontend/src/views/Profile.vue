@@ -59,7 +59,7 @@ export default defineComponent({
         </div>
 
         <div v-else class="flex w-full justify-between items-start">
-          <div class="flex gap-8">
+          <div class="flex gap-8 md:flex-row flex-col md:items-start items-center md:text-start text-center">
             <div
               class="rounded-full w-24 h-24 bg-base-300 flex items-center justify-center font-semibold text-6xl pb-2 uppercase"
             >
@@ -80,7 +80,7 @@ export default defineComponent({
               </p>
             </div>
           </div>
-          <div class="flex flex-row w-2/5 justify-end">
+          <div class="hidden md:flex flex-row w-2/5 justify-end">
             <p
               class="text-md mt-2 text-neutral-400 dark:text-base-content flex flex-row items-center gap-2 tooltip tooltip-bottom cursor-pointer hover:underline"
               data-tip="For your privacy, conversations and usage statistics are stored anonymously."

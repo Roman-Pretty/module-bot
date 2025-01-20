@@ -7,11 +7,14 @@ import {useAuthStore} from "../../store/auth.ts";
 import ModuleSettings from "./settings/ModuleSettings.vue";
 import ModuleStatistics from "./statistics/ModuleStatistics.vue";
 import ModuleMembers from "./members/ModuleMembers.vue";
+import Footer from "./Footer.vue";
 
 export default defineComponent({
   name: "DashboardContent",
   components: {
-    ModuleMembers,    ModuleStatistics, ModuleSettings, BarChart, Header},
+    Footer,
+    ModuleMembers, ModuleStatistics, ModuleSettings, BarChart, Header
+  },
   data() {
     return {
       selected: 'Statistics'
@@ -35,11 +38,12 @@ export default defineComponent({
 </script>
 
 <template>
-<!--  :class="{ 'bg-base-100': selected === 'Settings' }-->
+  <!--  :class="{ 'bg-base-100': selected === 'Settings' }-->
   <div class="w-full flex flex-col justify-between bg-base-100">
     <Header :is-dashboard="true" @change-section="changeSection"/>
     <ModuleStatistics v-if="selected === 'Statistics'"/>
     <ModuleSettings v-else-if="selected === 'Settings'"/>
     <ModuleMembers v-else-if="selected === 'Members'"/>
+    <Footer @change-section="changeSection"/>
   </div>
 </template>

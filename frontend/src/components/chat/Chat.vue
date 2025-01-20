@@ -1,13 +1,13 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
-import Header from "../../Header.vue";
+import Header from "../Header.vue";
 import Input from "./Input.vue";
-import {useAuthStore} from "../../../store/auth.ts";
+import {useAuthStore} from "../../store/auth";
 import Message from "./Message.vue";
-import {askChatbot} from "../../../api.ts";
-import {useModuleStore} from "../../../store/module.ts";
-import {fetchChatLogs} from "../../../api.ts";
-import {scrollToBottom} from "../../../util.ts";
+import {askChatbot} from "../../api";
+import {useModuleStore} from "../../store/module";
+import {fetchChatLogs} from "../../api";
+import {scrollToBottom} from "../../util";
 
 export interface MessageType {
   id: number;

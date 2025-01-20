@@ -51,7 +51,7 @@ export default defineComponent({
 <template>
   <div class="w-full flex justify-between p-6 items-center" :class="{'bg-base-200': index % 2 === 0}">
     <div class="flex items-center gap-4">
-      <div class="rounded-full w-10 h-10 bg-base-300 flex items-center justify-center font-bold uppercase">
+      <div class="rounded-full w-10 h-10 bg-base-300 hidden sm:flex items-center justify-center font-bold uppercase">
         {{ user.username.charAt(0) }}
       </div>
       <span class="font-semibold capitalize">{{ user.username }}</span>

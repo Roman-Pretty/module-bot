@@ -23,7 +23,6 @@ export default defineComponent({
 
     const isLoading = ref(true);
     const searchQuery = ref("");
-    const isModalOpen = ref(false);
 
     const memberToRemove = ref<User | null>(null);
 
@@ -77,6 +76,10 @@ export default defineComponent({
       document.getElementById('remove_modal').showModal()
     };
 
+    const showAddModal = () => {
+      document.getElementById('add_modal').showModal()
+    };
+
     const removeMember = async () => {
       if (memberToRemove.value) {
         await removeMemberFromModule(memberToRemove.value.id);
@@ -89,9 +92,9 @@ export default defineComponent({
       moduleStore,
       isLoading,
       searchQuery,
-      isModalOpen,
       addMember,
       showRemoveModal,
+      showAddModal,
       removeMember,
     };
   },
@@ -109,14 +112,14 @@ export default defineComponent({
 
     <div class="mt-8 flex justify-between" v-else>
       <h1 class="text-2xl">Module Members</h1>
-      <div class="flex gap-2">
+      <div class="flex flex-col-reverse sm:flex-row gap-2">
         <input
           v-model="searchQuery"
           type="text"
           placeholder="Search Members..."
-          class="input input-sm max-w-xs bg-base-200"
+          class="input sm:input-sm max-w-xs bg-base-200"
         />
-        <button @click="isModalOpen = true" class="btn btn-sm">Add Members</button>
+        <button @click="showAddModal" class="btn sm:btn-sm">Add Members</button>
       </div>
     </div>
     <div class="divider mt-1"></div>
@@ -127,9 +130,7 @@ export default defineComponent({
     </ul>
 
     <AddMemberModal
-      v-if="isModalOpen"
       @add-member="addMember"
-      @close="isModalOpen = false"
     />
 
     <dialog id="remove_modal" class="modal">
@@ -142,6 +143,9 @@ export default defineComponent({
           <button class="btn btn-ghost">Cancel</button>
         </div>
       </form>
+      <form method="dialog" class="modal-backdrop ">
+      <button class="cursor-default">close</button>
+    </form>
     </dialog>
   </div>
 </template>
