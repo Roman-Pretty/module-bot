@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia'
 import {Router} from 'vue-router'
 import {useModuleStore} from "./module.ts";
+import {url} from "../api";
 
 export interface User {
     username: string,
@@ -28,14 +29,14 @@ export const useAuthStore = defineStore('auth', {
     },
     actions: {
         async setCsrfToken(): Promise<void> {
-            await fetch('http://localhost:8000/api/set-csrf-token', {
+            await fetch(`${url}/api/set-csrf-token`, {
                 method: 'GET',
                 credentials: 'include',
             })
         },
 
         async login(username: string, password: string, router: Router | null = null): Promise<void> {
-            const response = await fetch('http://localhost:8000/api/login', {
+            const response = await fetch(`${url}/api/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,7 +63,7 @@ export const useAuthStore = defineStore('auth', {
 
         async logout(router: Router | null = null): Promise<void> {
             try {
-                const response = await fetch('http://localhost:8000/api/logout', {
+                const response = await fetch(`${url}/api/logout`, {
                     method: 'POST',
                     headers: {
                         'X-CSRFToken': getCSRFToken(),
@@ -88,7 +89,7 @@ export const useAuthStore = defineStore('auth', {
 
         async fetchUser(): Promise<void> {
             try {
-                const response = await fetch('http://localhost:8000/api/user', {
+                const response = await fetch(`${url}/api/user`, {
                     credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',

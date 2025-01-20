@@ -13,7 +13,7 @@ export default defineComponent({
     return {
       staff_email: '',
       password: '',
-      files: [],
+      files: [] as File[],
       loading: false,
     };
   },
@@ -29,7 +29,7 @@ export default defineComponent({
       const moduleStore = useModuleStore();
 
       try {
-        await regenerateModule(this.staff_email, this.password, moduleStore?.currentModule?.id, this.files);
+        await regenerateModule(this.staff_email || '', this.password || '', moduleStore?.currentModule?.id || '', this.files || []);
       } catch (error) {
         console.error("Error during submission:", error);
       } finally {
@@ -62,23 +62,24 @@ export default defineComponent({
           <input type="password" class="grow" placeholder="Password" v-model="password"/>
         </label>
         <div class="divider text-base-content/50">Additional Resources</div>
-      <input
-          type="file"
-          multiple
-          class="file-input w-full max-w-xs my-4"
-          @change="handleFileUpload"
-          accept="application/pdf,
+        <input
+            type="file"
+            multiple
+            class="file-input w-full max-w-xs my-4"
+            @change="handleFileUpload"
+            accept="application/pdf,
                   application/vnd.ms-powerpoint,
                   application/vnd.openxmlformats-officedocument.presentationml.presentation,
                   application/msword,
                   application/vnd.openxmlformats-officedocument.wordprocessingml.document,
                   text/plain,
                   "
-      />
-      <p class="text-base-content/50 text-xs w-full text-center"><span class="font-semibold">Accepted file types:</span> .pdf, .ppt, .pptx, .doc, .docx</p>
+        />
+        <p class="text-base-content/50 text-xs w-full text-center"><span
+            class="font-semibold">Accepted file types:</span> .pdf, .ppt, .pptx, .doc, .docx</p>
       </div>
       <div class="card-actions w-full justify-center mb-4 flex lg:hidden px-8">
-        <button class="btn flex-1" @click="this.$router.back()">Back</button>
+        <button class="btn flex-1" @click="$router.back()">Back</button>
         <button
             class="btn bg-primary dark:bg-base-200 border-none hover:bg-secondary text-neutral-50 flex-1 hover:dark:bg-base-100"
             @click="submit">Regenerate
@@ -97,7 +98,7 @@ export default defineComponent({
         </p>
       </div>
       <div class="card-actions justify-center mt-4">
-        <button class="btn w-1/3 lg:flex-1" @click="this.$router.back();">Back</button>
+        <button class="btn w-1/3 lg:flex-1" @click="$router.back();">Back</button>
         <button
             class="btn bg-primary dark:bg-base-200 border-none hover:bg-secondary hover:dark:bg-base-100 text-neutral-50 w-1/3 lg:flex-1"
             @click="submit">Regenerate

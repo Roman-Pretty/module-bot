@@ -32,7 +32,7 @@ export default defineComponent({
 
 <template>
   <main class="flex flex-row w-screen h-screen">
-    <Sidebar :bots="moduleStore.getModules" />
+    <Sidebar :bots="moduleStore.getModules || []" />
     <Chat v-if="moduleStore.moduleSelected" />
     <SelectModule v-else />
   </main>

@@ -1,7 +1,8 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
+    path('', views.main_spa),
 
     # Conversation API
     path('embedding-response/', views.module_chat, name='embedding_response'),
@@ -35,6 +36,8 @@ urlpatterns = [
     # Profile API
     path('user-summary/', views.user_summary, name='user_summary'),
 
+    # Redirect if it all goes wrong
+    re_path(r'^(?P<path>.*)/$', views.main_spa),
 ]
 
-#TODO: Follow URL naming conventions
+# TODO: Follow URL naming conventions

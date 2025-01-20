@@ -2,7 +2,7 @@
 import { defineComponent, ref } from 'vue';
 import { useAuthStore, User } from '../../../store/auth';
 import { UserRoundMinus } from 'lucide-vue-next';
-import { removeMemberFromModule, updateUserRole } from "../../../api.ts";
+import { updateUserRole } from "../../../api";
 
 export default defineComponent({
   name: "MemberEntry",
@@ -63,7 +63,7 @@ export default defineComponent({
         class="select w-full max-w-xs disabled:cursor-default bg-base-300"
         :disabled="user.id === useAuthStore()?.user?.id || role == 'Organizer'"
         :value="role"
-        @change="handleRoleChange($event?.target?.value, user)"
+        @change="handleRoleChange(($event.target as HTMLInputElement).value, user)"
       >
         <option value="Student">Student</option>
         <option value="Demonstrator">Demonstrator</option>

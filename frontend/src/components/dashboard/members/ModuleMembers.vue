@@ -1,8 +1,8 @@
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
-import { addMemberToModule, fetchModuleMembers, removeMemberFromModule } from "../../../api";
-import { useModuleStore } from "../../../store/module";
-import { User } from "../../../store/auth";
+import {defineComponent, ref, computed, watch} from "vue";
+import {addMemberToModule, fetchModuleMembers, removeMemberFromModule} from "../../../api";
+import {useModuleStore} from "../../../store/module";
+import {User} from "../../../store/auth";
 import MemberEntry from "./MemberEntry.vue";
 import AddMemberModal from "./AddMemberModal.vue";
 
@@ -14,7 +14,7 @@ interface ModuleMembers {
 
 export default defineComponent({
   name: "ModuleMembers",
-  components: { MemberEntry, AddMemberModal },
+  components: {MemberEntry, AddMemberModal},
   setup() {
     const organizers = ref<(User & { role: string })[]>([]);
     const demonstrators = ref<(User & { role: string })[]>([]);
@@ -31,15 +31,15 @@ export default defineComponent({
         isLoading.value = true;
         const users: ModuleMembers = await fetchModuleMembers();
         isLoading.value = false;
-        organizers.value = users.organizers.map(user => ({ ...user, role: "Organizer" }));
-        demonstrators.value = users.demonstrators.map(user => ({ ...user, role: "Demonstrator" }));
-        students.value = users.students.map(user => ({ ...user, role: "Student" }));
+        organizers.value = users.organizers.map(user => ({...user, role: "Organizer"}));
+        demonstrators.value = users.demonstrators.map(user => ({...user, role: "Demonstrator"}));
+        students.value = users.students.map(user => ({...user, role: "Student"}));
       } catch (error) {
         console.error("Failed to fetch module members:", error);
       }
     };
 
-    watch(() => moduleStore.currentModule, fetchMembers, { immediate: true });
+    watch(() => moduleStore.currentModule, fetchMembers, {immediate: true});
 
     const allMembers = computed(() => [
       ...organizers.value,
@@ -53,19 +53,19 @@ export default defineComponent({
       }
       const query = searchQuery.value.toLowerCase();
       return allMembers.value.filter(
-        (member) =>
-          member.username.toLowerCase().includes(query) ||
-          member.role.toLowerCase().includes(query)
+          (member) =>
+              member.username.toLowerCase().includes(query) ||
+              member.role.toLowerCase().includes(query)
       );
     });
 
     const addMember = async (newMember: { id: number; username: string; role: string }) => {
       const roleArray =
-        newMember.role === "Organizer"
-          ? organizers
-          : newMember.role === "Demonstrator"
-          ? demonstrators
-          : students;
+          newMember.role === "Organizer"
+              ? organizers
+              : newMember.role === "Demonstrator"
+                  ? demonstrators
+                  : students;
 
       roleArray.value.push(newMember as User & { role: string });
       await addMemberToModule(newMember.id, newMember.role);
@@ -73,11 +73,17 @@ export default defineComponent({
 
     const showRemoveModal = (member: User) => {
       memberToRemove.value = member;
-      document.getElementById('remove_modal').showModal()
+      const modal = document.getElementById('remove_modal') as HTMLDialogElement;
+      if (modal) {
+        modal.showModal();
+      }
     };
 
     const showAddModal = () => {
-      document.getElementById('add_modal').showModal()
+      const modal = document.getElementById('add_modal') as HTMLDialogElement;;
+      if (modal) {
+        modal.showModal();
+      }
     };
 
     const removeMember = async () => {
@@ -114,10 +120,10 @@ export default defineComponent({
       <h1 class="text-2xl">Module Members</h1>
       <div class="flex flex-col-reverse sm:flex-row gap-2">
         <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Search Members..."
-          class="input sm:input-sm max-w-xs bg-base-200"
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search Members..."
+            class="input sm:input-sm max-w-xs bg-base-200"
         />
         <button @click="showAddModal" class="btn sm:btn-sm">Add Members</button>
       </div>
@@ -125,27 +131,27 @@ export default defineComponent({
     <div class="divider mt-1"></div>
     <ul>
       <li v-for="(member, index) in members" :key="index">
-        <MemberEntry :user="member" :role="member.role" :index="index" @remove="showRemoveModal(member)" />
+        <MemberEntry :user="member" :role="member.role" :index="index" @remove="showRemoveModal(member)"/>
       </li>
     </ul>
 
     <AddMemberModal
-      @add-member="addMember"
+        @add-member="addMember"
     />
 
     <dialog id="remove_modal" class="modal">
       <form class="modal-box" method="dialog">
         <h3 class="text-lg ">Are you sure you want to remove this member?</h3>
         <div class="divider"></div>
-          <p class="mb-12">If you wish to add them back, you will have to do so manually!</p>
+        <p class="mb-12">If you wish to add them back, you will have to do so manually!</p>
         <div class="modal-action">
           <button class="btn" @click="removeMember">Yes, Remove</button>
           <button class="btn btn-ghost">Cancel</button>
         </div>
       </form>
       <form method="dialog" class="modal-backdrop ">
-      <button class="cursor-default">close</button>
-    </form>
+        <button class="cursor-default">close</button>
+      </form>
     </dialog>
   </div>
 </template>

@@ -5,7 +5,6 @@ import json
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login, logout
 from ..forms import CreateUserForm
-from ..models import Module
 
 
 @ensure_csrf_cookie

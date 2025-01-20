@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia';
 import {useAuthStore} from "./auth.ts";
+import {url} from "../api";
 
 export interface Module {
     id: string,
@@ -24,7 +25,7 @@ export const useModuleStore = defineStore('modules', {
     }),
     actions: {
         async fetchModules() {
-            const response = await fetch('http://localhost:8000/api/modules', {
+            const response = await fetch(`${url}/api/modules`, {
                 method: 'GET', credentials: 'include',
             });
             this.modules = await response.json();

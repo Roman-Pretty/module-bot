@@ -1,6 +1,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {getCSRFToken} from "../../store/auth.ts";
+import {getCSRFToken} from "../../store/auth";
+import {url} from "../../api";
 
 export default defineComponent({
   name: "FinalSubmit",

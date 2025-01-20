@@ -26,11 +26,11 @@ export default defineComponent({
         currentPage.value = response.current_page;
 
         userRoles.value = response.users.reduce(
-            (roles, user) => ({...roles, [user.id]: "Student"}),
+            (roles: string[], user: User) => ({...roles, [user.id]: "Student"}),
             {}
         );
 
-        response.users.forEach(user => {
+        response.users.forEach((user: User) => {
           userAdded.value[user.id] = false;
         });
       } catch (error) {
