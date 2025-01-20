@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.db.models import Count, Q
+from django.db.models import Count
 from django.db.models.functions import TruncDate
 from django.utils.timezone import now, timedelta
 from api.models import ChatLog, Module, ModuleMember

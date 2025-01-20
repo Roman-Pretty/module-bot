@@ -1,6 +1,4 @@
 from rest_framework import serializers
-
-from backend import settings
 from .models import Module, ChatLog, User, ModuleMember
 
 

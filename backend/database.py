@@ -1,7 +1,5 @@
-import os
-
 from django.conf import settings
-
+import os
 
 engines = {
     'sqlite': 'django.db.backends.sqlite3',
@@ -18,6 +16,7 @@ def config():
     name = os.getenv('DATABASE_NAME')
     if not name and engine == engines['sqlite']:
         name = os.path.join(settings.BASE_DIR, 'db.sqlite3')
+
     return {
         'ENGINE': engine,
         'NAME': name,

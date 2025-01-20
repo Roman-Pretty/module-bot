@@ -14,6 +14,8 @@ from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
 
+from backend import database
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -81,16 +83,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 # load_dotenv()
 # DB_PASSWORD = os.getenv("DB_PASSWORD")
-
+load_dotenv()
 DATABASES = {
-'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'q-module-bot',
-        'USER': 'admin',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': database.config(),
 }
 
 # Password validation
@@ -138,7 +133,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Embedding model dimensions
 EMBEDDING_MODEL_DIMENSIONS = 1536
-load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 QUESTION_LIMIT = 10
 
