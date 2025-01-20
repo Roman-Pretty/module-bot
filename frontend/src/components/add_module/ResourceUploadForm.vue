@@ -1,8 +1,10 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
+import {Hash, KeyRound, Link, Pencil, User} from "lucide-vue-next";
 
 export default defineComponent({
   name: "ResourceUploadForm",
+  components: {KeyRound, Hash, User, Link, Pencil},
   data() {
     return {
       files: [] as File[],
@@ -27,26 +29,48 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="flex flex-col items-center">
-    <h3 class="text-neutral-700 mb-2">Are there any additional resources the bot should be aware of?</h3>
-    <p class="text-neutral-500 text-sm">These may include PDFs, lecture slides, or downloaded external resources.</p>
-    <input
-        type="file"
-        multiple
-        class="file-input w-full max-w-xs my-4"
-        @change="handleFileUpload"
-        accept="application/pdf,
-                application/vnd.ms-powerpoint,
-                application/vnd.openxmlformats-officedocument.presentationml.presentation,
-                application/msword,
-                application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-                text/plain,
-                "
-    />
-    <p class="text-neutral-400 text-xs ">accepted: .pdf, .ppt, .pptx, .doc, .docx</p>
+  <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl lg:w-[50%] h-2/3 self-center justify-self-end lg:mr-4">
+    <div class="card-body h-full">
+      <div class="divider text-base-content/50">Additional Resources</div>
+      <input
+          type="file"
+          multiple
+          class="file-input w-full max-w-xs my-4"
+          @change="handleFileUpload"
+          accept="application/pdf,
+                  application/vnd.ms-powerpoint,
+                  application/vnd.openxmlformats-officedocument.presentationml.presentation,
+                  application/msword,
+                  application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                  text/plain,
+                  "
+      />
+      <p class="text-base-content/50 text-xs w-full text-center"><span class="font-semibold">Accepted file types:</span> .pdf, .ppt, .pptx, .doc, .docx</p>
+    </div>
+    <div class="card-actions w-full justify-center mb-4 flex lg:hidden px-8">
+      <button class="btn flex-1" @click="previous">Back</button>
+      <button
+          class="btn bg-primary dark:bg-base-200 border-none hover:bg-secondary text-neutral-50 flex-1 hover:dark:bg-base-100"
+          @click="next">Next
+      </button>
+    </div>
   </div>
-  <div class="card-actions justify-center">
-    <button class="btn w-1/3" @click="previous">Previous</button>
-    <button class="btn bg-qm text-neutral-50 w-1/3" @click="next">Next</button>
+
+  <div class="text-center lg:text-left w-1/2 text-white lg:flex hidden flex-col justify-between h-2/3 self-center">
+    <div>
+      <h1 class="text-5xl font-bold">Additional Resources</h1>
+      <p class="py-6 ">
+        Are there any additional resources the bot should be aware of?
+        <br/><br/>
+        These may include PDFs, lecture slides, or downloaded external resources.
+      </p>
+    </div>
+    <div class="card-actions justify-center mt-4">
+      <button class="btn w-1/3 lg:flex-1" @click="previous">Back</button>
+      <button
+          class="btn bg-primary dark:bg-base-200 border-none hover:bg-secondary hover:dark:bg-base-100 text-neutral-50 w-1/3 lg:flex-1"
+          @click="next">Next
+      </button>
+    </div>
   </div>
 </template>

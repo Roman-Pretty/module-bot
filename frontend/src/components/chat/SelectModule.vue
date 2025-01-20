@@ -15,7 +15,7 @@ export default defineComponent({
       <div class="hero-content text-center">
         <div class="max-w-md">
           <h1 class="text-2xl ">What can I help you with?</h1>
-          <p class="py-4 text-neutral-400">
+          <p class="py-4 text-base-content/50">
             Please select a module to start chatting.
           </p>
         </div>

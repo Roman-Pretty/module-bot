@@ -12,8 +12,6 @@ export default defineComponent({
       "Configuring settings...",
       "Fetching data...",
       "Setting up resources...",
-      "Locking S-Foils...",
-      "Generating module bot...",
       "Generating module bot...",
       "Preparing conversation...",
       "Finalizing setup...",
@@ -48,7 +46,7 @@ export default defineComponent({
         :size="50"
         color="#fff"
     />
-    <h1 class="text-md capitalize font-semibold  text-center mt-4 text-base-200">{{ currentMessage }}</h1>
+    <h1 class="text-md capitalize font-semibold  text-center mt-4 text-white">{{ currentMessage }}</h1>
   </div>
 </template>
 

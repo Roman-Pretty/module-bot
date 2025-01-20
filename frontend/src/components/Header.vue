@@ -62,13 +62,13 @@ export default defineComponent({
 
     <div class="gap-2 navbar-end">
       <RouterLink to="/addmodule"
-                  class="tooltip tooltip-bottom btn btn-circle btn-sm text-neutral-700 rounded-full bg-base-100 flex"
+                  class="tooltip tooltip-bottom btn btn-circle btn-sm text-base-content rounded-full bg-base-100 flex"
                   data-tip="Add Module" v-if="$route.path === '/dashboard' && authStore.user?.is_module_organizer">
         <Plus/>
       </RouterLink>
       <div class="dropdown dropdown-end md:mr-8 mt-1">
-        <div tabindex="0" role="button" class="btn btn-ghost h-14 w-14 btn-circle ">
-          <div class="avatar rounded-full w-12 h-12 bg-base-200 md:bg-base-300 flex items-center justify-center font-semibold text-lg uppercase">
+        <div tabindex="0" role="button" class="btn btn-ghost sm:h-12 h-14 sm:w-12 w-14 btn-circle ">
+          <div class="avatar rounded-full w-12 h-12 sm:h-10 sm:w-10 bg-base-200 md:bg-base-300 flex items-center justify-center font-semibold text-lg uppercase">
             {{ authStore?.user?.username?.charAt(0) || '!' }}
           </div>
         </div>

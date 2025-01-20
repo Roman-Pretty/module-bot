@@ -82,7 +82,7 @@ export default defineComponent({
           </div>
           <div class="hidden md:flex flex-row w-2/5 justify-end">
             <p
-              class="text-md mt-2 text-neutral-400 dark:text-base-content flex flex-row items-center gap-2 tooltip tooltip-bottom cursor-pointer hover:underline"
+              class="text-md mt-2 text-base-content/50 flex flex-row items-center gap-2 tooltip tooltip-bottom cursor-pointer hover:underline"
               data-tip="For your privacy, conversations and usage statistics are stored anonymously."
             >
               Why is that my name?

@@ -87,12 +87,20 @@ export default defineComponent({
         <div class="pb-4" v-html="html"/>
       </div>
       <div v-else v-html="html"/>
-      <div class="mt-2" v-if="message.loading">
+      <div class="mt-2 inline-block dark:hidden" v-if="message.loading">
         <hollow-dots-spinner
             :animation-duration="800"
             :dot-size="10"
             :dots-num="3"
             color="#072355"
+        />
+      </div>
+      <div class="mt-2 dark:inline-block hidden" v-if="message.loading">
+        <hollow-dots-spinner
+            :animation-duration="800"
+            :dot-size="10"
+            :dots-num="3"
+            color="#87adbb"
         />
       </div>
     </div>

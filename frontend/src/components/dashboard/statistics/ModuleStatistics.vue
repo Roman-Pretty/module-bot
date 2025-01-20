@@ -110,7 +110,7 @@ export default defineComponent({
     <div class="w-full flex flex-col sm:flex-row mt-1 min-h-64">
       <div class="sm:w-1/3 pr-2 mt-1 ">
         <h2 class="text-md  font-semibold">Overview</h2>
-        <p class="text-neutral-400 mt-1">
+        <p class="text-base-content/50 mt-1">
         <span
             class="font-semibold">{{ chatSummary.total_users }} user{{ chatSummary.total_users != 1 ? 's' : '' }}</span>
           {{ chatSummary.total_users != 1 ? 'have' : 'has' }} asked
@@ -131,7 +131,7 @@ export default defineComponent({
     </div>
     <div class="card w-full rounded-t-none border-base-300 border-t-0 border">
       <div class="card-body flex flex-row items-center justify-between">
-        <p class="text-neutral-400">Export all anonymised usage data for this module as a CSV file.</p>
+        <p class="text-base-content/50">Export all anonymised usage data for this module as a CSV file.</p>
         <button @click="downloadChatLogs" class="btn bg-base-100">Export</button>
       </div>
     </div>

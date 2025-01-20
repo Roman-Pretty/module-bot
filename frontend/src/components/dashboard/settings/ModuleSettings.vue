@@ -103,7 +103,7 @@ export default defineComponent({
       />
       <label for="enable-chat">
         <h2 class="text-md mt-4 font-semibold">Allow Module Chat</h2>
-        <p class="text-neutral-400 mt-1">
+        <p class="text-base-content/50 mt-1">
           You can temporarily disable chatting with the module during exams or
           timed assignments.
         </p>
@@ -119,7 +119,7 @@ export default defineComponent({
       />
       <label for="enable-welcome">
         <h2 class="text-md mt-4 font-semibold">Enable Welcome Message</h2>
-        <p class="text-neutral-400 mt-1">
+        <p class="text-base-content/50 mt-1">
           Set a small welcome message to be sent to students when they use the
           bot for the first time.
         </p>
@@ -150,7 +150,7 @@ export default defineComponent({
         <h2 class="text-md mt-4 font-semibold">
           Regenerate Module Data after saving
         </h2>
-        <p class="text-neutral-400 mt-1">
+        <p class="text-base-content/50 mt-1">
           This will completely regenerate the module's knowledge based on your QMPlus
           page. This is useful if you have made changes to your QMPlus page and want
           the bot to reflect those changes.<br/>

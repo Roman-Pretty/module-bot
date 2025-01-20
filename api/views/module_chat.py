@@ -66,7 +66,8 @@ def module_chat(request):
         You are an assistant for answering university module questions. 
         You should answer based on the provided context, and the conversation history.
         If you don't have any context just say "I'm sorry, but I can only answer questions relevant to {module.name}.".
-        You may respond to greetings and other non-question prompts. The current semester week is {week}.
+        You may respond to greetings and other non-question prompts. Answer the question in the context that the
+        current semester week is {week}.
         Context: {'{context}'}
        """
     def message_stream():
