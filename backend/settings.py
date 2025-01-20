@@ -18,6 +18,7 @@ from backend import database
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get(
@@ -27,6 +28,8 @@ SECRET_KEY = os.environ.get(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("VITE_DEV_MODE") == "True"
+
+print(f"DEBUG: {DEBUG}")
 
 ALLOWED_HOSTS = ['*']
 
@@ -84,7 +87,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 # load_dotenv()
 # DB_PASSWORD = os.getenv("DB_PASSWORD")
-load_dotenv()
+
 DATABASES = {
     'default': database.config(),
 }
