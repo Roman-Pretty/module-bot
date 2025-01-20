@@ -10,6 +10,7 @@ import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
 import Dashboard from "./views/Dashboard.vue";
 import Profile from "./views/Profile.vue";
+import RegenerateModule from "./views/RegenerateModule.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -24,6 +25,12 @@ const router = createRouter({
             path: '/addmodule',
             component: AddModule,
             name: 'addmodule',
+            meta: {requiresAuth: true}
+        },
+        {
+            path: '/regeneratemodule',
+            component: RegenerateModule,
+            name: 'regeneratemodule',
             meta: {requiresAuth: true}
         },
         {

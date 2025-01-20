@@ -10,11 +10,11 @@ export default defineComponent({
     password: String,
     module_name: String,
     module_code: String,
-    files: Array as () => File[], // Accept files as a prop
+    files: Array as () => File[],
   },
   methods: {
     async submit() {
-      this.$emit('setLoading', true); // Set loading to true
+      this.$emit('setLoading', true);
 
       try {
         const formData = new FormData();

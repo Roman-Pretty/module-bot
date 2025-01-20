@@ -10,6 +10,7 @@ urlpatterns = [
 
     # Generate Module API
     path('generate-module/', views.generate_module, name='generate_module'),
+    path('regenerate-module/', views.regenerate_module, name='regenerate_module'),
 
     # Auth API
     path('set-csrf-token', views.set_csrf_token, name='set_csrf_token'),

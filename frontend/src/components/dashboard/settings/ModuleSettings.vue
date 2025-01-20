@@ -2,16 +2,16 @@
 import {defineComponent, ref, onMounted, watch} from 'vue';
 import {useModuleStore} from '../../../store/module';
 import {fetchModuleSettings, updateModuleSettings} from '../../../api';
-import {useAuthStore} from "../../../store/auth.ts";
+import {ExternalLink} from 'lucide-vue-next';
 
 export default defineComponent({
   name: "ModuleSettings",
+  components: {ExternalLink},
   setup() {
     const moduleName = ref('');
     const allowModuleChat = ref(true);
     const enableWelcomeMessage = ref(false);
     const welcomeMessage = ref('');
-    const regenerateModuleData = ref(false);
     const isLoading = ref(true);
 
     const moduleStore = useModuleStore();
@@ -29,7 +29,6 @@ export default defineComponent({
           allowModuleChat.value = settings.enabled ?? true;
           enableWelcomeMessage.value = settings.enable_welcome_message ?? false;
           welcomeMessage.value = settings.welcome_message || '';
-          regenerateModuleData.value = false; // Default since this is a transient state
         }
       } catch (error) {
         console.error('Error loading module settings:', error);
@@ -61,7 +60,6 @@ export default defineComponent({
       allowModuleChat,
       enableWelcomeMessage,
       welcomeMessage,
-      regenerateModuleData,
       isLoading,
       saveChanges,
       undoChanges,
@@ -139,16 +137,14 @@ export default defineComponent({
     <h1 class="text-2xl mt-8">Advanced</h1>
     <div class="divider mt-1"></div>
 
-    <div class="flex items-center mt-4 gap-4">
-      <input
-          type="checkbox"
-          class="checkbox checkbox-sm"
-          v-model="regenerateModuleData"
-          id="regenerate-module"
-      />
+    <div class="flex sm:flex-row-reverse flex-col-reverse sm:items-end mt-4 gap-4">
+      <RouterLink to="/regeneratemodule" class="btn sm:btn-wide">
+        Regenerate Module
+        <ExternalLink :size="18"/>
+      </RouterLink>
       <label for="regenerate-module">
         <h2 class="text-md mt-4 font-semibold">
-          Regenerate Module Data after saving
+          Regenerate Module
         </h2>
         <p class="text-base-content/50 mt-1">
           This will completely regenerate the module's knowledge based on your QMPlus

@@ -49,7 +49,7 @@ def generate_module(request):
     for file in files:
         file_stream = io.BytesIO()
         file_stream.write(file.read())
-        file_stream.seek(0)  # Reset the stream's position to the beginning
+        file_stream.seek(0)
 
         # Provide a metadata_filename to indicate the file type
         loader = UnstructuredLoader(file=file_stream, metadata_filename=file.name)
@@ -72,3 +72,54 @@ def generate_module(request):
 
     return JsonResponse({'status': 'success', 'message': 'Module generated successfully'}, status=200)
 
+@api_view(['POST'])
+def regenerate_module(request):
+
+    module_id = request.POST.get('module_id')
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    files = request.FILES.getlist('files')
+
+    if not module_id or not email or not password:
+        return HttpResponseBadRequest("Missing required parameters")
+
+    if not ModuleMember.objects.filter(module=module_id, user=request.user, role='Organizer').exists():
+        return JsonResponse({'status': 'error', 'message': 'You do not have permission to regenerate this module'}, status=403)
+
+    module_instance = Module.objects.get(id=module_id)
+    module_embeddings = ModuleEmbedding.objects.filter(module=module_instance)
+    module_embeddings.delete()
+
+    raw_cookies = get_qmplus_cookies(email=email, password=password)
+    cookies = {cookie['name']: cookie['value'] for cookie in raw_cookies if
+               cookie['name'] in ['MDL_SSP_AuthToken', 'MDL_SSP_SessID', 'MoodleSession']}
+    loader = WebBaseLoader(module_instance.url)
+    loader.requests_kwargs = {"cookies": cookies}
+    documents = loader.load()
+
+    for file in files:
+        file_stream = io.BytesIO()
+        file_stream.write(file.read())
+        file_stream.seek(0)
+
+        # Provide a metadata_filename to indicate the file type
+        loader = UnstructuredLoader(file=file_stream, metadata_filename=file.name)
+        file_documents = loader.load()
+
+        # Append loaded documents to the main list
+        for document in file_documents:
+            documents.append(document)
+
+    embeddings_function = OpenAIEmbeddings(api_key=settings.OPENAI_API_KEY)
+    documents_content = [document.page_content for document in documents]
+    embeddings = embeddings_function.embed_documents(documents_content)
+
+    for embedding, document in zip(embeddings, documents):
+        ModuleEmbedding.objects.create(
+            module=module_instance,
+            embedding_data=embedding,
+            content=document.page_content,
+        )
+
+
+    return JsonResponse({'status': 'success', 'message': 'Module regenerated successfully'}, status=200)

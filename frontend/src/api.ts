@@ -220,7 +220,6 @@ export async function addMemberToModule(userId: number, role: string) {
         if (!response.ok) {
         throw new Error("Failed to add member to module");
         }
-        useModuleStore().fetchModules();
     } catch (error) {
         console.error("Error adding member to module:", error);
     }
@@ -247,7 +246,6 @@ export async function updateUserRole(userId: number, role: string) {
         if (!response.ok) {
             throw new Error("Failed to update member role");
         }
-        useModuleStore().fetchModules();
     } catch (error) {
         console.error("Error updating member role:", error);
     }
@@ -266,9 +264,32 @@ export async function removeMemberFromModule(userId: number) {
         if (!response.ok) {
             throw new Error("Failed to remove member from module");
         }
-        useModuleStore().fetchModules();
     } catch (error) {
         console.error("Error removing member from module:", error);
+    }
+}
+
+export async function regenerateModule(staff_email: string, password: string, module_id: string, files: File[]) {
+    try {
+        const formData = new FormData();
+        formData.append('email', staff_email || '');
+        formData.append('password', password || '');
+        formData.append('module_id', module_id || '');
+        files?.forEach((file) => formData.append('files', file));
+
+        const response = await fetch('http://localhost:8000/api/regenerate-module/', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'X-CSRFToken': getCSRFToken(),
+            },
+            body: formData,
+        });
+        if (!response.ok) {
+            throw new Error('Failed to regenerate module');
+        }
+    } catch (error) {
+        console.error("Error regenerating module:", error);
     }
 }
 
