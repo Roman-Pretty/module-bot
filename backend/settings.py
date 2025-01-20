@@ -29,8 +29,6 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("VITE_DEV_MODE") == "True"
 
-print(f"DEBUG: {DEBUG}")
-
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
