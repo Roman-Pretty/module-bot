@@ -4,7 +4,7 @@ import Header from "../Header.vue";
 import Input from "./Input.vue";
 import {useAuthStore} from "../../store/auth";
 import Message from "./Message.vue";
-import {askChatbot} from "../../api";
+import {askChatbot, url} from "../../api";
 import {useModuleStore} from "../../store/module";
 import {fetchChatLogs} from "../../api";
 import {scrollToBottom} from "../../util";
@@ -66,6 +66,9 @@ export default defineComponent({
     },
   },
   methods: {
+    url() {
+      return url
+    },
     async sendMessage(message: string): Promise<void> {
       if (!message) return;
 

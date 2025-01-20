@@ -56,9 +56,9 @@ export default defineComponent({
   </div>
   <nav
       class="w-[18%] bg-primary dark:bg-base-300 text-base-100 dark:text-base-content flex-col hidden md:flex overflow-x-hidden">
-    <a href="http://127.0.0.1:8000/admin" target="_blank" class="text-xs font-semibold uppercase m-8">
+    <h1 class="text-xs font-semibold uppercase m-8">
       Module Bots
-    </a>
+    </h1>
 
     <div v-if="isLoading" class="flex justify-center items-center px-8 mb-8">
       <div class="text-center">

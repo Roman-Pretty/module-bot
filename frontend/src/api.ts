@@ -1,13 +1,17 @@
 import {getCSRFToken} from "./store/auth.ts";
 import {useModuleStore} from "./store/module.ts";
 
+export let url = "";
+if (import.meta.env.VITE_DEV_MODE === "true" || import.meta.env.VITE_DEV_MODE === "True") {
+    url = "http://localhost:8000";
+}
 
 export async function* askChatbot(question: string) {
     const formData = new FormData();
     formData.append("question", question);
     formData.append("id", `${useModuleStore().currentModule?.id}`);
 
-    const response = await fetch("http://localhost:8000/api/embedding-response/", {
+    const response = await fetch(`${url}/api/embedding-response/`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -41,7 +45,7 @@ export async function* askChatbot(question: string) {
 export async function fetchChatLogs(): Promise<[]> {
     try {
         const response = await fetch(
-            `http://localhost:8000/api/chat-logs/?id=${useModuleStore().currentModule?.id}`,
+            `${url}/api/chat-logs/?id=${useModuleStore().currentModule?.id}`,
             {method: "GET", credentials: "include"}
         );
         if (!response.ok) {
@@ -62,7 +66,7 @@ export async function fetchChatLogs(): Promise<[]> {
 
 export async function fetchChartData(timeframe: string) {
     try {
-        const response = await fetch(`http://localhost:8000/api/chart-data/${useModuleStore()?.getCurrentModule?.id}?timeframe=${timeframe}`,
+        const response = await fetch(`${url}/api/chart-data/${useModuleStore()?.getCurrentModule?.id}?timeframe=${timeframe}`,
             {method: "GET", credentials: "include"});
         if (!response.ok) {
             throw new Error('Failed to fetch chart data');
@@ -88,7 +92,7 @@ export async function fetchChartData(timeframe: string) {
 
 export async function fetchChatSummary(timeframe: string) {
     try {
-        const response = await fetch(`http://localhost:8000/api/chat-summary/${useModuleStore()?.getCurrentModule?.id}?timeframe=${timeframe}`,
+        const response = await fetch(`${url}/api/chat-summary/${useModuleStore()?.getCurrentModule?.id}?timeframe=${timeframe}`,
             {method: "GET", credentials: "include"});
         if (!response.ok) {
             throw new Error('Failed to fetch chat summary');
@@ -101,15 +105,15 @@ export async function fetchChatSummary(timeframe: string) {
 
 export async function downloadChatLogs() {
     try {
-        const response = await fetch(`http://localhost:8000/api/download-chat-logs/${useModuleStore()?.getCurrentModule?.id}`,
+        const response = await fetch(`${url}/api/download-chat-logs/${useModuleStore()?.getCurrentModule?.id}`,
             {method: "GET", credentials: "include"});
         if (!response.ok) {
             throw new Error('Failed to download chat logs');
         }
         const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
+        const surl = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url;
+        a.href = surl;
         a.download = 'chat-logs.csv';
         a.click();
     } catch (error) {
@@ -119,7 +123,7 @@ export async function downloadChatLogs() {
 
 export async function fetchModuleMembers() {
     try {
-        const response = await fetch(`http://localhost:8000/api/module-members/${useModuleStore()?.getCurrentModule?.id}`,
+        const response = await fetch(`${url}/api/module-members/${useModuleStore()?.getCurrentModule?.id}`,
             {method: "GET", credentials: "include"});
         if (!response.ok) {
             throw new Error('Failed to fetch module organizers');
@@ -132,7 +136,7 @@ export async function fetchModuleMembers() {
 
 export async function fetchModuleSettings() {
     try {
-        const response = await fetch(`http://localhost:8000/api/module-settings/${useModuleStore()?.getCurrentModule?.id}`,
+        const response = await fetch(`${url}/api/module-settings/${useModuleStore()?.getCurrentModule?.id}`,
             {method: "GET", credentials: "include"});
         if (!response.ok) {
             throw new Error('Failed to fetch module settings');
@@ -149,7 +153,7 @@ export async function updateModuleSettings(settings: any) {
         for (const key in settings) {
             formData.append(key, settings[key]);
         }
-        const response = await fetch(`http://localhost:8000/api/module-settings/${useModuleStore()?.getCurrentModule?.id}/`,
+        const response = await fetch(`${url}/api/module-settings/${useModuleStore()?.getCurrentModule?.id}/`,
             {
                 method: "PUT",
                 credentials: "include",
@@ -169,7 +173,7 @@ export async function updateModuleSettings(settings: any) {
 
 export async function fetchUserSummary() {
     try {
-        const response = await fetch(`http://localhost:8000/api/user-summary/`,
+        const response = await fetch(`${url}/api/user-summary/`,
             {method: "GET", credentials: "include"});
         if (!response.ok) {
             throw new Error('Failed to fetch user summary');
@@ -182,13 +186,13 @@ export async function fetchUserSummary() {
 
 export async function fetchAllUsersOutOfModule(page: number, searchQuery: string) {
   try {
-    const url = new URL(`http://localhost:8000/api/all-users/${useModuleStore()?.getCurrentModule?.id}/`);
-    url.searchParams.set('page', String(page));
+    const surl = new URL(`${url}/api/all-users/${useModuleStore()?.getCurrentModule?.id}/`);
+    surl.searchParams.set('page', String(page));
     if (searchQuery) {
-      url.searchParams.set('search', searchQuery);
+      surl.searchParams.set('search', searchQuery);
     }
 
-    const response = await fetch(url.toString(), {
+    const response = await fetch(surl.toString(), {
       method: "GET",
       credentials: "include",
     });
@@ -208,7 +212,7 @@ export async function addMemberToModule(userId: number, role: string) {
         formData.append("user_id", String(userId));
         formData.append("role", role);
 
-        const response = await fetch(`http://localhost:8000/api/add-member/${useModuleStore()?.getCurrentModule?.id}/`, {
+        const response = await fetch(`${url}/api/add-member/${useModuleStore()?.getCurrentModule?.id}/`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -233,7 +237,7 @@ export async function updateUserRole(userId: number, role: string) {
             role: role
         };
 
-        const response = await fetch(`http://localhost:8000/api/update-member/${useModuleStore()?.getCurrentModule?.id}/`, {
+        const response = await fetch(`${url}/api/update-member/${useModuleStore()?.getCurrentModule?.id}/`, {
             method: "PUT",
             credentials: "include",
             headers: {
@@ -253,7 +257,7 @@ export async function updateUserRole(userId: number, role: string) {
 
 export async function removeMemberFromModule(userId: number) {
     try {
-        const response = await fetch(`http://localhost:8000/api/remove-member/${useModuleStore()?.getCurrentModule?.id}/${userId}/`, {
+        const response = await fetch(`${url}/api/remove-member/${useModuleStore()?.getCurrentModule?.id}/${userId}/`, {
             method: "DELETE",
             credentials: "include",
             headers: {
@@ -277,7 +281,7 @@ export async function regenerateModule(staff_email: string, password: string, mo
         formData.append('module_id', module_id || '');
         files?.forEach((file) => formData.append('files', file));
 
-        const response = await fetch('http://localhost:8000/api/regenerate-module/', {
+        const response = await fetch(`${url}/api/regenerate-module/`, {
             method: 'POST',
             credentials: 'include',
             headers: {

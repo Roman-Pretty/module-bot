@@ -25,7 +25,7 @@ export default defineComponent({
         formData.append('course_id', this.module_code || '');
         this.files?.forEach((file) => formData.append('files', file));
 
-        const response = await fetch('http://localhost:8000/api/generate-module/', {
+        const response = await fetch(`${url}/api/generate-module/`, {
           method: 'POST',
           credentials: 'include',
           headers: {
