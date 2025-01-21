@@ -36,7 +36,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <main class="flex flex-row w-screen h-screen">
+  <main class="flex flex-row w-screen h-[100dvh]">
     <Sidebar :bots="moduleStore.getOrganizedModules" />
     <DashboardContent v-if="moduleStore.moduleSelected" />
     <SelectDashboard v-else />

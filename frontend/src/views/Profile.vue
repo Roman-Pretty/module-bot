@@ -43,7 +43,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <main class="flex flex-row w-screen h-screen">
+  <main class="flex flex-row w-screen h-[100dvh]">
     <ProfileSidebar />
     <div class="w-full flex flex-col justify-between">
       <Header :isDashboard="false" />

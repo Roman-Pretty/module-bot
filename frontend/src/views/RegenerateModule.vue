@@ -42,14 +42,14 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-if="loading" class="hero bg-[#0a1732] dark:bg-base-300 h-screen w-screen">
+  <div v-if="loading" class="hero bg-[#0a1732] dark:bg-base-300 h-[100dvh] w-screen">
     <div class="hero-content text-center w-full">
       <div>
         <LoadingScreen/>
       </div>
     </div>
   </div>
-  <div v-else class="bg-[#0a1732] dark:bg-base-300 h-screen lg:grid grid-cols-2 flex items-center justify-center">
+  <div v-else class="bg-[#0a1732] dark:bg-base-300 h-[100dvh] lg:grid grid-cols-2 flex items-center justify-center">
     <div class="card bg-base-100 w-full max-w-sm shadow-2xl lg:w-[50%] h-2/3 self-center justify-self-end lg:mr-4">
       <div class="card-body h-full">
         <div class="divider text-base-content/50 dark:text-base-content">QMPlus Login</div>

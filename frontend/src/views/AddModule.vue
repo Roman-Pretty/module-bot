@@ -59,14 +59,14 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-if="loading" class="hero bg-[#0a1732] dark:bg-base-300 h-screen w-screen">
+  <div v-if="loading" class="hero bg-[#0a1732] dark:bg-base-300 h-[100dvh] w-screen">
     <div  class="hero-content text-center w-full">
       <div>
         <LoadingScreen/>
       </div>
       </div>
     </div>
-  <div v-else class="bg-[#0a1732] dark:bg-base-300 h-screen lg:grid grid-cols-2 flex items-center justify-center">
+  <div v-else class="bg-[#0a1732] dark:bg-base-300 h-[100dvh] lg:grid grid-cols-2 flex items-center justify-center">
     <ModuleInfoForm v-if="step === 1" @next="handleNext"/>
     <ResourceUploadForm v-else-if="step === 2" @updateFiles="handleFiles" @next="nextStep" @previous="previousStep"/>
     <FinalSubmit v-else-if="step === 3" v-bind="{...moduleData, files}" @setLoading="setLoading"

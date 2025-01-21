@@ -1,5 +1,5 @@
 <template>
-  <div class="hero bg-[#0a1732] dark:bg-base-300 min-h-screen login">
+  <div class="hero bg-[#0a1732] dark:bg-base-300 min-h-[100dvh] login">
     <div class="hero-content flex-col lg:flex-row-reverse">
       <div class="card bg-base-100 w-full shrink-0 shadow-2xl max-w-md rounded-none">
         <form class="card-body gap-4" @submit.prevent="login">
