@@ -7,7 +7,6 @@ import ChatBot from "./views/ChatBot.vue";
 import {createPinia} from 'pinia'
 import {useAuthStore} from './store/auth.ts'
 import Login from "./views/Login.vue";
-import Register from "./views/Register.vue";
 import Dashboard from "./views/Dashboard.vue";
 import Profile from "./views/Profile.vue";
 import RegenerateModule from "./views/RegenerateModule.vue";
@@ -50,11 +49,11 @@ const router = createRouter({
             name: 'login',
             component: Login
         },
-        {
-            path: '/register',
-            name: 'register',
-            component: Register
-        }
+        // {
+        //     path: '/register',
+        //     name: 'register',
+        //     component: Register
+        // }
     ]
 })
 

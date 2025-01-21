@@ -129,7 +129,7 @@ export default defineComponent({
         <h1 class="text-md font-semibold">Export usage data</h1>
       </div>
     </div>
-    <div class="card w-full rounded-t-none border-base-300 border-t-0 border">
+    <div class="card w-full rounded-t-none border-base-300 border-t-0 border mb-20">
       <div class="card-body flex flex-row items-center justify-between">
         <p class="text-base-content/50">Export all anonymised usage data for this module as a CSV file.</p>
         <button @click="downloadChatLogs" class="btn bg-base-100">Export</button>

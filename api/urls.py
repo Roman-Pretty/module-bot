@@ -18,7 +18,7 @@ urlpatterns = [
     path('login', views.login_view, name='login_view'),
     path('logout', views.logout_view, name='logout_view'),
     path('user', views.user, name='user'),
-    path('register', views.register, name='register'),
+    # path('register', views.register, name='register'),
 
     # Dashboard API
     path('chart-data/<str:module_id>/', views.chart_data, name='chart_data'),
