@@ -1,30 +1,38 @@
 <template>
-  <div class="hero bg-[#0a1732] dark:bg-base-300 min-h-[100dvh] login">
-    <div class="hero-content flex-col lg:flex-row-reverse">
-      <div class="card bg-base-100 w-full shrink-0 shadow-2xl max-w-md rounded-none">
-        <form class="card-body gap-4" @submit.prevent="login">
-          <h2 class="card-title text-center text-lg">You must be logged in to use QModuleBot.</h2>
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Username</span>
-            </label>
-            <input type="text" placeholder="username" id="username" v-model="username" class="input input-bordered" required @input="resetError"/>
-          </div>
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Password</span>
-            </label>
-            <input type="password" placeholder="password" id="password" v-model="password" class="input input-bordered" required @input="resetError"/>
-            <label class="label">
-              <RouterLink to="/register" class="label-text-alt link link-hover">Forgot password?</RouterLink>
-            </label>
-          </div>
-          <div class="form-control mt-6">
-            <button class="btn btn-primary dark:btn-ghost" type="submit">Login</button>
-          </div>
-          <p v-if="error" class="error">{{ error }}</p>
-        </form>
+  <div class="hero bg-[#0a1732] dark:bg-base-300 h-[100dvh]">
+    <div class="hero-content flex-col lg:flex-row-reverse gap-8">
+      <div class="text-center lg:text-left hidden lg:flex flex-col max-w-[30vw] text-white">
+        <h1 class="text-5xl font-bold">Welcome to<br/>Q-Module-Bot</h1>
+        <p class="py-6 text-white/80">
+          Q-Module-Bot is an AI chatbot filled with knowledge about your modules. It can answer questions, provide
+          resources and help you with your studies.
+          <br/><br/>
+          You must login to access the site.
+        </p>
+      </div>
+      <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+        <form class="card-body h-full" @submit.prevent="login">
+          <div class="divider text-base-content/50 dark:text-base-content">QModuleBot Login</div>
+          <label class="input input-bordered flex items-center gap-2">
+            <User class="opacity-35"/>
+            <input type="text" class="grow" placeholder="Username" id="username" v-model="username" required
+                   @input="resetError"/>
+          </label>
+          <label class="input input-bordered flex items-center gap-2">
+            <KeyRound class="opacity-35"/>
+            <input type="password" class="grow" placeholder="Password" id="password" v-model="password" required
+                   @input="resetError"/>
+          </label>
 
+          <p class=" text-sm w-full text-center my-2" :class="[error ? 'text-error' : 'text-base-content/50']">{{ error ? error : "If you don't have credentials yet, please wait." }}</p>
+          <div class="card-actions w-full justify-center mb-4 flex ">
+
+            <button
+                class="btn bg-primary dark:bg-base-200 border-none hover:bg-secondary text-neutral-50 flex-1 hover:dark:bg-base-100"
+                type="submit">Login
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -32,8 +40,10 @@
 
 <script>
 import {useAuthStore} from '../store/auth.ts'
+import {KeyRound, User} from "lucide-vue-next";
 
 export default {
+  components: {User, KeyRound},
   setup() {
     const authStore = useAuthStore()
     return {

@@ -50,16 +50,16 @@ def user(request):
     return JsonResponse(
         {'message': 'Not logged in'}, status=401
     )
-
-
-@require_http_methods(['POST'])
-def register(request):
-    data = json.loads(request.body.decode('utf-8'))
-    form = CreateUserForm(data)
-    if form.is_valid():
-        form.save()
-        return JsonResponse({'success': 'User registered successfully'}, status=201)
-    else:
-        errors = form.errors.as_json()
-        return JsonResponse({'error': errors}, status=400)
+#
+#
+# @require_http_methods(['POST'])
+# def register(request):
+#     data = json.loads(request.body.decode('utf-8'))
+#     form = CreateUserForm(data)
+#     if form.is_valid():
+#         form.save()
+#         return JsonResponse({'success': 'User registered successfully'}, status=201)
+#     else:
+#         errors = form.errors.as_json()
+#         return JsonResponse({'error': errors}, status=400)
 
