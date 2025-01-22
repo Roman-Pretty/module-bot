@@ -138,8 +138,5 @@ EMBEDDING_MODEL_DIMENSIONS = 1536
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 QUESTION_LIMIT = 10
 
-# Semester start date
-SEMESTER_START_DATE = datetime(2025, 1, 20)
-
 import django_on_heroku
 django_on_heroku.settings(locals())
