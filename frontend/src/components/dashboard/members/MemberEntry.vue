@@ -55,7 +55,6 @@ export default defineComponent({
         {{ user.username.charAt(0) }}
       </div>
       <span class="font-semibold capitalize">{{ user.username }}</span>
-      <span class="text-base-content/70">{{ user.email }}</span>
     </div>
 
     <div class="flex items-center gap-4">
