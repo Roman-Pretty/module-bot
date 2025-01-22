@@ -31,6 +31,12 @@ DEBUG = os.environ.get("VITE_DEV_MODE") == "True"
 
 ALLOWED_HOSTS = ['*']
 
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_SSL_REDIRECT = not DEBUG
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -137,9 +143,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMBEDDING_MODEL_DIMENSIONS = 1536
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 QUESTION_LIMIT = 10
-
-# Semester start date
-SEMESTER_START_DATE = datetime(2025, 1, 20)
 
 import django_on_heroku
 django_on_heroku.settings(locals())

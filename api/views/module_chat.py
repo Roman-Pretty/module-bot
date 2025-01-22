@@ -2,18 +2,17 @@ from django.http import HttpResponseBadRequest, StreamingHttpResponse
 from api.models import Module, ChatLog
 from api.llm.rag import conversational_rag
 from backend import settings
-from datetime import timedelta
-from django.utils.timezone import now
-import pytz
+from django.utils.timezone import now, timedelta
 
 def get_current_semester_week():
-    date = now()
-    start_date = pytz.timezone('UTC').localize(settings.SEMESTER_START_DATE)
+    start_date = now().replace(year=2025, month=1, day=22, hour=0, minute=0, second=0, microsecond=0)
 
-    week = 1
-    while start_date + timedelta(days=7) <= date:
-        start_date += timedelta(days=7)
-        week += 1
+    current_date = now()
+    if current_date < start_date:
+        return 0
+
+    elapsed_days = (current_date - start_date).days
+    week = elapsed_days // 7 + 1
 
     return week
 
