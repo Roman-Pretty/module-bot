@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 import secrets
-from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
 from backend import database
@@ -27,7 +26,7 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("VITE_DEV_MODE") == "True"
+DEBUG = os.environ.get("DEV_MODE") == "True"
 
 ALLOWED_HOSTS = ['*']
 
