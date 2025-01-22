@@ -31,6 +31,12 @@ DEBUG = os.environ.get("VITE_DEV_MODE") == "True"
 
 ALLOWED_HOSTS = ['*']
 
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_SSL_REDIRECT = not DEBUG
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
