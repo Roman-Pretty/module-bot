@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('auth', {
         },
 
         async login(username: string, password: string, router: Router | null = null): Promise<void> {
-            const response = await fetch(`${url}/api/login`, {
+            const response = await fetch(`${url}/api/login-api`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

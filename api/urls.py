@@ -15,7 +15,7 @@ urlpatterns = [
 
     # Auth API
     path('set-csrf-token', views.set_csrf_token, name='set_csrf_token'),
-    path('login', views.login_view, name='login_view'),
+    path('login-api', views.login_view, name='login_view'),
     path('logout', views.logout_view, name='logout_view'),
     path('user', views.user, name='user'),
     # path('register', views.register, name='register'),
