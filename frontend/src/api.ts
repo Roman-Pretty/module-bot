@@ -186,25 +186,36 @@ export async function fetchUserSummary() {
 
 export async function fetchAllUsersOutOfModule(page: number, searchQuery: string) {
   try {
-    const surl = new URL(`${url}/api/all-users/${useModuleStore()?.getCurrentModule?.id}/`);
-    surl.searchParams.set('page', String(page));
-    if (searchQuery) {
-      surl.searchParams.set('search', searchQuery);
+    const moduleId = useModuleStore()?.getCurrentModule?.id;
+    if (!moduleId) {
+      throw new Error("Module ID is missing or undefined");
     }
 
-    const response = await fetch(surl.toString(), {
+    const surl = url
+      ? new URL(`/api/all-users/${moduleId}/`, url).toString()
+      : `/api/all-users/${moduleId}/`;
+
+    const params = new URLSearchParams();
+    params.set('page', String(page));
+    if (searchQuery) {
+      params.set('search', searchQuery);
+    }
+
+    const response = await fetch(`${surl}?${params.toString()}`, {
       method: "GET",
       credentials: "include",
     });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch all users");
+      throw new Error(`Failed to fetch all users: ${response.statusText}`);
     }
     return await response.json();
   } catch (error) {
     console.error("Error fetching all users:", error);
   }
 }
+
+
 
 export async function addMemberToModule(userId: number, role: string) {
     try {
@@ -213,16 +224,16 @@ export async function addMemberToModule(userId: number, role: string) {
         formData.append("role", role);
 
         const response = await fetch(`${url}/api/add-member/${useModuleStore()?.getCurrentModule?.id}/`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-            "X-CSRFToken": getCSRFToken(),
-        },
-        body: formData,
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+            },
+            body: formData,
         });
 
         if (!response.ok) {
-        throw new Error("Failed to add member to module");
+            throw new Error("Failed to add member to module");
         }
     } catch (error) {
         console.error("Error adding member to module:", error);
