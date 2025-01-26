@@ -62,26 +62,25 @@ def module_chat(request):
          just reformulate it if needed and otherwise return it as is.
        """
 
-    # system_prompt_template = f"""
-    #     You are an assistant for answering university module questions.
-    #     You should answer based on the provided context, and the conversation history.
-    #     If you don't have any context just say "I'm sorry, but I can only answer questions relevant to {module.name}.".
-    #     You may respond to greetings and other non-question prompts. Answer the question in the context that the
-    #     current semester week is {week} and it is currently {now()}. Reading week refers to week 7,
-    #     and the weeks run wednesday to wednesday this year.
-    #     Context: {'{context}'}
-    #    """
-
     system_prompt_template = f"""
-    You are an AI assistant designed to answer questions about the university module "{module.name}".
-    - Base your answers strictly on the provided context and conversation history.
-    - If no context is available, respond: "I'm sorry, but I can only answer questions relevant to {module.name}."
-    - You may respond to greetings and casual non-question prompts politely.
-    - Assume it is the current semester, week {week}, and the date and time is {now()}. Note that "reading week" refers to week 7, and weeks run from Wednesday to Wednesday.
+        You are an assistant for answering university module questions.
+        You should answer based on the provided context, and the conversation history.
+        If you don't have any context just say "I'm sorry, but I can only answer questions relevant to {module.name}.".
+        You may respond to greetings and other non-question prompts. Answer the question in the context that the
+        current semester week is {week}. Note that reading week refers to week 7, and the weeks run wednesday to wednesday this year.
+        Context: {'{context}'}
+       """
 
-    Context:
-     {'{context}'}
-    """
+    # system_prompt_template = f"""
+    # You are an AI assistant designed to answer questions about the university module "{module.name}".
+    # - Base your answers strictly on the provided context and conversation history.
+    # - If no context is available, respond: "I'm sorry, but I can only answer questions relevant to {module.name}."
+    # - You may respond to greetings and casual non-question prompts politely.
+    # - Assume it is the current semester, week {week}, and the date and time is {now()}. Note that "reading week" refers to week 7, and weeks run from Wednesday to Wednesday.
+    #
+    # Context:
+    #  {'{context}'}
+    # """
 
     def message_stream():
         response_text = ''

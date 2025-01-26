@@ -106,13 +106,13 @@ export default defineComponent({
       </div>
 
       <div v-else class="overflow-y-auto h-full pt-1">
-        <ul class="space-y-2">
+        <ul class="space-y-2 ">
           <li
               v-for="user in users"
               :key="user.id"
-              class="flex justify-between items-center border-b pb-2"
+              class="flex justify-between items-center border-b pb-2 w-full overflow-x-hidden"
           >
-            <p class="font-medium">{{ user.username }}</p>
+            <p class="font-medium max-w-[45%] md:max-w-none overflow-x-hidden text-nowrap truncate">{{ user.username }}</p>
             <div class="flex items-center gap-2">
               <select
                   v-model="userRoles[user.id]"
@@ -125,7 +125,7 @@ export default defineComponent({
               <button
                   @click="addMember(user)"
                   :disabled="userAdded[user.id]"
-                  class="btn sm:btn-sm mr-4 sm:w-24"
+                  class="btn sm:btn-sm sm:mr-4 mr-0 sm:w-24"
               >
                 <span class="sm:inline-block hidden">
                   {{ userAdded[user.id] ? 'Added' : 'Add' }}

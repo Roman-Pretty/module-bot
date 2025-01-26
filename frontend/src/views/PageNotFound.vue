@@ -7,7 +7,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="hero min-h-screen">
+  <div class="hero min-h-[100dvh]">
   <div class="hero-content text-center">
     <div class="max-w-md">
       <h1 class="text-8xl font-bold">404</h1>

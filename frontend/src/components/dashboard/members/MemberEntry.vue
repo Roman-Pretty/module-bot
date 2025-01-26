@@ -54,12 +54,12 @@ export default defineComponent({
       <div class="rounded-full w-10 h-10 bg-base-300 hidden sm:flex items-center justify-center font-bold uppercase">
         {{ user.username.charAt(0) }}
       </div>
-      <span class="font-semibold capitalize">{{ user.username }}</span>
+      <span class="font-semibold capitalize md:max-w-none max-w-32 overflow-x-hidden text-nowrap truncate">{{ user.username }}</span>
     </div>
 
     <div class="flex items-center gap-4">
       <select
-        class="select w-full max-w-xs disabled:cursor-default bg-base-300"
+        class="select w-full sm:max-w-xs max-w-28 truncate text-nowrap disabled:cursor-default bg-base-300"
         :disabled="user.id === useAuthStore()?.user?.id || role == 'Organizer'"
         :value="role"
         @change="handleRoleChange(($event.target as HTMLInputElement).value, user)"
