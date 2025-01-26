@@ -10,6 +10,7 @@ import Login from "./views/Login.vue";
 import Dashboard from "./views/Dashboard.vue";
 import Profile from "./views/Profile.vue";
 import RegenerateModule from "./views/RegenerateModule.vue";
+import PageNotFound from "./views/PageNotFound.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -49,6 +50,11 @@ const router = createRouter({
             name: 'login',
             component: Login
         },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'notfound',
+            component: PageNotFound,
+        }
         // {
         //     path: '/register',
         //     name: 'register',
