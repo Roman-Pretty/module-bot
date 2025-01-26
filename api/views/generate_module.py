@@ -12,7 +12,6 @@ from backend import settings
 
 @api_view(['POST'])
 def generate_module(request):
-    print(request.user)
 
     name = request.POST.get('name')
     module_id = request.POST.get('course_id')
