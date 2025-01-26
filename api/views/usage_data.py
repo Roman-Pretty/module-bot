@@ -122,27 +122,39 @@ def download_chat_logs(request, module_id):
 def user_summary(request):
     user = request.user
 
+    # Count the number of modules the user is enrolled in
     modules = Module.objects.filter(members=user).count()
+
+    # Count the number of user-initiated chats
     user_chats = ChatLog.objects.filter(user=user, bot_message=False).count()
+
+    # Get all distinct users who have initiated chats
     all_users = ChatLog.objects.filter(bot_message=False).values_list('user', flat=True).distinct()
 
+    # Create a dictionary with user IDs and their respective chat counts
     user_chat_counts = {
         user_id: ChatLog.objects.filter(user_id=user_id, bot_message=False).count()
         for user_id in all_users
     }
 
+    # Sort users by chat count in descending order
     sorted_users = sorted(user_chat_counts.items(), key=lambda x: x[1], reverse=True)
-    rank = next((i + 1 for i, (user_id, _) in enumerate(sorted_users) if user_id == user.id), len(sorted_users))
 
+    # Find the rank of the current user (1-based indexing)
+    rank = next((i + 1 for i, (user_id, _) in enumerate(sorted_users) if user_id == user.id), None)
+
+    # Total number of users
     total_users = len(sorted_users)
-    top_percentage = 100 - (1 - (rank - 1) / total_users) * 100 if total_users > 0 else -1
 
-    if top_percentage == 0:
-        top_percentage = 1
-
-    if top_percentage == -1:
+    # Calculate the user's top percentage
+    if rank is None or total_users == 0:
+        # User has no activity or no users exist
         top_percentage = 0
+    else:
+        # Calculate rank-based percentage
+        top_percentage = (rank / total_users) * 100
 
+    # Round the percentage to 2 decimal places
     top_percentage = round(top_percentage, 2)
 
     return JsonResponse({
@@ -150,5 +162,6 @@ def user_summary(request):
         'user_chats': user_chats,
         'top_percentage': top_percentage
     })
+
 
 
