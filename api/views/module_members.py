@@ -112,3 +112,4 @@ def remove_member(request, module_id, user_id):
 
     module.members.remove(user)
     return JsonResponse({'success': 'User removed from module'}, status=200)
+

@@ -60,7 +60,7 @@ export default defineComponent({
       Module Bots
     </h1>
 
-    <div v-if="isLoading" class="flex justify-center items-center px-8 mb-8">
+    <div v-if="isLoading" class="flex justify-center items-center px-8 mb-8 max-w-full overflow-x-hidden">
       <div class="text-center">
         <span class="loading loading-spinner loading-md"></span>
         <p class="mt-2 text-xs">Loading modules...</p>
@@ -73,20 +73,21 @@ export default defineComponent({
       </div>
     </div>
 
-    <ul v-else class="flex flex-col gap-2 overflow-y-auto px-8 mb-8">
+    <ul v-else class="flex flex-col gap-2 overflow-y-auto h-full px-8 mb-8">
       <li
           @click="moduleStore.setCurrentModule(bot.id)"
           v-for="bot in bots"
+          :title="bot.name"
           :key="bot.id"
-          class="z-10 relative btn btn-primary dark:btn-ghost shadow-none text-base-100 dark:text-base-content justify-between font-normal"
+          class="z-10 relative btn btn-primary dark:btn-ghost shadow-none text-base-100 dark:text-base-content justify-between font-normal overflow-x-hidden max-w-full"
           :class="{
           'btn-secondary dark:bg-base-200': moduleStore?.getCurrentModule?.id === bot.id,
         }"
       >
-        <span class="text-nowrap truncate py-1 hidden lg:inline-block max-w-full">
+        <span class="text-nowrap truncate py-1 hidden lg:inline-block max-w-full overflow-x-hidden">
           {{ bot.name }}
         </span>
-        <span class="text-nowrap truncate py-1 inline-block lg:hidden max-w-full">
+        <span class="text-nowrap truncate py-1 inline-block lg:hidden max-w-full overflow-x-hidden">
           {{ bot.id }}
         </span>
       </li>
