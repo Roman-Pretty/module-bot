@@ -108,7 +108,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="h-full w-full overflow-y-auto xl:px-[20%] lg:px-[14%] px-4">
+  <div class="h-full w-full overflow-y-auto xl:px-[20%] lg:px-[14%] px-4 pb-20">
     <div v-if="isLoading" class="flex justify-center items-center h-full">
       <div class="text-center">
         <span class="loading loading-spinner loading-lg"></span>
