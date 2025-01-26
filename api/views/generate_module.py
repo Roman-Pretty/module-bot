@@ -1,5 +1,3 @@
-from io import BytesIO
-
 from django.http import JsonResponse, HttpResponseBadRequest
 from langchain_openai import OpenAIEmbeddings
 from rest_framework.decorators import api_view

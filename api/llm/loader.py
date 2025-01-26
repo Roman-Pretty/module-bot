@@ -1,7 +1,7 @@
 import os
 import tempfile
 from abc import ABC
-from pathlib import Path, PurePath
+from pathlib import PurePath
 from typing import (
     Iterator,
     Optional,
