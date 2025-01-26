@@ -47,7 +47,7 @@ export default defineComponent({
   <nav class="navbar ">
     <div class="navbar-start hidden md:flex">
       <div v-if="moduleStore?.getCurrentModule == null && $route.path === '/'"/>
-      <a v-else-if="$route.path === '/'" class="btn btn-ghost text-xl" :href="moduleStore.getCurrentModule?.url"
+      <a v-else-if="$route.path === '/'" class="btn btn-ghost text-xl" :href="moduleStore.getCurrentModule?.url" :title="moduleStore.getCurrentModule?.url"
          target="_blank">{{ moduleStore.getCurrentModule?.id }}</a>
       <RouterLink to="/" v-else class="btn btn-ghost text-xl text-neutral-400 dark:text-base-content"><ChevronLeft />Back</RouterLink>
     </div>

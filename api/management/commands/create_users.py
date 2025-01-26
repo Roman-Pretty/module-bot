@@ -61,7 +61,7 @@ class Command(BaseCommand):
             user = User.objects.create_user(username=username, password=password)
 
             # Assign user to the module
-            ModuleMember.objects.create(user=user, module=module)
+            ModuleMember.objects.create(user=user, module=module, role="Student")
 
             users_data.append({"Username": username, "Password": password})
 

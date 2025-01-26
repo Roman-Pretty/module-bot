@@ -67,16 +67,10 @@ export default defineComponent({
             multiple
             class="file-input w-full max-w-xs my-4"
             @change="handleFileUpload"
-            accept="application/pdf,
-                  application/vnd.ms-powerpoint,
-                  application/vnd.openxmlformats-officedocument.presentationml.presentation,
-                  application/msword,
-                  application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-                  text/plain,
-                  "
+            accept="application/pdf"
         />
         <p class="text-base-content/50 text-xs w-full text-center"><span
-            class="font-semibold">Accepted file types:</span> .pdf, .ppt, .pptx, .doc, .docx</p>
+            class="font-semibold">Accepted file types:</span> .pdf</p>
       </div>
       <div class="card-actions w-full justify-center mb-4 flex lg:hidden px-8">
         <button class="btn flex-1" @click="$router.back()">Back</button>
