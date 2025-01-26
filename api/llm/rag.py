@@ -42,7 +42,7 @@ def conversational_rag(
     )
     history_aware_retriever = create_history_aware_retriever(
         llm,
-        DocumentRetriever(module_id=module_id, max_results=4),
+        DocumentRetriever(module_id=module_id, max_results=2),
         condense_question_prompt,
     )
     qa_prompt = ChatPromptTemplate.from_messages(
