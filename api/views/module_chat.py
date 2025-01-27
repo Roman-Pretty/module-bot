@@ -48,11 +48,6 @@ def module_chat(request):
         response_text = f"ERROR:You have reached the maximum number of questions for this module. Please try again after {available_at}."
         return StreamingHttpResponse(response_text, content_type="text/event-stream")
 
-    ChatLog.objects.create(
-        user_id=user.id,
-        module_id=module_id,
-        message=user_question,
-    )
     week = get_current_semester_week()
     condense_question_prompt_template = """
          Given a chat history and the latest user question
@@ -98,6 +93,12 @@ def module_chat(request):
         ):
             response_text += chunk.get("answer", "")
             yield chunk.get("answer", "")
+
+        ChatLog.objects.create(
+            user_id=user.id,
+            module_id=module_id,
+            message=user_question,
+        )
         ChatLog.objects.create(
             user_id=user.id,
             module_id=module_id,

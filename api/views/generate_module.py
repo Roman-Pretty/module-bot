@@ -1,3 +1,4 @@
+import bs4
 from django.http import JsonResponse, HttpResponseBadRequest
 from langchain_openai import OpenAIEmbeddings
 from rest_framework.decorators import api_view
@@ -10,7 +11,6 @@ from backend import settings
 
 @api_view(['POST'])
 def generate_module(request):
-
     name = request.POST.get('name')
     module_id = request.POST.get('course_id')
     email = request.POST.get('email')
@@ -39,7 +39,10 @@ def generate_module(request):
     raw_cookies = get_qmplus_cookies(email=email, password=password)
     cookies = {cookie['name']: cookie['value'] for cookie in raw_cookies if
                cookie['name'] in ['MDL_SSP_AuthToken', 'MDL_SSP_SessID', 'MoodleSession']}
-    loader = WebBaseLoader(url)
+    loader = WebBaseLoader(url, bs_kwargs={
+        "parse_only": bs4.SoupStrainer(class_=["course-content", "drawercontent drag-container"]),
+    },
+                           bs_get_text_kwargs={"separator": "   ", "strip": True}, )
     loader.requests_kwargs = {"cookies": cookies}
     documents = loader.load()
 
@@ -87,7 +90,10 @@ def regenerate_module(request):
     raw_cookies = get_qmplus_cookies(email=email, password=password)
     cookies = {cookie['name']: cookie['value'] for cookie in raw_cookies if
                cookie['name'] in ['MDL_SSP_AuthToken', 'MDL_SSP_SessID', 'MoodleSession']}
-    loader = WebBaseLoader(module_instance.url)
+    loader = WebBaseLoader(module_instance.url, bs_kwargs={
+        "parse_only": bs4.SoupStrainer(class_=["course-content", "drawercontent drag-container"]),
+    },
+                           bs_get_text_kwargs={"separator": "   ", "strip": True}, )
     loader.requests_kwargs = {"cookies": cookies}
     documents = loader.load()
 
@@ -112,4 +118,3 @@ def regenerate_module(request):
         )
 
     return JsonResponse({'status': 'success', 'message': 'Module regenerated successfully'}, status=200)
-
