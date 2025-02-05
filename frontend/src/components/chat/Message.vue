@@ -81,12 +81,12 @@ export default defineComponent({
     <div :class="['chat-bubble',
     message.bot_message ? 'bg-base-100 text-base-content bot max-w-full' : 'text-base-200 dark:bg-base-300 dark:text-base-content max-w-[70%]',
     error ? 'bg-error/10 ' : '']">
-      <!--TODO: protect against XSS-->
       <div v-if="error" class="text-error h-full flex items-center gap-2">
         <CircleAlert/>
         <div class="pb-4" v-html="html"/>
       </div>
       <div v-else v-html="html"/>
+      <span v-else>{{message.message}}</span>
       <div class="mt-2 inline-block dark:hidden" v-if="message.loading">
         <hollow-dots-spinner
             :animation-duration="800"
