@@ -68,9 +68,11 @@ def module_chat(request):
         You should answer based on the provided context, and the conversation history.
         If you don't have any context just say "I'm sorry, but I can only answer questions relevant to {module.name}.".
         You may respond to greetings and other non-question prompts. Answer the question in the context that the
-        current semester week is {get_current_semester_week} and the date is {get_today}. Note that reading week refers to week 7, and the weeks run wednesday to wednesday this year.
+        current semester week is {get_current_semester_week()} and the date is {get_today()}. Note that reading week refers to week 7, and the weeks run wednesday to wednesday this year.
         Context: {'{context}'}
        """
+
+    print(system_prompt_template)
 
     def message_stream():
         response_text = ''
