@@ -30,14 +30,14 @@ export default defineComponent({
       return;
     }
     await this.authStore.fetchUser();
-    await this.moduleStore.fetchModules();
+    await this.moduleStore.fetchOrganizedModules();
   },
 })
 </script>
 
 <template>
   <main class="flex flex-row w-screen h-[100dvh]">
-    <Sidebar :bots="moduleStore.getOrganizedModules" />
+    <Sidebar :is-dashboard="true" :bots="moduleStore.getOrganizedModules || []" />
     <DashboardContent v-if="moduleStore.moduleSelected" />
     <SelectDashboard v-else />
   </main>

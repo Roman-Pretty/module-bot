@@ -1,38 +1,35 @@
 <script lang="ts">
-import {defineComponent} from 'vue'
-import {Module, useModuleStore} from "../../store/module";
-import {Ellipsis, ChevronDown} from "lucide-vue-next";
+import { defineComponent, computed } from 'vue';
+import { Module, useModuleStore } from "../../store/module";
+import { Ellipsis, ChevronDown } from "lucide-vue-next";
 
 export default defineComponent({
   name: "Sidebar",
-  components: {Ellipsis, ChevronDown},
+  components: { Ellipsis, ChevronDown },
   props: {
     bots: {
       type: Array as () => Module[],
       required: false,
     },
-  },
-  watch: {
-    'moduleStore.modules': {
-      immediate: true,
-      handler() {
-        if (this.moduleStore.modules) {
-          this.isLoading = false;
-        }
-      },
+    isDashboard: {
+      type: Boolean,
+      default: false,
     },
   },
-  setup() {
+  setup(props) {
     const moduleStore = useModuleStore();
-    const isLoading = moduleStore.modules === null;
+    const isLoading = computed(() =>
+      props.isDashboard ? moduleStore.organizedModules === null : moduleStore.modules === null
+    );
 
     return {
       moduleStore,
       isLoading,
     };
   },
-})
+});
 </script>
+
 
 <template>
   <div class="dropdown md:hidden absolute top-2 left-2">
@@ -67,7 +64,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div v-else-if="(moduleStore?.modules?.length ?? 0) <= 0">
+    <div v-else-if="(bots?.length ?? 0) <= 0">
       <div class="flex justify-center items-center px-8">
         <p class="mt-2 text-xs">No modules found</p>
       </div>

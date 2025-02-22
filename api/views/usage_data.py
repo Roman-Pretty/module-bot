@@ -95,7 +95,8 @@ def chat_summary(request, module_id):
     avg_questions_per_user = total_chats / total_users if total_users > 0 else 0
 
     return JsonResponse(
-        {'total_chats': total_chats, 'total_users': total_users, 'avg_questions_per_user': round(avg_questions_per_user, 2)})
+        {'total_chats': total_chats, 'total_users': total_users,
+         'avg_questions_per_user': round(avg_questions_per_user, 2)})
 
 
 def download_chat_logs(request, module_id):
@@ -162,6 +163,3 @@ def user_summary(request):
         'user_chats': user_chats,
         'top_percentage': top_percentage
     })
-
-
-

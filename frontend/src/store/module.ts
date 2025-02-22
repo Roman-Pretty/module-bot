@@ -1,12 +1,10 @@
 import {defineStore} from 'pinia';
-import {useAuthStore} from "./auth.ts";
 import {url} from "../api";
 
 export interface Module {
     id: string,
     name: string,
     url: string,
-    members: {member_id: number, role: string}[],
     enable_welcome_message: boolean,
     welcome_message: string,
 
@@ -16,19 +14,30 @@ export interface Module {
 interface ModuleState {
     currentModule: Module | null,
     modules: Module[] | null
+    organizedModules: Module[] | null
 }
 
 export const useModuleStore = defineStore('modules', {
     state: (): ModuleState => ({
         currentModule: null,
         modules: null,
+        organizedModules: null,
     }),
     actions: {
         async fetchModules() {
             const response = await fetch(`${url}/api/modules`, {
                 method: 'GET', credentials: 'include',
             });
-            this.modules = await response.json();
+            this.modules = await response.json() ?? [];
+        },
+        async fetchOrganizedModules() {
+            const response = await fetch(`${url}/api/organized-modules`, {
+                method: 'GET', credentials: 'include',
+            });
+            this.organizedModules = await response.json() ?? [];
+            if (!this.organizedModules || !this.organizedModules.some(module => module.id === this.getCurrentModule?.id)) {
+                this.setCurrentModule("");
+            }
         },
         setCurrentModule(moduleID: string) {
             this.currentModule = this.modules?.find((module) => module.id === moduleID) || null;
@@ -45,14 +54,7 @@ export const useModuleStore = defineStore('modules', {
             return state.modules;
         },
         getOrganizedModules: (state) => {
-            // Workaround for typescript
-            if (!useAuthStore()?.user) return [];
-            else {
-                const user = useAuthStore()?.user || {id: -1};
-                return state.modules?.filter((module: Module) =>
-                    module.members.some((member) => member.member_id === user.id && member.role === 'Organizer')
-                );
-            }
+            return state.organizedModules;
         },
         getCurrentModule: (state) => {
             return state.currentModule;
