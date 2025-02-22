@@ -31,7 +31,8 @@ def users_not_in_module(request, module_id):
     users_per_page = 40
 
     users_already_in_module = Module.objects.get(id=module_id).members.all().values_list('id', flat=True)
-    users = User.objects.exclude(id__in=users_already_in_module).filter(is_active=True, is_staff=False).order_by('username')
+    users = User.objects.exclude(id__in=users_already_in_module).filter(is_active=True, is_staff=False).order_by(
+        'username')
 
     if search_query:
         users = users.filter(Q(username__icontains=search_query))
@@ -48,6 +49,7 @@ def users_not_in_module(request, module_id):
     }
 
     return JsonResponse(response, safe=False)
+
 
 def add_member_to_module(request, module_id):
     try:
@@ -69,6 +71,7 @@ def add_member_to_module(request, module_id):
     module.members.add(user, through_defaults={'role': role})
 
     return JsonResponse({'success': 'User added to module'}, status=200)
+
 
 def update_member(request, module_id):
     if request.method == 'PUT':
@@ -96,6 +99,7 @@ def update_member(request, module_id):
         return JsonResponse({'success': 'User role updated'}, status=200)
     return JsonResponse({'error': 'Invalid method'}, status=405)
 
+
 def remove_member(request, module_id, user_id):
     try:
         module = Module.objects.get(id=module_id)
@@ -112,4 +116,3 @@ def remove_member(request, module_id, user_id):
 
     module.members.remove(user)
     return JsonResponse({'success': 'User removed from module'}, status=200)
-

@@ -8,6 +8,7 @@ urlpatterns = [
     path('embedding-response/', views.module_chat, name='embedding_response'),
     path('chat-logs/', views.manage_chat_logs, name='manage_chat_logs'),
     path('modules', views.modules, name='modules'),
+    path('organized-modules', views.organized_modules, name='organized_modules'),
 
     # Generate Module API
     path('generate-module/', views.generate_module, name='generate_module'),
@@ -18,7 +19,6 @@ urlpatterns = [
     path('login-api', views.login_view, name='login_view'),
     path('logout', views.logout_view, name='logout_view'),
     path('user', views.user, name='user'),
-    # path('register', views.register, name='register'),
 
     # Dashboard API
     path('chart-data/<str:module_id>/', views.chart_data, name='chart_data'),

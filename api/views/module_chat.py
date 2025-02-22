@@ -4,6 +4,7 @@ from api.llm.rag import conversational_rag
 from backend import settings
 from django.utils.timezone import now, timedelta
 
+
 def get_current_semester_week():
     start_date = now().replace(year=2025, month=1, day=22, hour=0, minute=0, second=0, microsecond=0)
 
@@ -15,6 +16,12 @@ def get_current_semester_week():
     week = elapsed_days // 7 + 1
 
     return week
+
+
+def get_today():
+    # Return todays date and the day of the week
+    today = now()
+    return today.strftime("%A %d %B %Y")
 
 
 def module_chat(request):
@@ -48,7 +55,6 @@ def module_chat(request):
         response_text = f"ERROR:You have reached the maximum number of questions for this module. Please try again after {available_at}."
         return StreamingHttpResponse(response_text, content_type="text/event-stream")
 
-    week = get_current_semester_week()
     condense_question_prompt_template = """
          Given a chat history and the latest user question
          which might reference context in the chat history,
@@ -62,20 +68,9 @@ def module_chat(request):
         You should answer based on the provided context, and the conversation history.
         If you don't have any context just say "I'm sorry, but I can only answer questions relevant to {module.name}.".
         You may respond to greetings and other non-question prompts. Answer the question in the context that the
-        current semester week is {week}. Note that reading week refers to week 7, and the weeks run wednesday to wednesday this year.
+        current semester week is {get_current_semester_week} and the date is {get_today}. Note that reading week refers to week 7, and the weeks run wednesday to wednesday this year.
         Context: {'{context}'}
        """
-
-    # system_prompt_template = f"""
-    # You are an AI assistant designed to answer questions about the university module "{module.name}".
-    # - Base your answers strictly on the provided context and conversation history.
-    # - If no context is available, respond: "I'm sorry, but I can only answer questions relevant to {module.name}."
-    # - You may respond to greetings and casual non-question prompts politely.
-    # - Assume it is the current semester, week {week}, and the date and time is {now()}. Note that "reading week" refers to week 7, and weeks run from Wednesday to Wednesday.
-    #
-    # Context:
-    #  {'{context}'}
-    # """
 
     def message_stream():
         response_text = ''

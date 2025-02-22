@@ -76,6 +76,7 @@ export const useAuthStore = defineStore('auth', {
                     const moduleStore = useModuleStore()
                     moduleStore.currentModule = null
                     moduleStore.modules = []
+                    moduleStore.organizedModules = []
                     this.saveState()
                     if (router) {
                         await router.push({name: 'login'})

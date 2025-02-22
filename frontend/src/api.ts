@@ -166,6 +166,7 @@ export async function updateModuleSettings(settings: any) {
             throw new Error('Failed to update module settings');
         }
         useModuleStore().fetchModules();
+        useModuleStore().fetchOrganizedModules();
     } catch (error) {
         console.error('Error updating module settings:', error);
     }

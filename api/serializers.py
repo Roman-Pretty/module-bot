@@ -12,11 +12,10 @@ class ModuleMemberSerializer(serializers.ModelSerializer):
 
 
 class ModuleSerializer(serializers.ModelSerializer):
-    members = ModuleMemberSerializer(source='modulemember_set', many=True)
 
     class Meta:
         model = Module
-        fields = ('id', 'name', 'url', 'enable_welcome_message', 'welcome_message', 'members')
+        fields = ('id', 'name', 'url', 'enable_welcome_message', 'welcome_message')
 
 
 class ModuleSettingsSerializer(serializers.ModelSerializer):
