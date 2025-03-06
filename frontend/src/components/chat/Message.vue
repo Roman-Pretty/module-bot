@@ -85,7 +85,7 @@ export default defineComponent({
         <CircleAlert/>
         <div class="pb-4" v-html="html"/>
       </div>
-      <div v-else v-html="html"/>
+      <div v-else-if="message.bot_message" v-html="html"/>
       <span v-else>{{message.message}}</span>
       <div class="mt-2 inline-block dark:hidden" v-if="message.loading">
         <hollow-dots-spinner
