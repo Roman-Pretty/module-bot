@@ -7,6 +7,11 @@ from api.serializers import ModuleSerializer
 
 @api_view(['GET'])
 def modules(request):
+    """
+    Returns all the modules that the user is registered in.
+    This is used for the sidebar in the frontend to allow users
+    to select a module to chat with.
+    """
     if not request.user:
         return Response({'message': 'Not logged in'}, status=401)
 
@@ -17,6 +22,10 @@ def modules(request):
 
 @api_view(['GET'])
 def organized_modules(request):
+    """
+    The same as modules, but only returns the modules that the user is
+    an organizer of.
+    """
     if not request.user:
         return Response({'message': 'Not logged in'}, status=401)
     elif not request.user.is_module_organizer:

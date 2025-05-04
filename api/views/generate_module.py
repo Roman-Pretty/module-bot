@@ -13,6 +13,11 @@ from langchain_experimental.text_splitter import SemanticChunker
 
 @api_view(['POST'])
 def generate_module(request):
+    """
+    Generates a module based on the given link,
+    name, and course ID.
+    """
+
     # Get the required fields from the request
     fields = ['name', 'course_id', 'email', 'password', 'url']
     name, module_id, email, password, url = (request.POST.get(field) for field in fields)
@@ -38,7 +43,6 @@ def generate_module(request):
     )
 
     # Authenticate with QMPlus and retrieve content
-    # TODO: if username and password are incorrect, return an error message
     raw_cookies = get_qmplus_cookies(email=email, password=password)
     cookies = {cookie['name']: cookie['value'] for cookie in raw_cookies if
                cookie['name'] in ['MDL_SSP_AuthToken', 'MDL_SSP_SessID', 'MoodleSession']}
@@ -81,6 +85,11 @@ def generate_module(request):
 
 @api_view(['POST'])
 def regenerate_module(request):
+    """
+    Similar to generate_module, but
+    simply generates the information over the current embeddings,
+    and deletes the old ones.
+    """
     module_id = request.POST.get('module_id')
     email = request.POST.get('email')
     password = request.POST.get('password')
@@ -98,7 +107,6 @@ def regenerate_module(request):
     module_embeddings.delete()
 
     # Authenticate with QMPlus and retrieve content
-    # TODO: if username and password are incorrect, return an error message
     raw_cookies = get_qmplus_cookies(email=email, password=password)
     cookies = {cookie['name']: cookie['value'] for cookie in raw_cookies if
                cookie['name'] in ['MDL_SSP_AuthToken', 'MDL_SSP_SessID', 'MoodleSession']}

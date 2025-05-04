@@ -10,13 +10,19 @@ from rest_framework.response import Response
 @api_view(['GET'])
 def set_csrf_token(request):
     """
-    We set the CSRF cookie on the frontend.
+    Set the CSRF cookie on the frontend. This is nicely
+    handled by the @ensure_csrf_cookie decorator.
     """
     return Response({'message': 'CSRF token successfully set.'}, status=200)
 
 
 @api_view(['POST'])
 def login_view(request):
+    """
+    The login API. It authenticates the user using django's built-in authenticate
+    method, and starts a session using django's built-in login method if
+    authentication is successful.
+    """
     try:
         data = json.loads(request.body.decode('utf-8'))
         username = data['username']
@@ -37,12 +43,20 @@ def login_view(request):
 
 @api_view(['POST'])
 def logout_view(request):
+    """
+    Very simple logout using django's built-in logout method.
+    """
     logout(request)
     return Response({'message': 'Logged out'})
 
 
 @api_view(['GET'])
 def user(request):
+    """
+    Get the current user's information. Used in the frontend
+    after logging in to get the user's information (to display
+    the dashboard, etc.)
+    """
     if request.user.is_authenticated:
         return Response(
             {'username': request.user.username, 'email': request.user.email, 'id': request.user.id,

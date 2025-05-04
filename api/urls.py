@@ -36,8 +36,6 @@ urlpatterns = [
     # Profile API
     path('user-summary/', views.user_summary, name='user_summary'),
 
-    # Redirect if it all goes wrong
+    # Base redirect, needed for Vue router otherwise refreshing a page will result in a 404
     re_path(r'^(?P<path>.*)/$', views.main_spa),
 ]
-
-# TODO: Follow URL naming conventions
