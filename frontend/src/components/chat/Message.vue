@@ -1,4 +1,9 @@
 <script lang="ts">
+/**
+ * Displays the messages for the bot and the users. This component
+ * also ensures that no HTML is injected into the messages.
+ */
+
 import {defineComponent} from 'vue';
 import {MessageType} from "./Chat.vue";
 import showdown from 'showdown';

@@ -1,4 +1,12 @@
 <script lang="ts">
+
+/**
+ * Sidebar of the page, displays a list of modules enrolled in
+ * on the home page, or a list of modules organized on the dashboard.
+ *
+ * If there are no modules, it displays a message saying "No modules found".
+ *
+ */
 import { defineComponent, computed } from 'vue';
 import { Module, useModuleStore } from "../../store/module";
 import { Ellipsis, ChevronDown } from "lucide-vue-next";

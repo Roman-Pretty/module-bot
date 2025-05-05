@@ -13,7 +13,7 @@ _**"Is student learning and engagement positively affected by the implementation
 </div>
 <br/>
 
-## Usage and Installation
+## Running the Application
 ### Deployed Application (Recommended)
 To use Q-Module-Bot, you will need access to valid login credentials for the website. These can be located in the supporting materials uploaded to QMPlus.
 

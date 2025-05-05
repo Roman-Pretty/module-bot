@@ -1,4 +1,8 @@
 <script lang="ts">
+/**
+ * A summary card for all the information a user
+ * has entered when creating a new module.
+ */
 import {defineComponent} from 'vue';
 import {getCSRFToken} from "../../store/auth";
 import {url} from "../../api";

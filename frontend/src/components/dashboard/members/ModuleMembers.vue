@@ -1,4 +1,7 @@
 <script lang="ts">
+/**
+ * Lists all the current members of the module using MemberEntry components.
+ */
 import {defineComponent, ref, computed, watch} from "vue";
 import {addMemberToModule, fetchModuleMembers, removeMemberFromModule} from "../../../api";
 import {useModuleStore} from "../../../store/module";

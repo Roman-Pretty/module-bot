@@ -1,4 +1,10 @@
 <script lang="ts">
+
+/**
+ * The second card when making a new module, takes pdf files
+ * as input to use as additional context.
+ */
+
 import {defineComponent} from 'vue';
 import {Hash, KeyRound, Link, Pencil, User} from "lucide-vue-next";
 

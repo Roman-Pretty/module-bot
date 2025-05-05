@@ -1,4 +1,11 @@
 <script lang="ts">
+
+/**
+ * The page for generating a new module. This works
+ * by storing a variable for the current step in the generation process
+ * and switching the component based on that.
+ */
+
 import {defineComponent, ref} from 'vue';
 import ModuleInfoForm from "../components/add_module/ModuleInfoForm.vue";
 import ResourceUploadForm from "../components/add_module/ResourceUploadForm.vue";

@@ -1,4 +1,10 @@
 <script lang="ts">
+/**
+ * A modal component for adding members to the module.
+ *
+ * Uses the api to display every user that is not already a member of the module,
+ * and is searchable by username.
+ */
 import {defineComponent, ref, onMounted} from "vue";
 import {fetchAllUsersOutOfModule} from "../../../api";
 import {User} from "../../../store/auth";

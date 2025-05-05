@@ -1,4 +1,8 @@
 <script lang="ts">
+/**
+ * A list element for the list of members on the dashboard.
+ * Shows a user's name and role that can be edited by the organizer.
+ */
 import { defineComponent, ref } from 'vue';
 import { useAuthStore, User } from '../../../store/auth';
 import { UserRoundMinus } from 'lucide-vue-next';

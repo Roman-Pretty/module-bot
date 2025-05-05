@@ -1,4 +1,8 @@
 <script lang="ts">
+/**
+ * The first card when making a new module, takes
+ * all the important information to send to the server.
+ */
 import {defineComponent} from 'vue';
 import {Pencil, Hash, Link, User, KeyRound} from 'lucide-vue-next';
 

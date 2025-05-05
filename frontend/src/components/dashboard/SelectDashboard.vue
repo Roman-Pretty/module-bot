@@ -1,4 +1,8 @@
 <script>
+/**
+ * A simple component telling the user to select a module.
+ */
+
 import {defineComponent} from 'vue'
 import Header from "../Header.vue";
 

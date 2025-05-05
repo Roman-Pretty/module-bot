@@ -1,4 +1,11 @@
 <script lang="ts">
+
+/**
+ * An animated loading screen that plays while the module is being scraped.
+ *
+ * The text (messages array) is meaningless and is there to help assure the user that the
+ * server is processing their request.
+ */
 import {defineComponent, ref, onMounted, onBeforeUnmount} from 'vue';
 //@ts-ignore
 import {FulfillingSquareSpinner} from 'epic-spinners';

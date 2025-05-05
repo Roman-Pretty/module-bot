@@ -7,6 +7,10 @@
 </template>
 
 <script>
+/**
+ * Bar Chart from ChartJS, this is provided in their documentation
+ * and has been edited to display the module usage data.
+ */
 import {Bar} from 'vue-chartjs';
 import {Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale} from 'chart.js';
 import {fetchChartData} from "../../../api";

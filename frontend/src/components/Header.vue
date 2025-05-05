@@ -1,4 +1,13 @@
 <script lang="ts">
+/**
+ * The header displays the current module with a link to its page,
+ * and the drop down bar for accessing the dashboard.
+ *
+ * If this is in the dashboard page, the header also displays an
+ * add module button and a tab bar for switching between different
+ * sections of the dashboard.
+ */
+
 import {defineComponent} from 'vue'
 import {useAuthStore} from "../store/auth.ts";
 import {useModuleStore} from "../store/module.ts";

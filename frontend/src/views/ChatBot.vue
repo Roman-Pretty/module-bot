@@ -1,4 +1,12 @@
 <script lang="ts">
+
+/**
+ * The main page of the application.
+ *
+ * Displays the sidebar, and either the current conversation window
+ * or a message notifying the user to select a module.
+ */
+
 import {defineComponent} from 'vue';
 import {useAuthStore} from '../store/auth.ts';
 import {useRouter} from 'vue-router';

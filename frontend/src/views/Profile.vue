@@ -6,6 +6,15 @@ import { useAuthStore } from "../store/auth.ts";
 import { Info } from "lucide-vue-next";
 import { fetchUserSummary } from "../api.ts";
 
+/**
+ * This page is a simple gamified summary of the user's interactions with Q-Module-Bot.
+ *
+ * It calls the API to show where the user ranks in comparison to all other members.
+ * It also shows the number of questions asked and the number of modules the user is enrolled in.
+ *
+ * It also explains why the user has a random name in the system, for their privacy.
+ */
+
 export default defineComponent({
   name: "Profile",
   components: { ProfileSidebar, Header, Info },
