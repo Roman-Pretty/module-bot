@@ -8,7 +8,7 @@ This is my 2025 Final Year Project used in a study to answer the research questi
 _**"Is student learning and engagement positively affected by the implementation and integration of an automated chatbot system?".**_
 
 <br/>
-<div style="text-align: center;">
+<div style="text-align: center; width: 100%;">
   <img src="./frontend/public/banner.png" style="width: 75%">
 </div>
 <br/>
@@ -82,4 +82,13 @@ To run Q-Module-Bot locally, you will need to follow an extensive setup process 
 11. You are now able to access the [dashboard](http://localhost:8000/dashboard) and create a new module. You can do this by clicking the "Create Module" button in the top right corner of the page. This will take you to a form where you can enter the module name, code, and description. Once you have filled out the form, click the "Create Module" button to create the module.
     > This step requires you to use your QMPlus credentials to generate the module. These are not stored at any point.
 </details>
-<br/>
+
+## Navigating the Source Code
+- If preferred, Q-Module-Bot's source code is available on my [Github](https://github.com/Roman-Pretty/module-bot).
+### Backend
+The backend of the site is built using Django, and the most important backend code is located in the api/views directory.<br/>
+This is where all of the API endpoints I have created are located.
+
+### Frontend
+The frontend of the site is built with Vue.js and its extensions Pinia and Vue Router. The frontend code is located in frontend/src.<br/>
+The views folder here contains all the pages for the site.
