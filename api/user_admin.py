@@ -3,8 +3,15 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 from .models import User
 
-@admin.register(User)  # Registers your custom User model
+@admin.register(User)
 class UserAdmin(BaseUserAdmin):
+    """
+    This is boilerplate code for a custom UserAdmin Django class,
+    covered in https://docs.djangoproject.com/en/5.2/topics/auth/customizing/.
+    All this does is add the is_module_organizer field to the User entry
+    in the Django admin interface.
+    """
+
     # Define the fields to display in the User list view
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_module_organizer')
 

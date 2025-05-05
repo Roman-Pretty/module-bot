@@ -1,4 +1,9 @@
 <script lang="ts">
+/**
+ * Switches the content of the dashboard based on the selected tab,
+ * either settings, members or statistics.
+ */
+
 import {defineComponent} from 'vue'
 import Header from "../Header.vue";
 import BarChart from "./statistics/BarChart.vue";

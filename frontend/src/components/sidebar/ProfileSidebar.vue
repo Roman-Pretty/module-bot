@@ -1,4 +1,9 @@
 <script lang="ts">
+/**
+ * A simple sidebar component for the profile page, as the
+ * user should not switch modules here.
+ */
+
 import {defineComponent} from 'vue'
 
 export default defineComponent({

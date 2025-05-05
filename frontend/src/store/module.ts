@@ -1,3 +1,13 @@
+/**
+ * A pinia store for storing module information on the client.
+ *
+ * Stores the modules a user is currently enrolled in, as well as
+ * the modules they currently organise. It also holds their settings.
+ *
+ * Originally, this store held every user in a module, but that
+ * was inefficient and allowed malicious users to find out others ids.
+ */
+
 import {defineStore} from 'pinia';
 import {url} from "../api";
 

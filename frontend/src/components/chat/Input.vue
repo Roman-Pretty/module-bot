@@ -1,4 +1,12 @@
 <script lang="ts">
+/**
+ * Was originally a simple text input, this component is now a
+ * textarea (similar to the google search bar) so that users can enter multi-line queries.
+ *
+ * This took a lot of time and trial and error to get right so that the text area
+ * would look good on mobile and any view and resize correctly.
+ */
+
 import {defineComponent} from 'vue'
 import {ArrowUp} from "lucide-vue-next";
 
@@ -18,10 +26,10 @@ export default defineComponent({
 
         // Reset height after clearing the message
         textarea.style.height = 'auto';
-        textarea.style.height = '1.6rem'; // Reset to the initial height of the textarea
+        textarea.style.height = '1.6rem';
 
-        // Reset label height (ensure label doesn't shrink below 48px)
-        label.style.height = '48px'; // Reset to the default height for the label (3rem)
+        // Reset label height
+        label.style.height = '48px';
       });
     },
     adjustHeight(event: Event) {
@@ -45,7 +53,7 @@ export default defineComponent({
       if (event.shiftKey) {
         return;
       }
-      // If Shift is not held down, send the message (submit the form)
+      // If Shift is not held down, send the message
       event.preventDefault();
       this.send();
     }

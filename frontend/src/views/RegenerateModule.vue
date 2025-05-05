@@ -1,4 +1,10 @@
 <script lang="ts">
+
+/**
+ * See the AddModule component, this is similar
+ * but already has a lot of the necessary information.
+ */
+
 import {defineComponent} from 'vue';
 import {regenerateModule} from "../api";
 import {useModuleStore} from "../store/module";

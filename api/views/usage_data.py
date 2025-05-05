@@ -7,8 +7,14 @@ from collections import defaultdict
 import csv
 from django.http import HttpResponse
 
+# This file is mostly for usage data used in the Dashboard
+# overview page and the user profile page
 
 def get_chats_based_on_timeframe(timeframe, module_id):
+    """
+    Get the chat logs for a module based on the passed timeframe
+    (used for graph plotting in the frontend)
+    """
     today = now().date()
 
     if timeframe == '1 day':
@@ -53,6 +59,10 @@ def get_chats_based_on_timeframe(timeframe, module_id):
 
 
 def chart_data(request, module_id):
+    """
+    Calls the above function to get the chat logs for a module based on the passed timeframe
+    and returns the data in a format that can be used for graph plotting
+    """
     timeframe = request.GET.get('timeframe', '1 week').lower()
     if timeframe not in ['1 day', '3 days', '1 week', '1 month']:
         return JsonResponse({'error': 'Invalid timeframe'}, status=400)
@@ -70,6 +80,10 @@ def chart_data(request, module_id):
 
 
 def chat_summary(request, module_id):
+    """
+    Same as above, but to create a text summary to appear
+    next to the graph on the frontend
+    """
     timeframe = request.GET.get('timeframe', '1 week').lower()
     if timeframe not in ['1 day', '3 days', '1 week', '1 month']:
         return JsonResponse({'error': 'Invalid timeframe'}, status=400)
@@ -100,6 +114,10 @@ def chat_summary(request, module_id):
 
 
 def download_chat_logs(request, module_id):
+    """
+    Download the chat logs for a module as a CSV file.
+    Used for external graph plotting in the report.
+    """
     user = request.user
     if not ModuleMember.objects.filter(module__id=module_id, user=user, role='Organizer').exists():
         return JsonResponse({'error': 'User does not have access to this module'}, status=403)
@@ -121,6 +139,11 @@ def download_chat_logs(request, module_id):
 
 
 def user_summary(request):
+    """
+    Simply returns a summary of the user for the profile page,
+    including a gamified representation of their interactions with
+    the app compared to other users.
+    """
     user = request.user
 
     # Count the number of modules the user is enrolled in
@@ -141,7 +164,7 @@ def user_summary(request):
     # Sort users by chat count in descending order
     sorted_users = sorted(user_chat_counts.items(), key=lambda x: x[1], reverse=True)
 
-    # Find the rank of the current user (1-based indexing)
+    # Find the rank of the current user
     rank = next((i + 1 for i, (user_id, _) in enumerate(sorted_users) if user_id == user.id), None)
 
     # Total number of users

@@ -13,7 +13,10 @@ from api.llm.retrievers import DocumentRetriever
 
 
 class InMemoryHistory(BaseChatMessageHistory, BaseModel):
-    """In memory implementation of chat message history."""
+    """
+    The LangChain implementation of in-memory chat history. Modified to
+    retrieve the two most relevant embeddings only for the currently selected module.
+    """
     messages: list[BaseMessage] = Field(default_factory=list)
 
     def add_message(self, message: BaseMessage) -> None:

@@ -1,6 +1,11 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 
+/**
+ * Just a simple 404 page, as I need Django to accept any URL
+ * so I can use Vue Router, I needed a catch-all page.
+ */
+
 export default defineComponent({
   name: "PageNotFound"
 })

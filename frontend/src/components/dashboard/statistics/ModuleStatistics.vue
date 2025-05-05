@@ -1,4 +1,11 @@
 <script lang="ts">
+
+/**
+ * Shows the Chart for the module and a text based summary of
+ * its usage data. Also contains a button for downloading the chat logs
+ * to be used in my own analysis.
+ */
+
 import {defineComponent, ref, computed, watch} from 'vue';
 import {ChevronDown} from 'lucide-vue-next';
 // @ts-ignore - This is a custom component and is definitely there!

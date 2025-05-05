@@ -1,4 +1,7 @@
 <script lang="ts">
+/**
+ * Displays all of a users messages and Q-Module-Bot's responses.
+ */
 import {defineComponent} from 'vue';
 import Header from "../Header.vue";
 import Input from "./Input.vue";

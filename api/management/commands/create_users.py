@@ -8,6 +8,13 @@ from ...models import User, Module, ModuleMember
 
 
 class Command(BaseCommand):
+    """
+    Command to create users with AdjectiveNoun usernames and assign them to a module.
+    This script was used to create all users for Fundamentals of Web Technology
+    and automatically add them to the module.
+
+    Makes use of the Faker library to generate random usernames and passwords.
+    """
     help = "Create users with AdjectiveNoun usernames, assign them to a module, and print credentials."
 
     def add_arguments(self, parser):

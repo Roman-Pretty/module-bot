@@ -1,4 +1,12 @@
 <script>
+
+/**
+ * The dashboard, which is only accessible to module organizers.
+ *
+ * If a module is selected then information appears, but if not a message
+ * shows telling the user to choose one.
+ */
+
 import {defineComponent, provide, ref} from 'vue'
 import Header from "../components/Header.vue";
 import {useAuthStore} from "../store/auth.ts";

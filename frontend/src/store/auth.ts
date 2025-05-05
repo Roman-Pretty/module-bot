@@ -1,3 +1,11 @@
+/**
+ * A pinia store for authentication.
+ *
+ * Stores the user information and authentication state, and contains
+ * a helper method for getting the current CSRF token, logging in,
+ * logging out, and fetching the user information.
+ */
+
 import {defineStore} from 'pinia'
 import {Router} from 'vue-router'
 import {useModuleStore} from "./module.ts";

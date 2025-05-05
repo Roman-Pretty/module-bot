@@ -39,6 +39,12 @@
 </template>
 
 <script>
+
+/**
+ * Login page for Q-Module-Bot, when a user logs in a session is created
+ * and the user is redirected to the home page.
+ */
+
 import {useAuthStore} from '../store/auth.ts'
 import {KeyRound, User} from "lucide-vue-next";
 

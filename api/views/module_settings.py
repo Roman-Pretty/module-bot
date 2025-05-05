@@ -6,6 +6,11 @@ from api.serializers import ModuleSettingsSerializer
 
 @api_view(['GET', 'PUT'])
 def module_settings(request, module_id):
+    """
+    Handles GET and PUT requests for module settings,
+    all this does is retrieve the current settings for a module,
+    or update them when a module is saved.
+    """
     if request.method == 'GET':
         return Response(ModuleSettingsSerializer(Module.objects.get(id=module_id)).data)
     elif request.method == 'PUT':

@@ -8,6 +8,11 @@ from api.models import ModuleEmbedding
 
 
 class DocumentRetriever(BaseRetriever):
+    """
+    Edited document retriever to only retrieve modules based on the passed module.
+    This is used for the RAG pipeline, and uses cosine distance to retrieve the most relevant
+    embeddings for a prompt.
+    """
     max_results: int
     module_id: str
 

@@ -1,4 +1,9 @@
 <script lang="ts">
+/**
+ * The settings for the module, this is basically
+ * just a list of form components that update the module when
+ * save is pressed, which calls the api.
+ */
 import {defineComponent, ref, onMounted, watch} from 'vue';
 import {useModuleStore} from '../../../store/module';
 import {fetchModuleSettings, updateModuleSettings} from '../../../api';

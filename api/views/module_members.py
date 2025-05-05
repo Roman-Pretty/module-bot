@@ -6,8 +6,13 @@ from django.http import JsonResponse
 from django.db.models import Q
 from django.core.paginator import Paginator
 
+# This handles the members of a module, and is used mainly in the
+# members panel of the dashboard.
 
 def module_members(request, module_id):
+    """
+    Retrieves all the members of a module and their roles.
+    """
     try:
         module = Module.objects.get(id=module_id)
     except Module.DoesNotExist:
@@ -26,6 +31,10 @@ def module_members(request, module_id):
 
 
 def users_not_in_module(request, module_id):
+    """
+    Retrieves all the users that are not in a module.
+    Useful for the add members modal in the frontend.
+    """
     search_query = request.GET.get('search', '').strip()
     page = request.GET.get('page', 1)
     users_per_page = 40
@@ -52,6 +61,10 @@ def users_not_in_module(request, module_id):
 
 
 def add_member_to_module(request, module_id):
+    """
+    Adds a user to a module with a specific role.
+    Simply creates a new ModuleMember object for the pair.
+    """
     try:
         module = Module.objects.get(id=module_id)
     except Module.DoesNotExist:
@@ -74,6 +87,12 @@ def add_member_to_module(request, module_id):
 
 
 def update_member(request, module_id):
+    """
+    Updates the role of a user in a module.
+    Useful for promoting members to demonstrators or organizers,
+    though as mentioned in the models class demonstrators currently have
+    no additional permissions.
+    """
     if request.method == 'PUT':
         try:
             module = Module.objects.get(id=module_id)
@@ -101,6 +120,9 @@ def update_member(request, module_id):
 
 
 def remove_member(request, module_id, user_id):
+    """
+    Removes a user from a module by simply deleting the ModuleMember object.
+    """
     try:
         module = Module.objects.get(id=module_id)
     except Module.DoesNotExist:

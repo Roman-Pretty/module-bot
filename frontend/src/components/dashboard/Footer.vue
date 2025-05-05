@@ -1,4 +1,10 @@
 <script lang="ts">
+
+/**
+ * A footer that displays if accessing the dashboard
+ * on a mobile view, looks similar to the tabs of instagram or other
+ * apps.
+ */
 import {defineComponent} from 'vue'
 import {ChartColumnIncreasing, Users, Settings2} from "lucide-vue-next";
 

@@ -19,7 +19,11 @@ from langchain_community.document_loaders.parsers.pdf import (
 )
 
 class BasePDFLoader(BaseLoader, ABC):
-    """Edited Base Loader class for `PDF` files with support for file bytes."""
+    """
+    Edited Base Loader class for `PDF` files with support for file bytes.
+    This is copied from the original langchain BasePDFLoader class but modified to accept
+    either bytes or a file path.
+    """
 
     def __init__(
             self,
@@ -99,7 +103,15 @@ class BasePDFLoader(BaseLoader, ABC):
         return self.web_path if self.web_path is not None else self.file_path
 
 
-class RomanLoader(BasePDFLoader):
+class InMemoryLoader(BasePDFLoader):
+    """
+    Extended PDF loader for `PDF` files with support for file bytes.
+
+    We need to make a custom loader here (edit the provided langchain ones)
+    to support loading PDF files from bytes, as the original langchain loaders
+    don't allow this. Without this, when uploading files to the API, we would
+    have to save the file to disk first, which is bad!
+    """
     def __init__(
             self,
             file_bytes: bytes,
