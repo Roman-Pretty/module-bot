@@ -4,7 +4,7 @@ from bs4 import SoupStrainer
 from django.http import JsonResponse, HttpResponseBadRequest
 from langchain_openai import OpenAIEmbeddings
 from rest_framework.decorators import api_view
-from api.llm.loader import RomanLoader
+from api.llm.loader import InMemoryLoader
 from api.models import Module, ModuleEmbedding, ModuleMember
 from api.llm.selenium import get_qmplus_cookies
 from backend import settings
@@ -64,7 +64,7 @@ def generate_module(request):
     for file in files:
         file_bytes = file.read()
 
-        loader = RomanLoader(file_bytes=file_bytes)
+        loader = InMemoryLoader(file_bytes=file_bytes)
         file_documents = loader.load()
 
         for document in file_documents:
@@ -73,6 +73,7 @@ def generate_module(request):
     documents_content = [document.page_content for document in documents]
     embeddings = embeddings_function.embed_documents(documents_content)
 
+    # Iterate through each embedding and document pair
     for embedding, document in zip(embeddings, documents):
         ModuleEmbedding.objects.create(
             module=module_instance,
@@ -128,7 +129,7 @@ def regenerate_module(request):
     for file in files:
         file_bytes = file.read()
 
-        loader = RomanLoader(file_bytes=file_bytes)
+        loader = InMemoryLoader(file_bytes=file_bytes)
         file_documents = loader.load()
 
         for document in file_documents:

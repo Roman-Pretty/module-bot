@@ -103,7 +103,7 @@ class BasePDFLoader(BaseLoader, ABC):
         return self.web_path if self.web_path is not None else self.file_path
 
 
-class RomanLoader(BasePDFLoader):
+class InMemoryLoader(BasePDFLoader):
     """
     Extended PDF loader for `PDF` files with support for file bytes.
 
